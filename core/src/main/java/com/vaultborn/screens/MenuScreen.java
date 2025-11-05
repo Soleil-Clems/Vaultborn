@@ -31,9 +31,9 @@ public class MenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton playButton = new TextButton("Play", skin);
-        TextButton settingsButton = new TextButton("Settings", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton playButton = new TextButton("Jouer", skin);
+        TextButton settingsButton = new TextButton("Parametres", skin);
+        TextButton exitButton = new TextButton("Sortir", skin);
 
         table.center();
         table.add(playButton).pad(10).width(200).row();
