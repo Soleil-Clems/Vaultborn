@@ -1,6 +1,7 @@
 package com.vaultborn.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,12 +21,16 @@ public class GameScreen implements Screen {
 
         world = new World();
     }
-
+    
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.update(delta);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            game.setScreen(new MenuScreen(game));
+            System.out.println("Bouton escape");
+        }
 
         batch.begin();
         world.render(batch);
