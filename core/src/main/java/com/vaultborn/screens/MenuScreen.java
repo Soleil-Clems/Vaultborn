@@ -2,36 +2,93 @@ package com.vaultborn.screens;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import com.vaultborn.MainGame;
 
 import java.util.List;
-import java.util.Arrays;
 
-public class MenuScreen extends AbsMenu {
 
-    private static final List<String> items = Arrays.asList("Jouer", "Parametres", "Exit");
+public class MenuScreen{
+    
+    protected MainGame game;
+    protected Stage stage;
+    protected Skin skin;
+    protected List<String> element;
+    private boolean activated;
 
-    public MenuScreen(MainGame game) {
+
+    public MenuScreen(MainGame game,Skin skin,List<String> element){
+        this.game = game;
+        this.skin = skin;
+        this.element = element;
+        this.activated = false;
+        stage = new Stage(new ScreenViewport());
+        //initie les inputs
+        Gdx.input.setInputProcessor(stage);
+        //System.out.println(Gdx.files.internal(skin).exists());
+    
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
+        for (String e : element){
+            TextButton Button = new TextButton(e, skin);
+            table.add(Button).pad(10).width(200).row();
         
-        super(game, "Menu", new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json")), items);
-       
+            Button.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Bouton : " + e);
+                onClick(e);
+                }
+                });
+        }    
+    }
+    public boolean isActivated(){
+        return activated;
+    }
+    public Stage getStage(){
+        return stage;
+    }
+    public void setActivated(boolean a){
+        this.activated = a;
     }
 
-   @Override
-   protected void onClick(String name) {
-       switch(name) {
-            case "Jouer":
+    public void onClick(String name){
+        switch (name) {
+            case "Jouer" :
                 game.setScreen(new GameScreen(game));
                 break;
-            case "Settings":
-                //game.setScreen(new SettingsScreen(game));
+            case "Continuer" :
+                this.activated = !this.activated;
                 break;
-            case "Exit":
+            case "Parametres":
+                break;
+            case "Exit" :
                 Gdx.app.exit();
                 break;
+            default:
+                break;
         }
-       
-   }
+    }
+    public void rdMenu(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.act(delta);
+        stage.draw();
+    }
+    public void dpMenu(){stage.dispose(); skin.dispose();}   
+
+    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true); }
+    public void shMenu() {}
+    public void pMenu() {}
+    public void rMenu() {}
+    public void hMenu() {}
 }
