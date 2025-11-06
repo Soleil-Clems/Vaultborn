@@ -19,9 +19,9 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private World world;
     private MainGame game;
-    private MenuScreen MainMenuScreen;
+    
     private MenuScreen PauseMenuScreen;
-    private static final List<String> buttonMain = Arrays.asList("Jouer", "Parametres", "Exit");
+    
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
@@ -30,8 +30,7 @@ public class GameScreen implements Screen {
         this.game = game;
         this.batch = new SpriteBatch();
         world = new World();
-        MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);  
-        MainMenuScreen.setActivated(true);
+        
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);  
         
     }
@@ -64,19 +63,14 @@ public class GameScreen implements Screen {
     }
 
     @Override public void resize(int width, int height) {
-         if(MainMenuScreen.isActivated()){
-            //MainMenuScreen.rsMenu(width,height);
-        }
+            
+            PauseMenuScreen.rsMenu(width, height);            
+        
     }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
     @Override public void show() {}
     @Override public void dispose() {
-         if(MainMenuScreen.isActivated()){
-            MainMenuScreen.dpMenu();
-        }
-        else{
             batch.dispose(); }
-        }
 }

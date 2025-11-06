@@ -23,6 +23,7 @@ public class MenuScreen{
     protected Skin skin;
     protected List<String> element;
     private boolean activated;
+    private Table table;
 
 
     public MenuScreen(MainGame game,Skin skin,List<String> element){
@@ -35,12 +36,13 @@ public class MenuScreen{
         Gdx.input.setInputProcessor(stage);
         //System.out.println(Gdx.files.internal(skin).exists());
     
-        Table table = new Table();
+        table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
         for (String e : element){
             TextButton Button = new TextButton(e, skin);
-            table.add(Button).pad(10).width(200).row();
+            Button.getLabel().setFontScale(2f);
+            table.add(Button).pad(10).width(500).height(Gdx.graphics.getHeight()*0.2f).row();
         
             Button.addListener(new ChangeListener() {
                 @Override
@@ -86,7 +88,7 @@ public class MenuScreen{
     }
     public void dpMenu(){stage.dispose(); skin.dispose();}   
 
-    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true); }
+    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
     public void shMenu() {}
     public void pMenu() {}
     public void rMenu() {}
