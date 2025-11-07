@@ -5,10 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
-import com.vaultborn.world.World;
 
 
-public class Warrior extends Character {
+public class Warrior extends Player {
 
     public Warrior(Vector2 position, TextureRegion texture) {
         super(position, texture, "Lancelot");
