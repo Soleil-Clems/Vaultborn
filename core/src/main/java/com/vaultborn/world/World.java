@@ -64,14 +64,14 @@ public class World {
     }
 
     public void update(float delta) {
-        // Passe le World au joueur pour gérer les collisions
         player.update(delta);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
         float cameraX = player.getPosition().x + 100;
-        float cameraY = 730f;
+        float cameraY =730f;
+//        float cameraY = player.getPosition().y + 50;
         cameraY = Math.max(cameraY, h / 2f);
 
         worldCamera.position.set(cameraX, cameraY, 0);
@@ -104,7 +104,6 @@ public class World {
     }
 
     public boolean isCellBlocked(float worldX, float worldY) {
-        // Si pas de layer de collision, on ne bloque rien
         if (collisionLayer == null) {
             return false;
         }
@@ -112,19 +111,16 @@ public class World {
         int x = (int)(worldX / tileSize);
         int y = (int)(worldY / tileSize);
 
-        // Vérifier si on est hors de la map
         if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) {
-            return false; // ou true si vous voulez bloquer aux bords de la map
+            return false;
         }
 
         TiledMapTileLayer.Cell cell = collisionLayer.getCell(x, y);
 
-        // Si la cellule est null ou n'a pas de tile, ce n'est PAS bloqué
         if (cell == null || cell.getTile() == null) {
             return false;
         }
 
-        // Seulement bloqué si la tile a la propriété "blocked"
         return cell.getTile().getProperties().containsKey("blocked");
     }
 }

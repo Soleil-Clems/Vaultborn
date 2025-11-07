@@ -1,8 +1,6 @@
 package com.vaultborn.entities.characters.players;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -11,11 +9,6 @@ import com.vaultborn.world.World;
 
 
 public class Warrior extends Character {
-
-    private float speed = 200f;
-    public boolean facingRight = true;
-    private World world;
-
 
     public Warrior(Vector2 position, TextureRegion texture) {
         super(position, texture, "Lancelot");
@@ -26,9 +19,6 @@ public class Warrior extends Character {
         this.agility = 10;
         this.range = 1;
 
-        // Ajustez selon votre sprite
-//        this.characterWidth = 48f;  // Largeur de votre personnage
-//        this.characterHeight = 64f; // Hauteur de votre personnage
     }
 
     @Override
@@ -41,8 +31,8 @@ public class Warrior extends Character {
         addAnimation("idle", new Texture("warrior/Idle.png"), 5, 0.1f);
         addAnimation("walk", new Texture("warrior/Walk.png"), 9, 0.1f);
         addAnimation("attack", new Texture("warrior/Attack_1.png"), 4, 0.08f);
+        addAnimation("dash", new Texture("warrior/Jump.png"), 4, 0.08f);
+        addAnimation("jump", new Texture("warrior/Jump.png"), 7, 0.1f);
     }
-
-
 
 }

@@ -25,9 +25,13 @@ public abstract class Character extends Entity {
     public boolean facingRight = true;
     private float speed = 200f;
     protected World world;
-    // Dimensions du personnage pour les collisions
     protected float characterWidth = 32f;
     protected float characterHeight = 48f;
+
+    protected float velocityY = 0f;
+    protected float gravity = -1000f;
+    protected float jumpSpeed = 450f;
+    protected boolean onGround = false;
 
 
     protected TextureRegion portrait;
@@ -44,7 +48,6 @@ public abstract class Character extends Entity {
 
     public abstract void attack(Character target);
 
-    // Getters et setters...
     public String getName() { return name; }
     public int getHp() { return hp; }
     public void setHp(int hp) { this.hp = hp; }
@@ -85,45 +88,8 @@ public abstract class Character extends Entity {
     }
 
 
-
-//public void update(float delta) {
-//    float moveX = 0;
-//    float moveY = 0;
-//
-//    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-//        moveX -= 1f;
-//        facingRight = false;
-//    }
-//    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-//        moveX += 1f;
-//        facingRight = true;
-//    }
-//    if (Gdx.input.isKeyPressed(Input.Keys.UP))    moveY += 1;
-//    if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  moveY -= 1;
-//
-//
-//    if (moveX != 0 || moveY != 0) {
-//        Vector2 move = new Vector2(moveX, moveY).nor().scl(speed * delta);
-//        position.add(move);
-//        bounds.setPosition(position);
-//
-//        if (facingRight) {
-//            portrait.flip(false, true);
-//        }
-//
-//
-//        setAnimation("walk");
-//    } else {
-//        setAnimation("idle");
-//    }
-//
-//    stateTime += delta;
-//}
-
-
     public void update(float delta) {
         float moveX = 0;
-        float moveY = 0;
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             moveX -= 1f;
@@ -133,35 +99,41 @@ public abstract class Character extends Entity {
             moveX += 1f;
             facingRight = true;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP))    moveY += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))  moveY -= 1;
 
-        if (moveX != 0 || moveY != 0) {
-            Vector2 move = new Vector2(moveX, moveY).nor().scl(speed * delta);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && onGround) {
+            velocityY = jumpSpeed + agility;
+            onGround = false;
+        }
 
-            // Vérifier les collisions avant de déplacer
-            Vector2 newPosition = new Vector2(position).add(move);
+        velocityY += gravity * delta;
+        if (velocityY < -800f) velocityY = -800f;
 
-            if (world != null && !isColliding(newPosition)) {
-                position.set(newPosition);
-                bounds.setPosition(position);
-            } else if (world != null) {
-                // Essayer de glisser le long des murs
-                // Tester le mouvement X seul
-                Vector2 moveX_only = new Vector2(position.x + move.x, position.y);
-                if (!isColliding(moveX_only)) {
-                    position.x = moveX_only.x;
-                }
+        Vector2 move = new Vector2(moveX * speed * delta, velocityY * delta);
 
-                // Tester le mouvement Y seul
-                Vector2 moveY_only = new Vector2(position.x, position.y + move.y);
-                if (!isColliding(moveY_only)) {
-                    position.y = moveY_only.y;
-                }
+        Vector2 newPosition = new Vector2(position).add(move);
 
-                bounds.setPosition(position);
+        Vector2 testX = new Vector2(newPosition.x, position.y);
+        if (world != null && !isColliding(testX)) {
+            position.x = testX.x;
+        }
+
+        Vector2 testY = new Vector2(position.x, newPosition.y);
+        if (world != null && !isColliding(testY)) {
+            position.y = testY.y;
+            onGround = false;
+        } else {
+            if (velocityY < 0) {
+                onGround = true;
             }
+            velocityY = 0;
+        }
 
+        bounds.setPosition(position);
+
+
+        if (!onGround) {
+            setAnimation("jump");
+        } else if (moveX != 0) {
             setAnimation("walk");
         } else {
             setAnimation("idle");
@@ -170,11 +142,10 @@ public abstract class Character extends Entity {
         stateTime += delta;
     }
 
-    // Vérifie si le personnage entre en collision aux coins de sa hitbox
+
     private boolean isColliding(Vector2 pos) {
         if (world == null) return false;
 
-        // Vérifier les 4 coins du personnage
         boolean topLeft = world.isCellBlocked(pos.x, pos.y + characterHeight);
         boolean topRight = world.isCellBlocked(pos.x + characterWidth, pos.y + characterHeight);
         boolean bottomLeft = world.isCellBlocked(pos.x, pos.y);
