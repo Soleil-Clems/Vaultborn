@@ -26,8 +26,8 @@ public abstract class Character extends Entity {
     private float speed = 200f;
     protected World world;
     // Dimensions du personnage pour les collisions
-    protected float characterWidth = 32f;  // Ajustez selon votre sprite
-    protected float characterHeight = 48f; // Ajustez selon votre sprite
+    protected float characterWidth = 32f;
+    protected float characterHeight = 48f;
 
 
     protected TextureRegion portrait;
