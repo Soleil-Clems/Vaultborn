@@ -17,7 +17,6 @@ public class GameScreen implements Screen {
         this.game = game;
         this.batch = new SpriteBatch();
 
-
         world = new World();
     }
 
@@ -27,9 +26,9 @@ public class GameScreen implements Screen {
 
         world.update(delta);
 
-        batch.begin();
+//        batch.begin();
         world.render(batch);
-        batch.end();
+//        batch.end();
     }
 
     @Override public void resize(int width, int height) {}
