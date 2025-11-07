@@ -21,6 +21,8 @@ public class GameScreen implements Screen {
     private MainGame game;
     
     private MenuScreen PauseMenuScreen;
+    private InventoryPlayer inv;
+    
     
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
@@ -31,34 +33,38 @@ public class GameScreen implements Screen {
         this.batch = new SpriteBatch();
         world = new World();
         
-        PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);  
+        PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
+        inv = new InventoryPlayer();
+        
         
     }
 
     @Override
     public void render(float delta) {
-        // if(MainMenuScreen.isActivated()){
-        //     MainMenuScreen.rdMenu(delta);
-        //     Gdx.input.setInputProcessor(MainMenuScreen.getStage());
-        // }
-        // else{
-            if (!PauseMenuScreen.isActivated()){
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                world.update(delta);
-                batch.begin();
-                world.render(batch);
-                batch.end(); 
-                Gdx.input.setInputProcessor(null);
-                
+        /*
+        //exit fast
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+                    Gdx.app.exit();
             }
-            else{
-                PauseMenuScreen.rdMenu(delta);
-                Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
-            }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-                    PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
-            }
-        // }
+        */
+        if (!PauseMenuScreen.isActivated()){
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            world.update(delta);
+            batch.begin();
+            world.render(batch);
+            batch.end(); 
+            Gdx.input.setInputProcessor(null);
+            
+        }
+        else{
+            PauseMenuScreen.rdMenu(delta);
+            Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+                PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
+        }
+        //fait les input du inventory
+        inv.InventoryInput();        
                 
     }
 

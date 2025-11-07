@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
-
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 
@@ -21,7 +21,16 @@ public class MainScreen implements Screen{
         MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);  
     }
 
-    @Override public void render(float delta) {MainMenuScreen.rdMenu(delta);}
+    @Override public void render(float delta) {
+        MainMenuScreen.rdMenu(delta);
+        /*
+        //exit fast
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+                    Gdx.app.exit();
+            }
+        */
+        }
+        
     @Override public void resize(int width, int height) {MainMenuScreen.rsMenu(width, height);}
     @Override public void pause() {}
     @Override public void resume() {}
