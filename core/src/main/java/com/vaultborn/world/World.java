@@ -70,8 +70,8 @@ public class World {
         float h = Gdx.graphics.getHeight();
 
         float cameraX = player.getPosition().x + 100;
-        float cameraY =730f;
-//        float cameraY = player.getPosition().y + 50;
+//        float cameraY =730f;
+        float cameraY = player.getPosition().y + 200;
         cameraY = Math.max(cameraY, h / 2f);
 
         worldCamera.position.set(cameraX, cameraY, 0);

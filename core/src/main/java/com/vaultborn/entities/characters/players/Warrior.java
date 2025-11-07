@@ -30,8 +30,11 @@ public class Warrior extends Player {
         addAnimation("idle", new Texture("warrior/Idle.png"), 5, 0.1f);
         addAnimation("walk", new Texture("warrior/Walk.png"), 9, 0.1f);
         addAnimation("attack", new Texture("warrior/Attack_1.png"), 4, 0.08f);
+        addAnimation("attack2", new Texture("warrior/Attack_2.png"), 5, 0.08f);
+        addAnimation("attack3", new Texture("warrior/Attack_3.png"), 4, 0.08f);
         addAnimation("dash", new Texture("warrior/Jump.png"), 4, 0.08f);
-        addAnimation("jump", new Texture("warrior/Jump.png"), 7, 0.1f);
+        addAnimation("jump", new Texture("warrior/Jump.png"), 7, 0.09f);
+        addAnimation("protect", new Texture("warrior/Protect.png"), 2, 1f);
     }
 
 }

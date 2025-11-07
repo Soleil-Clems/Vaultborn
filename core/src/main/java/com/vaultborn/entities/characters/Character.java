@@ -32,7 +32,8 @@ public abstract class Character extends Entity {
     protected float gravity = -1000f;
     protected float jumpSpeed = 450f;
     protected boolean onGround = false;
-
+    protected String isAttacking = "";
+    protected boolean isProtected = false;
 
     protected TextureRegion portrait;
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
@@ -100,6 +101,21 @@ public abstract class Character extends Entity {
             facingRight = true;
         }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            isAttacking = "attack";
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            isAttacking = "attack2";
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.X)) {
+            isAttacking = "attack3";
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
+            isProtected = true;
+        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && onGround) {
             velocityY = jumpSpeed + agility;
             onGround = false;
@@ -133,7 +149,19 @@ public abstract class Character extends Entity {
 
         if (!onGround) {
             setAnimation("jump");
-        } else if (moveX != 0) {
+        } else if (isAttacking.equals("attack")) {
+            setAnimation("attack");
+            isAttacking = "";
+        }else if (isAttacking.equals("attack2")) {
+            setAnimation("attack2");
+            isAttacking = "";
+        } else if (isAttacking.equals("attack3")) {
+            setAnimation("attack3");
+            isAttacking = "";
+        }else if (isProtected) {
+            setAnimation("protect");
+            isProtected = false;
+        }else if (moveX != 0) {
             setAnimation("walk");
         } else {
             setAnimation("idle");
