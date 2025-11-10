@@ -11,8 +11,8 @@ public class Warrior extends Player {
 
     public Warrior(Vector2 position, TextureRegion texture) {
         super(position, texture, "Lancelot");
-        this.hp = 100;
-        this.damage = 10;
+        this.hp = 20;
+        this.damage = 20;
         this.defense = 8;
         this.level = 1;
         this.agility = 10;
@@ -23,18 +23,20 @@ public class Warrior extends Player {
     @Override
     public void attack(Character target) {
         int dmg = Math.max(1, this.damage - target.getDefense());
-        target.setHp(target.getHp() - dmg);
+        target.takeDamage(dmg);
     }
 
     public void loadAnimations() {
         addAnimation("idle", new Texture("warrior/Idle.png"), 5, 0.1f);
         addAnimation("walk", new Texture("warrior/Walk.png"), 9, 0.1f);
-        addAnimation("attack", new Texture("warrior/Attack_1.png"), 4, 0.08f);
-        addAnimation("attack2", new Texture("warrior/Attack_2.png"), 5, 0.08f);
-        addAnimation("attack3", new Texture("warrior/Attack_3.png"), 4, 0.08f);
-        addAnimation("dash", new Texture("warrior/Jump.png"), 4, 0.08f);
+        addAnimation("attack", new Texture("warrior/Attack_1.png"), 4, 0.045f);
+        addAnimation("attack2", new Texture("warrior/Attack_2.png"), 5, 0.045f);
+        addAnimation("attack3", new Texture("warrior/Attack_3.png"), 4, 0.039f);
+        addAnimation("run", new Texture("warrior/Run.png"), 8, 0.08f);
         addAnimation("jump", new Texture("warrior/Jump.png"), 7, 0.09f);
         addAnimation("protect", new Texture("warrior/Protect.png"), 2, 2f);
+        addAnimation("dead", new Texture("warrior/Dead.png"), 6, 0.15f);
+        addAnimation("hurt", new Texture("warrior/Hurt.png"), 2, 0.15f);
     }
 
 }
