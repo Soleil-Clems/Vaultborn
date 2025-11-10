@@ -8,7 +8,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.players.Warrior;
+
 import com.vaultborn.entities.characters.mobs.Gorgon;
+
+
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.Gdx;
@@ -20,8 +24,11 @@ public class World {
 
     private final AssetManager assetsManager;
     private final Warrior player;
+
     private final Gorgon mob;
+
     private TiledMap map;
+
 
     private OrthographicCamera worldCamera;
     private OrthographicCamera uiCamera;
@@ -65,11 +72,14 @@ public class World {
 
         player = new Warrior(new Vector2(350, 580), region);
         player.loadAnimations();
+
         player.setWorld(this);
+
 
         mob = new Gorgon(new Vector2(330, 580), regionMob);
         mob.loadAnimations();
         mob.setWorld(this);
+
 
     }
 
@@ -84,6 +94,7 @@ public class World {
 //            player.getPosition().x -= 5f;
         }
 
+
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -93,6 +104,7 @@ public class World {
 
         worldCamera.position.set(cameraX, cameraY, 0);
         worldCamera.update();
+
     }
 
     private boolean checkCollision(Character a, Character b) {
@@ -116,8 +128,11 @@ public class World {
         batch.setProjectionMatrix(worldCamera.combined);
         batch.begin();
         player.render(batch);
+
         mob.render(batch);
+
         batch.end();
+
     }
 
     public void dispose() {
