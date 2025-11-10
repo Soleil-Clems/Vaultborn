@@ -36,4 +36,5 @@ public class Gorgon extends Mob{
         addAnimation("hurt", new Texture("gorgon/Hurt.png"), 3, 0.15f);
 
     }
+
 }
