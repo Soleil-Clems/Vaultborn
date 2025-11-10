@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.players.Warrior;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.Gdx;
@@ -18,7 +19,9 @@ public class World {
 
     private final AssetManager assetsManager;
     private final Warrior player;
+
     private TiledMap map;
+
 
     private OrthographicCamera worldCamera;
     private OrthographicCamera uiCamera;
@@ -59,12 +62,15 @@ public class World {
 
         player = new Warrior(new Vector2(320, 580), region);
         player.loadAnimations();
+
         player.setWorld(this);
+
 
     }
 
     public void update(float delta) {
         player.update(delta);
+
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -76,6 +82,7 @@ public class World {
 
         worldCamera.position.set(cameraX, cameraY, 0);
         worldCamera.update();
+
     }
 
     public void render(SpriteBatch batch) {
@@ -90,7 +97,9 @@ public class World {
         batch.setProjectionMatrix(worldCamera.combined);
         batch.begin();
         player.render(batch);
+
         batch.end();
+
     }
 
     public void dispose() {
