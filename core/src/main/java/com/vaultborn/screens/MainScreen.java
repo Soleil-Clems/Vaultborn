@@ -28,7 +28,7 @@ public class MainScreen implements Screen{
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
                     Gdx.app.exit();
             }
-        */
+        */ 
         }
         
     @Override public void resize(int width, int height) {MainMenuScreen.rsMenu(width, height);}

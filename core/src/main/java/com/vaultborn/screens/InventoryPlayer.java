@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -26,11 +27,15 @@ import java.util.List;
 import java.lang.SuppressWarnings;
 
 public class InventoryPlayer {
-    private Boolean putIn;
+    private boolean putIn;
     
     private LinkedHashMap<Item<? extends Stuff>,Integer> InventoryItem;
     //Hat foo = new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau");
     
+    private Stage stage;
+    private Table rootTable;
+    private boolean showInventory;
+    private Skin skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
     
     Item<Sword> theSword = new Item<>(new Sword(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png"))),Item.Type.EQUIPMENT);
     Item<Hat> theHat = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau"),Item.Type.EQUIPMENT);
@@ -41,7 +46,24 @@ public class InventoryPlayer {
     public InventoryPlayer(){
         InventoryItem = new LinkedHashMap<Item<? extends Stuff>,Integer>();
         this.putIn = false;
+        stage = new Stage(new ScreenViewport());
+        rootTable = new Table();
+        rootTable.setFillParent(true);
+        stage.addActor(rootTable);
+
+        int rows = 5;
+        int cols = 5;
+
+        for(int r = 0; r < rows; r++) {
+            for(int c = 0; c < cols; c++) {
+                ImageButton slot = new ImageButton(skin);
+                rootTable.add(slot).size(64).pad(5);
+            }
+            rootTable.row();
+        }
     }
+
+    //setter dans inventory
     public void addInventory(Item<? extends Stuff> object){
         if(object.getType().equals(Item.Type.EQUIPMENT) && !InventoryItem.containsKey(object)){
             System.err.println(object.getObject().getName()+ " récolté.");
@@ -69,22 +91,31 @@ public class InventoryPlayer {
             
         }
     }
-
+    //getter inventory global
     public LinkedHashMap<Item<? extends Stuff>,Integer> getInventory(){
         return InventoryItem;
+    }
+    public boolean isShowInventory(){
+        return showInventory;
+    }
+    public Stage getStage(){
+        return this.stage;
     }
 
     public void InventoryInput(){
         //afficher l'inventaire
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
-            for (Item<? extends Stuff> itm : InventoryItem.keySet()){
-                if (InventoryItem.get(itm)>1){
-                    System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));                    
-                }
-                else{
-                    System.out.println(itm.getObject().getName());
+            if(!this.showInventory){
+                for (Item<? extends Stuff> itm : InventoryItem.keySet()){
+                    if (InventoryItem.get(itm)>1){
+                        System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));                    
+                    }
+                    else{
+                        System.out.println(itm.getObject().getName());
+                    }
                 }
             }
+            this.showInventory = !showInventory;
             
         }
 
@@ -117,6 +148,20 @@ public class InventoryPlayer {
     }
 
     
+    //gestin d'affichage
+    public void rdMenu(float delta) {
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.act(delta);
+        stage.draw();
+    }
+    public void dpMenu(){stage.dispose(); /*skin.dispose();*/}   
+
+    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
+    public void shMenu() {}
+    public void pMenu() {}
+    public void rMenu() {}
+    public void hMenu() {}
 
 
     

@@ -64,13 +64,21 @@ public class GameScreen implements Screen {
                 PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
         }
         //fait les input du inventory
-        inv.InventoryInput();        
+        inv.InventoryInput();
+        if (inv.isShowInventory()){
+            inv.rdMenu(delta);
+            Gdx.input.setInputProcessor(inv.getStage());
+            
+        }
                 
     }
 
     @Override public void resize(int width, int height) {
             
-            PauseMenuScreen.rsMenu(width, height);            
+            PauseMenuScreen.rsMenu(width, height);  
+            if (inv.isShowInventory()){
+                inv.rsMenu(width, height);
+            }
         
     }
     @Override public void pause() {}
@@ -78,5 +86,6 @@ public class GameScreen implements Screen {
     @Override public void hide() {}
     @Override public void show() {}
     @Override public void dispose() {
-            batch.dispose(); }
+            batch.dispose(); 
+        inv.dpMenu();}
 }
