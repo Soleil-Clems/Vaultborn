@@ -15,15 +15,15 @@ import com.vaultborn.world.World;
 
 public class GameScreen implements Screen {
 
-    
+
     private SpriteBatch batch;
     private World world;
     private MainGame game;
-    
+
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
-    
-    
+
+
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
@@ -35,11 +35,11 @@ public class GameScreen implements Screen {
 
 
         world = new World();
-        
+
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
         inv = new InventoryPlayer();
-        
-        
+
+
     }
 
     @Override
@@ -54,11 +54,11 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             world.update(delta);
-            batch.begin();
+//            batch.begin();
             world.render(batch);
-            batch.end(); 
+//            batch.end();
             Gdx.input.setInputProcessor(null);
-            
+
         }
         else{
             PauseMenuScreen.rdMenu(delta);
@@ -72,9 +72,9 @@ public class GameScreen implements Screen {
         if (inv.isShowInventory()){
             inv.rdMenu(delta);
             Gdx.input.setInputProcessor(inv.getStage());
-            
+
         }
-                
+
 
 
         world.update(delta);
@@ -86,18 +86,18 @@ public class GameScreen implements Screen {
     }
 
     @Override public void resize(int width, int height) {
-            
-            PauseMenuScreen.rsMenu(width, height);  
+
+            PauseMenuScreen.rsMenu(width, height);
             if (inv.isShowInventory()){
                 inv.rsMenu(width, height);
             }
-        
+
     }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
     @Override public void show() {}
     @Override public void dispose() {
-            batch.dispose(); 
+            batch.dispose();
         inv.dpMenu();}
 }
