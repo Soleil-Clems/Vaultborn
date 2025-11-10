@@ -31,6 +31,9 @@ public class GameScreen implements Screen {
     public GameScreen(MainGame game) {
         this.game = game;
         this.batch = new SpriteBatch();
+
+
+
         world = new World();
         
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
@@ -49,6 +52,7 @@ public class GameScreen implements Screen {
         */
         if (!PauseMenuScreen.isActivated()){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
             world.update(delta);
             batch.begin();
             world.render(batch);
@@ -71,6 +75,14 @@ public class GameScreen implements Screen {
             
         }
                 
+
+
+        world.update(delta);
+
+//        batch.begin();
+        world.render(batch);
+//        batch.end();
+
     }
 
     @Override public void resize(int width, int height) {
