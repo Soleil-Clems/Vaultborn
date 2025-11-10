@@ -9,6 +9,7 @@ public abstract  class Player extends Character {
     protected int weapon;
     public Player(Vector2 position, TextureRegion texture, String name) {
         super(position, texture, name);
+        this.isPlayerControlled = true;
 
     }
 

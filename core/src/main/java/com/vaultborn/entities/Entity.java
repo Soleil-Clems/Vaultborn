@@ -39,4 +39,7 @@ public abstract class Entity {
 
     public TextureRegion getTexture() { return texture; }
     public void setTexture(TextureRegion texture) { this.texture = texture; }
+
+
+
 }
