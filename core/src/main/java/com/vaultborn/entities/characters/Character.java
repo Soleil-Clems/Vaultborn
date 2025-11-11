@@ -282,7 +282,11 @@ public abstract class Character extends Entity {
 
         if (!onGround) {
             setAnimation("jump");
-        } else if (attack.equals("attack")) {
+
+        } else if (Math.abs(velocityY) < 10 && isMovingHorizontally()) {
+
+            setAnimation("walk");
+        }  else if (attack.equals("attack")) {
             startAttack("attack");
         } else if (attack.equals("attack2")) {
             startAttack("attack2");
@@ -316,6 +320,14 @@ public abstract class Character extends Entity {
 
         return topLeft || topRight || bottomLeft || bottomRight;
     }
+
+    protected boolean isMovingHorizontally() {
+        if (isPlayerControlled) {
+            return Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        }
+        return false;
+    }
+
 
     @Override
     public void render(SpriteBatch batch) {

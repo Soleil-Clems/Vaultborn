@@ -36,7 +36,7 @@ public class Warrior extends Player {
         addAnimation("jump", new Texture("warrior/Jump.png"), 7, 0.09f);
         addAnimation("protect", new Texture("warrior/Protect.png"), 2, 2f);
         addAnimation("dead", new Texture("warrior/Dead.png"), 6, 0.15f);
-        addAnimation("hurt", new Texture("warrior/Hurt.png"), 2, 0.15f);
+        addAnimation("hurt", new Texture("warrior/Hurt.png"), 2, 0.09f);
     }
 
 }
