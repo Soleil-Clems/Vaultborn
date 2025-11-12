@@ -76,9 +76,7 @@ public class GameScreen implements Screen {
     @Override public void resize(int width, int height) {
             
             PauseMenuScreen.rsMenu(width, height);  
-            if (inv.isShowInventory()){
-                inv.rsMenu(width, height);
-            }
+            inv.rsMenu(width, height);
         
     }
     @Override public void pause() {}
