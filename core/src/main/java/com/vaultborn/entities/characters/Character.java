@@ -51,7 +51,7 @@ public abstract class Character extends Entity {
 
     protected TextureRegion portrait;
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
-    protected float stateTime = 0f;
+    public float stateTime = 0f;
     protected String currentAnimation = "idle";
 
     public Character(Vector2 position, TextureRegion texture, String name) {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.characters.mobs.Gorgon;
+import com.vaultborn.entities.characters.mobs.Mob;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.Gdx;
@@ -17,12 +18,16 @@ import com.vaultborn.factories.Factory;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.entities.characters.Character;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class World {
 
     private final AssetManager assetsManager;
     private final Factory factory;
     private final Warrior player;
-    private final Gorgon mob;
+    private final List<Mob> mobs = new ArrayList<>();
     private TiledMap map;
 
     private OrthographicCamera worldCamera;
@@ -42,8 +47,6 @@ public class World {
         factory = new Factory();
         assetsManager = new AssetManager();
 
-
-
         map = new TmxMapLoader().load("maps/" + levelName + ".tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1f);
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Collision");
@@ -60,16 +63,35 @@ public class World {
         uiCamera.position.set(w / 2f, h / 2f, 0);
         uiCamera.update();
 
-        player = (Warrior) factory.createPlayer("warrior", 350, 580, this);
-        mob = (Gorgon) factory.createMob("gorgon", 330, 580, this);
 
+        player = (Warrior) factory.createPlayer("warrior", 350, 580, this);
+
+
+        mobs.add(factory.createMob("gorgon", 330, 580, this));
+        mobs.add(factory.createMob("gorgon", 600, 580, this));
+        mobs.add(factory.createMob("gorgon", 800, 580, this));
     }
 
     public void update(float delta) {
         player.update(delta);
-        mob.update(delta);
 
+        // Mise à jour des mobs + suppression des morts
+        Iterator<Mob> iterator = mobs.iterator();
+        while (iterator.hasNext()) {
+            Mob mob = iterator.next();
+            mob.update(delta);
 
+            // On supprime le mob mort une fois son animation terminée
+            if (mob.isDead) {
+                if (mob.getAnimation("dead") != null &&
+                    mob.getAnimation("dead").isAnimationFinished(mob.stateTime)) {
+                    iterator.remove();
+                    System.out.println("💀 Mob supprimé du monde !");
+                }
+            }
+        }
+
+        // Caméra centrée sur le joueur
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
 
@@ -77,41 +99,28 @@ public class World {
         float cameraY = 730f;
         cameraY = Math.max(cameraY, h / 2f);
 
-//        for (Iterator<Mob> it = mobs.iterator(); it.hasNext();) {
-//            Mob mob = it.next();
-//            mob.update(delta);
-//
-//            if (mob.readyToRemove) {
-//                it.remove(); // Le mob disparaît définitivement
-//            }
-//        }
-
         worldCamera.position.set(cameraX, cameraY, 0);
         worldCamera.update();
     }
 
-    private boolean checkCollision(Character a, Character b) {
-        if (!mob.isDead && !player.isDead) {
-//            player.attack(mob);
-//            mob.attack(player);
-        }
-        return a.getBounds().overlaps(b.getBounds());
-    }
-
-
     public void render(SpriteBatch batch) {
+        // Fond
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();
 
+        // Carte
         tiledMapRenderer.setView(worldCamera);
         tiledMapRenderer.render();
 
+        // Joueur et mobs
         batch.setProjectionMatrix(worldCamera.combined);
         batch.begin();
         player.render(batch);
-        mob.render(batch);
+        for (Mob mob : mobs) {
+            mob.render(batch);
+        }
         batch.end();
     }
 
@@ -125,56 +134,45 @@ public class World {
         return player;
     }
 
-
     public boolean isCellBlocked(float worldX, float worldY) {
-        if (collisionLayer == null) {
-            return false;
-        }
+        if (collisionLayer == null) return false;
 
         int x = (int) (worldX / tileSize);
         int y = (int) (worldY / tileSize);
 
-        if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) {
-            return false;
-        }
+        if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) return false;
 
         TiledMapTileLayer.Cell cell = collisionLayer.getCell(x, y);
-
-        if (cell == null || cell.getTile() == null) {
-            return false;
-        }
-
-        return cell.getTile().getProperties().containsKey("blocked");
+        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
     }
 
     public Character getNearestEnemy(Character attacker, float range) {
-        // 💡 Pour plus tard : ici on bouclera sur une liste de mobs.
-        // for (Character c : mobs) {
-        //     if (c == attacker || c.isDead) continue;
-        //     float dist = c.getPosition().dst(attacker.getPosition());
-        //     if (dist <= range * 64f) {
-        //         return c;
-        //     }
-        // }
-        // return null;
 
+        if (attacker == player) {
+            Character nearest = null;
+            float nearestDist = Float.MAX_VALUE;
 
-        if (attacker == player && mob != null && !mob.isDead) {
-            float dist = mob.getPosition().dst(player.getPosition());
-            if (dist <= range * 64f) {
-                return mob;
+            for (Mob mob : mobs) {
+                if (mob.isDead) continue;
+                float dist = mob.getPosition().dst(player.getPosition());
+                if (dist < nearestDist && dist <= range * 64f) {
+                    nearest = mob;
+                    nearestDist = dist;
+                }
             }
+            return nearest;
         }
 
-        if (attacker == mob && player != null && !player.isDead) {
-            float dist = player.getPosition().dst(mob.getPosition());
-            if (dist <= range * 64f) {
-                return player;
+
+        if (attacker instanceof Mob) {
+            if (player != null && !player.isDead) {
+                float dist = player.getPosition().dst(attacker.getPosition());
+                if (dist <= range * 64f) {
+                    return player;
+                }
             }
         }
 
         return null;
     }
-
-
 }
