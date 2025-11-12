@@ -3,16 +3,23 @@ package com.vaultborn.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -34,8 +41,12 @@ public class InventoryPlayer {
     
     private Stage stage;
     private Table rootTable;
+    private Table invTable;
     private boolean showInventory;
     private Skin skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
+    private float WidthCalculation;
+    private float HeightCalculation;
+    private int numberOfSlot = 15;
     
     Item<Sword> theSword = new Item<>(new Sword(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png"))),Item.Type.EQUIPMENT);
     Item<Hat> theHat = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau"),Item.Type.EQUIPMENT);
@@ -50,17 +61,69 @@ public class InventoryPlayer {
         rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
+        rootTable.setDebug(true);
+        
+        //test
+        /*Label equipeLabel = new Label("equipe:", skin);
+        Label statLabel = new Label("Stat:", skin);
+        Label invLabel = new Label("inv:", skin);*/
 
-        int rows = 5;
+        //les compartiment de l'inventaire
+        Table equipeTable = new Table();
+        Table statTable = new Table();
+        invTable = new Table();
+        
+        rootTable.defaults().padBottom(100).padTop(100).expand().uniform().maxWidth(WidthCalculation).maxHeight(HeightCalculation);
+        rootTable.add(equipeTable);
+        rootTable.add(statTable);
+        rootTable.add(invTable);
+
+        //bouton avec item
+        ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
+        styleFullSlot.up = new TextureRegionDrawable(new Texture("objects/sword.png"));
+        styleFullSlot.down = new TextureRegionDrawable(new Texture("objects/sword.png")).tint(new Color (1f,1f,1f,0.5f));
+        ImageButton btn = new ImageButton(styleFullSlot);
+        invTable.add(btn).size(100).fill();
+        
+        //bouton de couleur
+        //choix de couleur
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(new Color(66 / 255f, 55 / 255f, 54 / 255f, 100 / 255f));
+        pixmap.fill();
+        Texture textureEmptySlot = new Texture(pixmap);
+        pixmap.dispose();
+        //pour faire le style du bouton
+        TextureRegionDrawable drawableEmptySlot = new TextureRegionDrawable(new TextureRegion(textureEmptySlot));
+        ImageButton.ImageButtonStyle styleEmptySlot = new ImageButton.ImageButtonStyle();
+        styleEmptySlot.up = drawableEmptySlot;
+        
+        invTable.add(new ImageButton(styleEmptySlot)).size(100).fill();
+
+        
+        //invTable.add(new ImageButton(styleEmptySlot)).size(100).fill();
+        //invTable.add(new ImageButton(styleFullSlot)).size(100).fill();
+        
+        //invTable
+        //test
+        
+        /*float spaceInRowAvailable = WidthCalculation;
+        
+        for (int count = 0; numberOfSlot>count;count ++){
+            if (spaceInRowAvailable>0 )
+        }*/
+
+        //"normal"
+        /*int rows = 5;
         int cols = 5;
 
         for(int r = 0; r < rows; r++) {
             for(int c = 0; c < cols; c++) {
                 ImageButton slot = new ImageButton(skin);
-                rootTable.add(slot).size(64).pad(5);
+                invTable.add(slot).size(64).pad(5);
             }
-            rootTable.row();
-        }
+            invTable.row();
+        }*/
+        
     }
 
     //setter dans inventory
@@ -101,7 +164,7 @@ public class InventoryPlayer {
     public Stage getStage(){
         return this.stage;
     }
-
+    
     public void InventoryInput(){
         //afficher l'inventaire
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
@@ -114,8 +177,22 @@ public class InventoryPlayer {
                         System.out.println(itm.getObject().getName());
                     }
                 }
+                int inventorySlotOccuped = InventoryItem.size();
+                for (int count = 0; count<numberOfSlot; count++){
+                    if(count<inventorySlotOccuped){
+                        
+                    }
+                    //System.out.println("test");
+                }
             }
             this.showInventory = !showInventory;
+            WidthCalculation = Gdx.graphics.getWidth() / 3f;
+            HeightCalculation = Gdx.graphics.getHeight()-60;
+            System.out.println("size 1/3 "+Gdx.graphics.getWidth() / 3f);
+            System.out.println("pixel dispo "+WidthCalculation*HeightCalculation);
+            System.out.println("pixel par image "+WidthCalculation*HeightCalculation/numberOfSlot);
+            System.out.println("racine de l'image "+ Math.round(Math.sqrt(WidthCalculation*HeightCalculation/numberOfSlot)));
+            System.out.println("carré de la racine de l'image "+ Math.sqrt(WidthCalculation*HeightCalculation/numberOfSlot)*Math.sqrt(WidthCalculation*HeightCalculation/numberOfSlot));
             
         }
 
@@ -157,7 +234,10 @@ public class InventoryPlayer {
     }
     public void dpMenu(){stage.dispose(); /*skin.dispose();*/}   
 
-    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
+    public void rsMenu(int width, int height) { 
+        stage.getViewport().update(width, height, true);
+        rootTable.defaults().maxWidth(Gdx.graphics.getWidth() / 3f).maxHeight(Gdx.graphics.getHeight()-60);
+    }
     public void shMenu() {}
     public void pMenu() {}
     public void rMenu() {}
