@@ -30,7 +30,7 @@ public class Gorgon extends Mob{
         addAnimation("attack", new Texture("gorgon/Attack_1.png"), 16, 0.045f);
         addAnimation("attack2", new Texture("gorgon/Attack_2.png"), 7, 0.045f);
         addAnimation("attack3", new Texture("gorgon/Attack_3.png"), 10, 0.039f);
-        addAnimation("jump", new Texture("gorgon/idle_2.png"), 5, 0.09f);
+        addAnimation("jump", new Texture("gorgon/Idle_2.png"), 5, 0.09f);
         addAnimation("protect", new Texture("gorgon/Special.png"), 5, 2f);
         addAnimation("dead", new Texture("gorgon/Dead.png"), 3, 0.15f);
         addAnimation("hurt", new Texture("gorgon/Hurt.png"), 3, 0.15f);
