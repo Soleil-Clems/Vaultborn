@@ -13,6 +13,5 @@ public class HellWorld extends BaseWorld {
         mobs.add(factory.createMob("gorgon", 300, 580, this));
         mobs.add(factory.createMob("gorgon", 600, 580, this));
         mobs.add(factory.createMob("gorgon", 900, 580, this));
-        System.out.println("🔥 Mobs de l'enfer chargés !");
     }
 }
