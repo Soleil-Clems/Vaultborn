@@ -13,12 +13,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.vaultborn.factories.Factory;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.entities.characters.Character;
 
 public class World {
 
     private final AssetManager assetsManager;
+    private final Factory factory;
     private final Warrior player;
     private final Gorgon mob;
     private TiledMap map;
@@ -37,18 +39,13 @@ public class World {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         background = new Texture("backgrounds/background.png");
-
+        factory = new Factory();
         assetsManager = new AssetManager();
 
-        Texture portrait = new Texture("warrior/Idle.png");
-        TextureRegion region = new TextureRegion(portrait);
 
-        Texture portraitMob = new Texture("gorgon/Idle.png");
-        TextureRegion regionMob = new TextureRegion(portraitMob);
 
         map = new TmxMapLoader().load("maps/" + levelName + ".tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1f);
-
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Collision");
 
         int mapWidth = map.getProperties().get("width", Integer.class);
@@ -63,13 +60,8 @@ public class World {
         uiCamera.position.set(w / 2f, h / 2f, 0);
         uiCamera.update();
 
-        player = new Warrior(new Vector2(350, 580), region);
-        player.loadAnimations();
-        player.setWorld(this);
-
-        mob = new Gorgon(new Vector2(330, 580), regionMob);
-        mob.loadAnimations();
-        mob.setWorld(this);
+        player = (Warrior) factory.createPlayer("warrior", 350, 580, this);
+        mob = (Gorgon) factory.createMob("gorgon", 330, 580, this);
 
     }
 
@@ -77,12 +69,6 @@ public class World {
         player.update(delta);
         mob.update(delta);
 
-
-        if (checkCollision(player, mob)) {
-//            System.out.println("Collision avec le mob ! "+checkCollision(player, mob));
-
-//            player.getPosition().x -= 5f;
-        }
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
