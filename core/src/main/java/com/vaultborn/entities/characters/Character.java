@@ -23,7 +23,7 @@ public abstract class Character extends Entity {
     protected int agility;
     protected int range;
     public boolean facingRight = true;
-    private float speed = 200f;
+    private float speed = 100f;
     protected boolean isPlayerControlled = false;
     protected BaseWorld world;
     protected float characterWidth = 32f;

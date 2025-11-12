@@ -16,17 +16,16 @@ import com.vaultborn.world.HellWorld;
 
 public class GameScreen implements Screen {
 
-
     private final MainGame game;
     private final SpriteBatch batch;
     private final BaseWorld world;
 
 
-    
+
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
-    
-    
+
+
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
@@ -36,11 +35,11 @@ public class GameScreen implements Screen {
         this.game = game;
         this.batch = new SpriteBatch();
         this.world = new HellWorld();
-    
+
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
         inv = new InventoryPlayer();
-        
-        
+
+
 
     }
 
@@ -62,11 +61,10 @@ public class GameScreen implements Screen {
         if (!PauseMenuScreen.isActivated()){
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             world.update(delta);
-            batch.begin();
             world.render(batch);
-            batch.end(); 
+
             Gdx.input.setInputProcessor(null);
-            
+
         }
         else{
             PauseMenuScreen.rdMenu(delta);
@@ -80,15 +78,15 @@ public class GameScreen implements Screen {
         if (inv.isShowInventory()){
             inv.rdMenu(delta);
             Gdx.input.setInputProcessor(inv.getStage());
-            
+
         }
-                
+
     }
 
-    @Override public void resize(int width, int height) {   
-            PauseMenuScreen.rsMenu(width, height);  
+    @Override public void resize(int width, int height) {
+            PauseMenuScreen.rsMenu(width, height);
             inv.rsMenu(width, height);
-        
+
     }
     @Override public void pause() {}
     @Override public void resume() {}
@@ -99,6 +97,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         world.dispose();
-        inv.dpMenu();}
+        inv.dpMenu();
     }
 }

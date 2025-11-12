@@ -73,7 +73,7 @@ public abstract class BaseWorld {
     }
 
     protected void initPlayer() {
-        player = (Warrior) factory.createPlayer("warrior", 350, 580, this);
+        player = (Warrior) factory.createPlayer("warrior", 350, 590, this);
     }
 
     /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
