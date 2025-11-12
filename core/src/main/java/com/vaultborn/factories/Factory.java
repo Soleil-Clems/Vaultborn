@@ -8,7 +8,7 @@ import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.managers.AssetManager;
-import com.vaultborn.world.World;
+import com.vaultborn.world.BaseWorld;
 
 public class Factory {
 
@@ -29,7 +29,7 @@ public class Factory {
     }
 
 
-    public Player createPlayer(String type, float x, float y, World world) {
+    public Player createPlayer(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "warrior":
                 Warrior player = new Warrior(new Vector2(x, y), warriorRegion);
@@ -43,7 +43,7 @@ public class Factory {
     }
 
 
-    public Mob createMob(String type, float x, float y, World world) {
+    public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
                 Gorgon mob = new Gorgon(new Vector2(x, y), gorgonRegion);

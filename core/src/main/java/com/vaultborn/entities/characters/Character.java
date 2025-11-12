@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 import com.badlogic.gdx.graphics.Texture;
-import com.vaultborn.world.World;
+import com.vaultborn.world.BaseWorld;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public abstract class Character extends Entity {
     public boolean facingRight = true;
     private float speed = 200f;
     protected boolean isPlayerControlled = false;
-    protected World world;
+    protected BaseWorld world;
     protected float characterWidth = 32f;
     protected float characterHeight = 48f;
 
@@ -399,7 +399,7 @@ public abstract class Character extends Entity {
         }
     }
 
-    public void setWorld(World world) {
+    public void setWorld(BaseWorld world) {
         this.world = world;
     }
 }

@@ -5,30 +5,30 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.vaultborn.MainGame;
-import com.vaultborn.world.World;
+import com.vaultborn.world.BaseWorld;
+import com.vaultborn.world.HellWorld;
 
 public class GameScreen implements Screen {
 
-    private MainGame game;
-    private SpriteBatch batch;
-    private World world;
+    private final MainGame game;
+    private final SpriteBatch batch;
+    private final BaseWorld world;
 
     public GameScreen(MainGame game) {
         this.game = game;
         this.batch = new SpriteBatch();
 
-        world = new World();
+
+        this.world = new HellWorld();
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.update(delta);
-
-//        batch.begin();
         world.render(batch);
-//        batch.end();
     }
 
     @Override public void resize(int width, int height) {}
@@ -36,5 +36,10 @@ public class GameScreen implements Screen {
     @Override public void resume() {}
     @Override public void hide() {}
     @Override public void show() {}
-    @Override public void dispose() { batch.dispose(); }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+        world.dispose();
+    }
 }

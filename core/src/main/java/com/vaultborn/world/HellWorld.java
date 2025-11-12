@@ -1,4 +1,18 @@
 package com.vaultborn.world;
 
-public class HellWorld {
+import com.vaultborn.entities.characters.mobs.Gorgon;
+
+public class HellWorld extends BaseWorld {
+
+    public HellWorld() {
+        super("HellMap/map", "backgrounds/background_hell.png");
+    }
+
+    @Override
+    protected void initMobs() {
+        mobs.add(factory.createMob("gorgon", 300, 580, this));
+        mobs.add(factory.createMob("gorgon", 600, 580, this));
+        mobs.add(factory.createMob("gorgon", 900, 580, this));
+        System.out.println("🔥 Mobs de l'enfer chargés !");
+    }
 }
