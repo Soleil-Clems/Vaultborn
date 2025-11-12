@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.vaultborn.MainGame;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
+import com.vaultborn.world.LavaWorld;
 
 public class GameScreen implements Screen {
 
@@ -34,7 +35,7 @@ public class GameScreen implements Screen {
     public GameScreen(MainGame game) {
         this.game = game;
         this.batch = new SpriteBatch();
-        this.world = new HellWorld();
+        this.world = new LavaWorld();
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
         inv = new InventoryPlayer();
