@@ -91,6 +91,15 @@ public class World {
         float cameraY = 730f;
         cameraY = Math.max(cameraY, h / 2f);
 
+//        for (Iterator<Mob> it = mobs.iterator(); it.hasNext();) {
+//            Mob mob = it.next();
+//            mob.update(delta);
+//
+//            if (mob.readyToRemove) {
+//                it.remove(); // Le mob disparaît définitivement
+//            }
+//        }
+
         worldCamera.position.set(cameraX, cameraY, 0);
         worldCamera.update();
     }

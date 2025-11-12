@@ -41,6 +41,10 @@ public abstract class Character extends Entity {
     protected boolean hasHit = false;
 
     public boolean isDead = false;
+    protected float deadTimer = 0f;
+    protected float deadDuration = 5f;
+    protected boolean readyToRemove = false;
+
     protected boolean isHurt = false;
     protected float hurtTimer = 0f;
     protected float hurtDuration = 0.5f;
@@ -142,9 +146,24 @@ public abstract class Character extends Entity {
         stateTime += delta;
 
         if (isDead) {
-            setAnimation("dead");
+            Animation<TextureRegion> deadAnim = animations.get("dead");
+
+            if (deadAnim != null && !deadAnim.isAnimationFinished(stateTime)) {
+                setAnimation("dead");
+                stateTime += delta;
+            }
+
+            deadTimer += delta;
+
+            if (deadTimer >= deadDuration) {
+                readyToRemove = true;
+            }
+
+            velocityY = 0;
             return;
         }
+
+
 
         if (isHurt) {
             hurtTimer -= delta;
@@ -231,7 +250,7 @@ public abstract class Character extends Entity {
         if (isDead) return;
 
         hp -= amount;
-        System.out.println(name + " prend " + amount + " dégâts → HP = " + hp);
+//        System.out.println(name + " prend " + amount + " dégâts → HP = " + hp);
 
         if (hp <= 0) {
             hp = 0;
@@ -244,10 +263,17 @@ public abstract class Character extends Entity {
     }
 
     protected void die() {
+        if (isDead) return;
+
         isDead = true;
+        stateTime = 0f;
+        velocityY = 0f;
         setAnimation("dead");
         System.out.println(name + " est mort !");
     }
+
+
+
 
 
 
@@ -329,12 +355,41 @@ public abstract class Character extends Entity {
     }
 
 
+//    @Override
+//    public void render(SpriteBatch batch) {
+//        Animation<TextureRegion> anim = animations.get(currentAnimation);
+//        if (anim != null) {
+//            TextureRegion frame = anim.getKeyFrame(stateTime, true);
+//
+//            if ((facingRight && frame.isFlipX()) || (!facingRight && !frame.isFlipX())) {
+//                frame.flip(true, false);
+//            }
+//
+//            batch.draw(frame, position.x, position.y);
+//        } else if (portrait != null) {
+//            batch.draw(portrait, position.x, position.y);
+//        }
+//    }
+
     @Override
     public void render(SpriteBatch batch) {
         Animation<TextureRegion> anim = animations.get(currentAnimation);
         if (anim != null) {
-            TextureRegion frame = anim.getKeyFrame(stateTime, true);
+            boolean looping = true;
 
+            // On ne boucle PAS l’animation de mort
+            if (currentAnimation.equals("dead")) {
+                looping = false;
+            }
+
+            TextureRegion frame = anim.getKeyFrame(stateTime, looping);
+
+            // Si mort et animation terminée → garde la dernière frame
+            if (currentAnimation.equals("dead") && anim.isAnimationFinished(stateTime)) {
+                frame = anim.getKeyFrames()[anim.getKeyFrames().length - 1];
+            }
+
+            // Flip selon la direction
             if ((facingRight && frame.isFlipX()) || (!facingRight && !frame.isFlipX())) {
                 frame.flip(true, false);
             }

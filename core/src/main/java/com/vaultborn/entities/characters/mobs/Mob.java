@@ -1,25 +1,27 @@
 package com.vaultborn.entities.characters.mobs;
 
 import com.vaultborn.entities.characters.Character;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract class Mob extends Character {
+
     protected int weapon;
     private float attackCooldown = 1.5f;
     private float attackTimer = 0f;
 
+    private float deadTimer = 0f;
+    private final float deadDuration = 5f;
+    public boolean readyToRemove = false;
+
     public Mob(Vector2 position, TextureRegion texture, String name) {
         super(position, texture, name);
         this.isPlayerControlled = false;
-
     }
 
     @Override
     protected void handleAI(float delta) {
-
-        float amplitude = 50f;
         float speedAI = 50f;
         float moveX = (float) Math.sin(stateTime * 1.5f) * speedAI * delta;
         moveAndCollide(moveX, velocityY * delta);
@@ -27,6 +29,25 @@ public abstract class Mob extends Character {
 
     @Override
     public void update(float delta) {
+        if (isDead) {
+            Animation<TextureRegion> deadAnim = animations.get("dead");
+
+            if (deadAnim != null) {
+                if (!deadAnim.isAnimationFinished(stateTime)) {
+                    setAnimation("dead");
+                    stateTime += delta;
+                }
+            }
+
+            deadTimer += delta;
+            if (deadTimer >= deadDuration) {
+                readyToRemove = true;
+            }
+
+            velocityY = 0;
+            return;
+        }
+
         if (world == null || world.getPlayer() == null) return;
 
         Character player = world.getPlayer();
@@ -44,19 +65,14 @@ public abstract class Mob extends Character {
             setAnimation("idle");
             return;
         }
-        System.out.println("Player is dead " + player.getHp());
 
+        facingRight = distanceX > 0;
 
-        if (distanceX > 0) {
-            facingRight = true;
-        } else {
-            facingRight = false;
-        }
         attackTimer -= delta;
+
         if (distance > attackRange && distance < followRange) {
             float moveX = Math.signum(distanceX) * speed * delta;
             position.x += moveX;
-
             setAnimation("walk");
         } else if (distance <= attackRange) {
             if (attackTimer <= 0f) {
@@ -65,13 +81,10 @@ public abstract class Mob extends Character {
                 attackTimer = attackCooldown;
             }
         } else {
-
             setAnimation("idle");
         }
 
         bounds.setPosition(position);
         stateTime += delta;
     }
-
-
 }
