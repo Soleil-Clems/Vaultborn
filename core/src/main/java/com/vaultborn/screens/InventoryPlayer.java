@@ -20,10 +20,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import com.vaultborn.MainGame;
+import com.vaultborn.entities.Entity;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.entities.stuff.armor.Hat;
@@ -31,22 +33,26 @@ import com.vaultborn.entities.stuff.armor.Robe;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ArrayList; 
 import java.lang.SuppressWarnings;
 
 public class InventoryPlayer {
     private boolean putIn;
     
     private LinkedHashMap<Item<? extends Stuff>,Integer> InventoryItem;
-    //Hat foo = new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau");
+    private List<Item<? extends Stuff>> InventoryItemList = new ArrayList<>();
     
     private Stage stage;
     private Table rootTable;
     private Table invTable;
     private boolean showInventory;
     private Skin skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
-    private float WidthCalculation;
-    private float HeightCalculation;
+    private float WidthCalculation = Gdx.graphics.getWidth() / 3f;
+    private float HeightCalculation = Gdx.graphics.getHeight()-60;
+    
     private int numberOfSlot = 15;
+    public ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
+    public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
     
     Item<Sword> theSword = new Item<>(new Sword(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png"))),Item.Type.EQUIPMENT);
     Item<Hat> theHat = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau"),Item.Type.EQUIPMENT);
@@ -55,35 +61,35 @@ public class InventoryPlayer {
     Item<Robe> theRobe2 = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
 
     public InventoryPlayer(){
+        
         InventoryItem = new LinkedHashMap<Item<? extends Stuff>,Integer>();
         this.putIn = false;
         stage = new Stage(new ScreenViewport());
         rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
-        rootTable.setDebug(true);
-        
-        //test
-        /*Label equipeLabel = new Label("equipe:", skin);
-        Label statLabel = new Label("Stat:", skin);
-        Label invLabel = new Label("inv:", skin);*/
+        //rootTable.setDebug(true);
 
         //les compartiment de l'inventaire
         Table equipeTable = new Table();
         Table statTable = new Table();
         invTable = new Table();
+
+        Pixmap Pix = new Pixmap(1,1,Pixmap.Format.RGB888);
+        Pix.setColor(new Color(26 / 255f, 21 / 255f, 20 / 255f, 100 / 255f));
+        Pix.fill();
+        rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))));
+        rootTable.pad(30);
+        rootTable.defaults().padBottom(100).padTop(100).width(WidthCalculation).height(HeightCalculation).maxWidth(WidthCalculation).maxHeight(HeightCalculation);
+        rootTable.add(equipeTable).expand().padLeft(10);
+        rootTable.add(statTable).expand();
+        rootTable.add(invTable).expand().width(WidthCalculation).padRight(10);
         
-        rootTable.defaults().padBottom(100).padTop(100).expand().uniform().maxWidth(WidthCalculation).maxHeight(HeightCalculation);
-        rootTable.add(equipeTable);
-        rootTable.add(statTable);
-        rootTable.add(invTable);
 
         //bouton avec item
-        ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
+        //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
         styleFullSlot.up = new TextureRegionDrawable(new Texture("objects/sword.png"));
         styleFullSlot.down = new TextureRegionDrawable(new Texture("objects/sword.png")).tint(new Color (1f,1f,1f,0.5f));
-        ImageButton btn = new ImageButton(styleFullSlot);
-        invTable.add(btn).size(100).fill();
         
         //bouton de couleur
         //choix de couleur
@@ -94,43 +100,20 @@ public class InventoryPlayer {
         pixmap.dispose();
         //pour faire le style du bouton
         TextureRegionDrawable drawableEmptySlot = new TextureRegionDrawable(new TextureRegion(textureEmptySlot));
-        ImageButton.ImageButtonStyle styleEmptySlot = new ImageButton.ImageButtonStyle();
         styleEmptySlot.up = drawableEmptySlot;
-        
-        invTable.add(new ImageButton(styleEmptySlot)).size(100).fill();
-
-        
-        //invTable.add(new ImageButton(styleEmptySlot)).size(100).fill();
-        //invTable.add(new ImageButton(styleFullSlot)).size(100).fill();
-        
-        //invTable
-        //test
-        
-        /*float spaceInRowAvailable = WidthCalculation;
-        
-        for (int count = 0; numberOfSlot>count;count ++){
-            if (spaceInRowAvailable>0 )
-        }*/
-
-        //"normal"
-        /*int rows = 5;
-        int cols = 5;
-
-        for(int r = 0; r < rows; r++) {
-            for(int c = 0; c < cols; c++) {
-                ImageButton slot = new ImageButton(skin);
-                invTable.add(slot).size(64).pad(5);
-            }
-            invTable.row();
-        }*/
         
     }
 
     //setter dans inventory
     public void addInventory(Item<? extends Stuff> object){
         if(object.getType().equals(Item.Type.EQUIPMENT) && !InventoryItem.containsKey(object)){
-            System.err.println(object.getObject().getName()+ " récolté.");
-            InventoryItem.put(object,1);
+            if(InventoryItem.size()<=15){
+                System.err.println(object.getObject().getName()+ " récolté.");
+                InventoryItem.put(object,1);
+            }
+            else{
+                System.out.println("inventaire full");
+            }
         }
         else if (object.getType().equals(Item.Type.EQUIPMENT)){
             System.out.println("objet déjà ajouté");
@@ -164,11 +147,21 @@ public class InventoryPlayer {
     public Stage getStage(){
         return this.stage;
     }
+    public void setShowInventory(boolean showInventory){
+        this.showInventory = showInventory;
+    }
+    
     
     public void InventoryInput(){
         //afficher l'inventaire
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+            WidthCalculation = Gdx.graphics.getWidth() / 3f;
+            HeightCalculation = Gdx.graphics.getHeight()-60;
+            long ItemSizeInv = Math.round(Math.sqrt((WidthCalculation*HeightCalculation)/numberOfSlot))-5;
+            int spaceInRowAvailable = Math.round(WidthCalculation+100);
             if(!this.showInventory){
+                //gestion de l'inventaire
+                //savoir ce qu'il y a dans l'inventaire
                 for (Item<? extends Stuff> itm : InventoryItem.keySet()){
                     if (InventoryItem.get(itm)>1){
                         System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));                    
@@ -176,24 +169,42 @@ public class InventoryPlayer {
                     else{
                         System.out.println(itm.getObject().getName());
                     }
+                    InventoryItemList.add(itm);
                 }
+                //afficher la partie inventaire
                 int inventorySlotOccuped = InventoryItem.size();
                 for (int count = 0; count<numberOfSlot; count++){
                     if(count<inventorySlotOccuped){
-                        
+                        if(spaceInRowAvailable<ItemSizeInv){
+                            invTable.row();
+                            spaceInRowAvailable = Math.round(WidthCalculation+100);
+                        }
+                        TextureRegion currentTexture = InventoryItemList.get(count).getObject().getTexture();
+                        //bouton avec item
+                        //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
+                        styleFullSlot.up = new TextureRegionDrawable(currentTexture);
+                        styleFullSlot.down = new TextureRegionDrawable(currentTexture).tint(new Color (1f,1f,1f,0.5f));
+                        invTable.add(new ImageButton(styleFullSlot)).size(ItemSizeInv).fill().pad(2);
+                        spaceInRowAvailable -= ItemSizeInv +2;
                     }
-                    //System.out.println("test");
+                    else{
+                        if(spaceInRowAvailable<ItemSizeInv){
+                            invTable.row();
+                            spaceInRowAvailable = Math.round(WidthCalculation+100);
+                        }
+                        invTable.add(new ImageButton(styleEmptySlot)).size(ItemSizeInv).fill().pad(2);
+                        spaceInRowAvailable -= ItemSizeInv +2;
+                    }
+                    
                 }
+                //afficher la partie equipement
+                
+            }
+            else{
+                invTable.clear();
+                InventoryItemList.clear();
             }
             this.showInventory = !showInventory;
-            WidthCalculation = Gdx.graphics.getWidth() / 3f;
-            HeightCalculation = Gdx.graphics.getHeight()-60;
-            System.out.println("size 1/3 "+Gdx.graphics.getWidth() / 3f);
-            System.out.println("pixel dispo "+WidthCalculation*HeightCalculation);
-            System.out.println("pixel par image "+WidthCalculation*HeightCalculation/numberOfSlot);
-            System.out.println("racine de l'image "+ Math.round(Math.sqrt(WidthCalculation*HeightCalculation/numberOfSlot)));
-            System.out.println("carré de la racine de l'image "+ Math.sqrt(WidthCalculation*HeightCalculation/numberOfSlot)*Math.sqrt(WidthCalculation*HeightCalculation/numberOfSlot));
-            
         }
 
         //test d'ajout
@@ -236,7 +247,6 @@ public class InventoryPlayer {
 
     public void rsMenu(int width, int height) { 
         stage.getViewport().update(width, height, true);
-        rootTable.defaults().maxWidth(Gdx.graphics.getWidth() / 3f).maxHeight(Gdx.graphics.getHeight()-60);
     }
     public void shMenu() {}
     public void pMenu() {}
@@ -247,7 +257,7 @@ public class InventoryPlayer {
     
 }
 //class de gestion des items
-class Item<T>{
+class Item<T extends Entity & Stuff>{
     
     public enum Type {
         CONSUMABLE,

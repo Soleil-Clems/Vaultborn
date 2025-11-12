@@ -69,13 +69,14 @@ public class GameScreen implements Screen {
         else{
             PauseMenuScreen.rdMenu(delta);
             Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
+            if(inv.isShowInventory()){inv.setShowInventory(false);}
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
                 PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
         }
         //fait les input du inventory
         inv.InventoryInput();
-        if (inv.isShowInventory()){
+        if (inv.isShowInventory()&&!PauseMenuScreen.isActivated()){
             inv.rdMenu(delta);
             Gdx.input.setInputProcessor(inv.getStage());
 
