@@ -269,7 +269,6 @@ public abstract class Character extends Entity {
         stateTime = 0f;
         velocityY = 0f;
         setAnimation("dead");
-        System.out.println(name + " est mort !");
     }
 
 
