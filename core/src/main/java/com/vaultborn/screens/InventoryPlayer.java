@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.particles.values.WeightMeshSpawnShapeValue;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -33,23 +34,40 @@ import com.vaultborn.entities.stuff.armor.Robe;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ArrayList; 
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.lang.SuppressWarnings;
 
 public class InventoryPlayer {
     private boolean putIn;
+    Item<? extends Stuff> nonItemEquip = new Item<>(null, Item.Type.EQUIPMENT);
     
+    //list
     private LinkedHashMap<Item<? extends Stuff>,Integer> InventoryItem;
     private List<Item<? extends Stuff>> InventoryItemList = new ArrayList<>();
+    private LinkedHashMap<String,Item<? extends Stuff>> equipeItem = new LinkedHashMap<String,Item<? extends Stuff>>(){{
+    put("head",nonItemEquip);
+    put("torso",nonItemEquip);
+    put("arm",nonItemEquip);
+    put("leg",nonItemEquip);
+    put("foot",nonItemEquip);
+    put("Sword",nonItemEquip);
+    }};
     
     private Stage stage;
+    //les tables
     private Table rootTable;
+    private Table equipeTable;
+    private Table statTable;
     private Table invTable;
+
     private boolean showInventory;
     private Skin skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
     private float WidthCalculation = Gdx.graphics.getWidth() / 3f;
     private float HeightCalculation = Gdx.graphics.getHeight()-60;
     
+    //affichage de l'inventaire
     private int numberOfSlot = 15;
     public ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
     public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
@@ -71,25 +89,19 @@ public class InventoryPlayer {
         //rootTable.setDebug(true);
 
         //les compartiment de l'inventaire
-        Table equipeTable = new Table();
-        Table statTable = new Table();
+        equipeTable = new Table();
+        statTable = new Table();
         invTable = new Table();
 
         Pixmap Pix = new Pixmap(1,1,Pixmap.Format.RGB888);
         Pix.setColor(new Color(26 / 255f, 21 / 255f, 20 / 255f, 100 / 255f));
         Pix.fill();
-        rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))));
+        //rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))));
         rootTable.pad(30);
         rootTable.defaults().padBottom(100).padTop(100).width(WidthCalculation).height(HeightCalculation).maxWidth(WidthCalculation).maxHeight(HeightCalculation);
         rootTable.add(equipeTable).expand().padLeft(10);
         rootTable.add(statTable).expand();
         rootTable.add(invTable).expand().width(WidthCalculation).padRight(10);
-        
-
-        //bouton avec item
-        //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
-        styleFullSlot.up = new TextureRegionDrawable(new Texture("objects/sword.png"));
-        styleFullSlot.down = new TextureRegionDrawable(new Texture("objects/sword.png")).tint(new Color (1f,1f,1f,0.5f));
         
         //bouton de couleur
         //choix de couleur
@@ -150,7 +162,9 @@ public class InventoryPlayer {
     public void setShowInventory(boolean showInventory){
         this.showInventory = showInventory;
     }
-    
+    public void setEquipeItem(String key,Item<? extends Stuff> item){
+        equipeItem.replace(key,item);
+    }
     
     public void InventoryInput(){
         //afficher l'inventaire
@@ -198,10 +212,26 @@ public class InventoryPlayer {
                     
                 }
                 //afficher la partie equipement
-                
+                for (String key : equipeItem.keySet()){
+                    //System.out.println(key);
+                    if(equipeItem.get(key).equals(nonItemEquip)){
+                        equipeTable.add(new ImageButton(styleEmptySlot)).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
+                        equipeTable.row();
+                    }
+                    else{
+                        TextureRegion currentTexture = equipeItem.get(key).getObject().getTexture();
+                        //bouton avec item
+                        //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
+                        styleFullSlot.up = new TextureRegionDrawable(currentTexture);
+                        styleFullSlot.down = new TextureRegionDrawable(currentTexture).tint(new Color (1f,1f,1f,0.5f));
+                        equipeTable.add(new ImageButton(styleFullSlot)).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
+                        equipeTable.row();
+                    }
+                }
             }
             else{
                 invTable.clear();
+                equipeTable.clear();
                 InventoryItemList.clear();
             }
             this.showInventory = !showInventory;
@@ -231,7 +261,23 @@ public class InventoryPlayer {
             System.out.println(InventoryItem);
         }
 
+        //equiper
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+            //System.out.println(InventoryItem.keySet());
+            //System.out.println(equipeItem.keySet());
+            for (Item<?> a:InventoryItem.keySet()){
+                System.out.println(a.getObject().getType());
+                System.out.println(equipeItem.containsKey(a.getObject().getType()));
+                setEquipeItem(a.getObject().getType(), a);
+                InventoryItem.remove(a);
+                break;
+                
+            }
+
+        }
         
+
+
         
     }
 
@@ -285,7 +331,6 @@ class Item<T extends Entity & Stuff>{
 Gdx.input.setInputProcessor(new InputAdapter() {
 @Override
 public boolean keyDown(int keycode) {
-    }
     System.out.println("Touche pressée : " + Input.Keys.toString(keycode));
     return true;
 }
