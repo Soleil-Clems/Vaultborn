@@ -34,6 +34,9 @@ public abstract class BaseWorld {
     protected float tileSize;
     protected float mapHeightInPixels;
 
+    protected float offsetX;
+    protected float offsetY;
+
     protected String levelName;
 
     public BaseWorld(String levelName, String backgroundPath) {
@@ -41,11 +44,16 @@ public abstract class BaseWorld {
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
         this.background = new Texture(backgroundPath);
-
+        offsetX = -30f;
+        offsetY = -10f;
         loadMap();
         initCameras();
         initPlayer();
         initMobs();
+    }
+
+    public OrthographicCamera getUiCamera() {
+        return uiCamera;
     }
 
     protected void loadMap() {
@@ -125,8 +133,10 @@ public abstract class BaseWorld {
 
     public boolean isCellBlocked(float worldX, float worldY) {
         if (collisionLayer == null) return false;
-        int x = (int) (worldX / tileSize);
-        int y = (int) (worldY / tileSize);
+        float adjustedX = worldX - offsetX;
+        float adjustedY = worldY - offsetY;
+        int x = (int) (adjustedX / tileSize);
+        int y = (int) (adjustedY / tileSize);
         if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) return false;
         TiledMapTileLayer.Cell cell = collisionLayer.getCell(x, y);
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");

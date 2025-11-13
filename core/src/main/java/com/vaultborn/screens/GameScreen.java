@@ -9,7 +9,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.vaultborn.MainGame;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
@@ -21,14 +23,12 @@ public class GameScreen implements Screen {
     private final BaseWorld world;
 
 
-
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
 
 
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
-
 
 
     public GameScreen(MainGame game) {
@@ -40,7 +40,6 @@ public class GameScreen implements Screen {
         inv = new InventoryPlayer();
 
 
-
     }
 
     @Override
@@ -49,33 +48,29 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        world.update(delta);
-        world.render(batch);
 
-        /*
-        //exit fast
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-                    Gdx.app.exit();
-            }
-        */
-        if (!PauseMenuScreen.isActivated()){
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (!PauseMenuScreen.isActivated()) {
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
             world.update(delta);
             world.render(batch);
 
+            batch.begin();
+            batch.setProjectionMatrix(world.getUiCamera().combined);
+            renderPlayerHealthBar(batch);
+            batch.end();
+
             Gdx.input.setInputProcessor(null);
 
-        }
-        else{
+        } else {
             PauseMenuScreen.rdMenu(delta);
             Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-                PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
         }
         //fait les input du inventory
         inv.InventoryInput();
-        if (inv.isShowInventory()){
+        if (inv.isShowInventory()) {
             inv.rdMenu(delta);
             Gdx.input.setInputProcessor(inv.getStage());
 
@@ -83,15 +78,60 @@ public class GameScreen implements Screen {
 
     }
 
-    @Override public void resize(int width, int height) {
-            PauseMenuScreen.rsMenu(width, height);
-            inv.rsMenu(width, height);
+    private void renderPlayerHealthBar(SpriteBatch batch) {
+        int hp = world.getPlayer().getHp();
+        int maxHp = world.getPlayer().getMaxHp();
+        String playerName = world.getPlayer().getName();
+        float ratio = Math.max(0f, Math.min(1f, (float) hp / maxHp));
+
+        float x = 20f;
+        float y = Gdx.graphics.getHeight() - 60f;
+        float width = 300f;
+        float height = 24f;
+
+        BitmapFont font = MainGame.getFont();
+
+        batch.setColor(Color.WHITE);
+        font.draw(batch, playerName, x, y + height + 20);
+
+
+        batch.setColor(Color.BLACK);
+        batch.draw(MainGame.getWhitePixel(), x - 2, y - 2, width + 4, height + 4);
+
+
+        batch.setColor(0.4f, 0f, 0f, 1f);
+        batch.draw(MainGame.getWhitePixel(), x, y, width, height);
+
+
+        batch.setColor(0f, 0.8f, 0f, 1f);
+        batch.draw(MainGame.getWhitePixel(), x, y, width * ratio, height);
+
+        batch.setColor(Color.WHITE);
+        font.draw(batch, hp + " / " + maxHp, x + 8, y + height - 6);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        PauseMenuScreen.rsMenu(width, height);
+        inv.rsMenu(width, height);
 
     }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
-    @Override public void show() {}
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void show() {
+    }
 
     @Override
     public void dispose() {

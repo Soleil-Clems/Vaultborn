@@ -5,7 +5,7 @@ import com.vaultborn.entities.characters.mobs.Gorgon;
 public class HellWorld extends BaseWorld {
 
     public HellWorld() {
-        super("HellMap/map", "backgrounds/background_hell.png");
+        super("HellMap/maptest", "backgrounds/background_hell.png");
     }
 
     @Override

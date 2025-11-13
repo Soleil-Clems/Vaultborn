@@ -18,19 +18,14 @@ public class MainScreen implements Screen{
     Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     public MainScreen(MainGame game){
-        MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);  
+        MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);
     }
 
     @Override public void render(float delta) {
         MainMenuScreen.rdMenu(delta);
-        /*
-        //exit fast
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
-                    Gdx.app.exit();
-            }
-        */ 
+
         }
-        
+
     @Override public void resize(int width, int height) {MainMenuScreen.rsMenu(width, height);}
     @Override public void pause() {}
     @Override public void resume() {}
@@ -39,5 +34,5 @@ public class MainScreen implements Screen{
     @Override public void dispose() {MainMenuScreen.dpMenu();}
 
 
-    
+
 }
