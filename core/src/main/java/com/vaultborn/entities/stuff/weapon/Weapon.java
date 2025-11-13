@@ -1,19 +1,31 @@
 package com.vaultborn.entities.stuff.weapon;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 //import com.badlogic.gdx.graphics.Texture;
+import com.vaultborn.entities.characters.Character;
+import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
+import com.vaultborn.world.BaseWorld;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
-public abstract class Weapon extends Entity implements Stuff{
+public abstract class Weapon extends GameObject implements Stuff{
     protected String type;
     protected String name;
     protected int durability;
     protected String specialPerk;
     protected int damage;
     protected int range;
+    protected Character character;
+    public BaseWorld world;
+    protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
 
     //weapon sans specialPerk
     public Weapon(Vector2 position, TextureRegion texture, String type){
@@ -78,7 +90,32 @@ public abstract class Weapon extends Entity implements Stuff{
 
     @Override
     public void update(float delta) {
-        
+
     }
-    
+
+    @Override
+    public void pickUp(Character character) {
+        if (character instanceof Player) {
+            character.setDamage(this.damage+ character.getDamage());
+        }
+    }
+
+    public void setWorld(BaseWorld world) {
+        this.world = world;
+    }
+
+    protected void addAnimation(String key, Texture spriteSheet, int frameCount, float frameDuration) {
+        int frameWidth = spriteSheet.getWidth() / frameCount;
+        int frameHeight = spriteSheet.getHeight();
+        TextureRegion[][] tmp = TextureRegion.split(spriteSheet, frameWidth, frameHeight);
+
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            frames[i] = tmp[0][i];
+        }
+
+        Animation<TextureRegion> anim = new Animation<>(frameDuration, frames);
+        animations.put(key, anim);
+    }
+
 }

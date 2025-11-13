@@ -8,9 +8,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.factories.Factory;
 import com.vaultborn.managers.AssetManager;
 
@@ -24,6 +26,7 @@ public abstract class BaseWorld {
     protected final Factory factory;
     protected Warrior player;
     protected List<Mob> mobs = new ArrayList<>();
+    protected List<GameObject> gameObjects = new ArrayList<>();
 
     protected TiledMap map;
     protected TiledMapTileLayer collisionLayer;
@@ -34,6 +37,9 @@ public abstract class BaseWorld {
     protected float tileSize;
     protected float mapHeightInPixels;
 
+    protected float offsetX;
+    protected float offsetY;
+
     protected String levelName;
 
     public BaseWorld(String levelName, String backgroundPath) {
@@ -41,11 +47,17 @@ public abstract class BaseWorld {
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
         this.background = new Texture(backgroundPath);
-
+        offsetX = -30f;
+        offsetY = -10f;
         loadMap();
         initCameras();
         initPlayer();
         initMobs();
+        initObjects();
+    }
+
+    public OrthographicCamera getUiCamera() {
+        return uiCamera;
     }
 
     protected void loadMap() {
@@ -78,6 +90,8 @@ public abstract class BaseWorld {
 
     /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
     protected abstract void initMobs();
+    /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
+    protected abstract void initObjects();
 
     public void update(float delta) {
         player.update(delta);
@@ -89,6 +103,23 @@ public abstract class BaseWorld {
             if (mob.isDead && mob.getAnimation("dead") != null &&
                 mob.getAnimation("dead").isAnimationFinished(mob.stateTime)) {
                 it.remove();
+            }
+        }
+
+        Iterator<GameObject> objectIterator = gameObjects.iterator();
+        while (objectIterator.hasNext()) {
+            GameObject obj = objectIterator.next();
+
+            float px = player.getPosition().x;
+            float py = player.getPosition().y;
+            float ox = obj.getPosition().x;
+            float oy = obj.getPosition().y;
+
+            float distance = Vector2.dst(px, py, ox, oy);
+
+            if (distance < 40f) {
+                obj.pickUp(player);
+                objectIterator.remove();
             }
         }
 
@@ -120,13 +151,20 @@ public abstract class BaseWorld {
         batch.begin();
         player.render(batch);
         for (Mob mob : mobs) mob.render(batch);
+
+        for (GameObject obj : gameObjects) {
+            obj.render(batch);
+            System.out.println("arm");
+        }
         batch.end();
     }
 
     public boolean isCellBlocked(float worldX, float worldY) {
         if (collisionLayer == null) return false;
-        int x = (int) (worldX / tileSize);
-        int y = (int) (worldY / tileSize);
+        float adjustedX = worldX - offsetX;
+        float adjustedY = worldY - offsetY;
+        int x = (int) (adjustedX / tileSize);
+        int y = (int) (adjustedY / tileSize);
         if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) return false;
         TiledMapTileLayer.Cell cell = collisionLayer.getCell(x, y);
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");

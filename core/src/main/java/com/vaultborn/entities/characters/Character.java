@@ -17,13 +17,14 @@ public abstract class Character extends Entity {
 
     protected String name;
     protected int hp;
+    protected int maxHp=100;
     protected int defense;
     protected int damage;
     protected int level;
     protected int agility;
     protected int range;
     public boolean facingRight = true;
-    private float speed = 100f;
+    private float speed = 200f;
     protected boolean isPlayerControlled = false;
     protected BaseWorld world;
     protected float characterWidth = 32f;
@@ -71,9 +72,13 @@ public abstract class Character extends Entity {
     public int getHp() {
         return hp;
     }
+    public int getMaxHp() {
+        return maxHp;
+    }
 
     public void setHp(int hp) {
         this.hp = hp;
+        if (this.maxHp == 0) this.maxHp = hp;
     }
 
     public int getDefense() {
@@ -270,9 +275,6 @@ public abstract class Character extends Entity {
         velocityY = 0f;
         setAnimation("dead");
     }
-
-
-
 
 
 
