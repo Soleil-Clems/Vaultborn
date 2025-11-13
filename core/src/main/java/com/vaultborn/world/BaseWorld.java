@@ -8,9 +8,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.factories.Factory;
 import com.vaultborn.managers.AssetManager;
 
@@ -24,6 +26,7 @@ public abstract class BaseWorld {
     protected final Factory factory;
     protected Warrior player;
     protected List<Mob> mobs = new ArrayList<>();
+    protected List<GameObject> gameObjects = new ArrayList<>();
 
     protected TiledMap map;
     protected TiledMapTileLayer collisionLayer;
@@ -50,6 +53,7 @@ public abstract class BaseWorld {
         initCameras();
         initPlayer();
         initMobs();
+        initObjects();
     }
 
     public OrthographicCamera getUiCamera() {
@@ -86,6 +90,8 @@ public abstract class BaseWorld {
 
     /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
     protected abstract void initMobs();
+    /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
+    protected abstract void initObjects();
 
     public void update(float delta) {
         player.update(delta);
@@ -97,6 +103,23 @@ public abstract class BaseWorld {
             if (mob.isDead && mob.getAnimation("dead") != null &&
                 mob.getAnimation("dead").isAnimationFinished(mob.stateTime)) {
                 it.remove();
+            }
+        }
+
+        Iterator<GameObject> objectIterator = gameObjects.iterator();
+        while (objectIterator.hasNext()) {
+            GameObject obj = objectIterator.next();
+
+            float px = player.getPosition().x;
+            float py = player.getPosition().y;
+            float ox = obj.getPosition().x;
+            float oy = obj.getPosition().y;
+
+            float distance = Vector2.dst(px, py, ox, oy);
+
+            if (distance < 40f) {
+                obj.pickUp(player);
+                objectIterator.remove();
             }
         }
 
@@ -128,6 +151,11 @@ public abstract class BaseWorld {
         batch.begin();
         player.render(batch);
         for (Mob mob : mobs) mob.render(batch);
+
+        for (GameObject obj : gameObjects) {
+            obj.render(batch);
+            System.out.println("arm");
+        }
         batch.end();
     }
 

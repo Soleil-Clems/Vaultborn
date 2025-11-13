@@ -278,9 +278,6 @@ public abstract class Character extends Entity {
 
 
 
-
-
-
     protected void applyGravity(float delta) {
         velocityY += gravity * delta;
         if (velocityY < -800f) velocityY = -800f;

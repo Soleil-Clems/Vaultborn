@@ -15,5 +15,10 @@ public class HellWorld extends BaseWorld {
         mobs.add(factory.createMob("gorgon", 900, 580, this));
     }
 
+    @Override
+    protected void initObjects() {
+        gameObjects.add(factory.createObject("sword", 650, 600, this));
+    }
+
 
 }

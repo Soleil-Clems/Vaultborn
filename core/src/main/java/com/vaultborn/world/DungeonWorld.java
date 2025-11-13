@@ -10,4 +10,7 @@ public class DungeonWorld extends BaseWorld{
         mobs.add(factory.createMob("gorgon", 400, 580, this));
         mobs.add(factory.createMob("gorgon", 900, 580, this));
     }
+
+    @Override
+    protected void initObjects() {}
 }
