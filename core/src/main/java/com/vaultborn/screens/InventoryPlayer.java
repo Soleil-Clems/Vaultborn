@@ -20,15 +20,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.Entity;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.entities.stuff.weapon.Sword;
+import com.vaultborn.entities.stuff.weapon.Weapon;
+import com.vaultborn.entities.stuff.armor.Armor;
 import com.vaultborn.entities.stuff.armor.Hat;
 import com.vaultborn.entities.stuff.armor.Robe;
 
@@ -47,12 +50,12 @@ public class InventoryPlayer {
     private LinkedHashMap<Item<? extends Stuff>,Integer> InventoryItem;
     private List<Item<? extends Stuff>> InventoryItemList = new ArrayList<>();
     private LinkedHashMap<String,Item<? extends Stuff>> equipeItem = new LinkedHashMap<String,Item<? extends Stuff>>(){{
-    put("head",nonItemEquip);
-    put("torso",nonItemEquip);
-    put("arm",nonItemEquip);
-    put("leg",nonItemEquip);
-    put("foot",nonItemEquip);
-    put("Sword",nonItemEquip);
+    put("Head",nonItemEquip);
+    put("Torso",nonItemEquip);
+    put("Arm",nonItemEquip);
+    put("Leg",nonItemEquip);
+    put("Foot",nonItemEquip);
+    put("Weapon",nonItemEquip);
     }};
     
     private Stage stage;
@@ -78,6 +81,8 @@ public class InventoryPlayer {
     Item<Robe> theRobe = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
     Item<Robe> theRobe2 = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
 
+
+    private Pixmap Pix;
     public InventoryPlayer(){
         
         InventoryItem = new LinkedHashMap<Item<? extends Stuff>,Integer>();
@@ -93,7 +98,7 @@ public class InventoryPlayer {
         statTable = new Table();
         invTable = new Table();
 
-        Pixmap Pix = new Pixmap(1,1,Pixmap.Format.RGB888);
+         Pix = new Pixmap(1,1,Pixmap.Format.RGB888);
         Pix.setColor(new Color(26 / 255f, 21 / 255f, 20 / 255f, 100 / 255f));
         Pix.fill();
         //rootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))));
@@ -159,16 +164,24 @@ public class InventoryPlayer {
     public Stage getStage(){
         return this.stage;
     }
+    public Stage getObjectStage(){
+        return this.objectStage;
+    }
     public void setShowInventory(boolean showInventory){
         this.showInventory = showInventory;
     }
     public void setEquipeItem(String key,Item<? extends Stuff> item){
         equipeItem.replace(key,item);
     }
-    
+    public boolean getObjectInfoMenu(){
+        return this.objectInfoMenu;
+    }
+
+    private int theCount =0;
+    private boolean reload = false;
     public void InventoryInput(){
         //afficher l'inventaire
-        if (Gdx.input.isKeyJustPressed(Input.Keys.I)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)||reload == true){
             WidthCalculation = Gdx.graphics.getWidth() / 3f;
             HeightCalculation = Gdx.graphics.getHeight()-60;
             long ItemSizeInv = Math.round(Math.sqrt((WidthCalculation*HeightCalculation)/numberOfSlot))-5;
@@ -198,7 +211,15 @@ public class InventoryPlayer {
                         //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
                         styleFullSlot.up = new TextureRegionDrawable(currentTexture);
                         styleFullSlot.down = new TextureRegionDrawable(currentTexture).tint(new Color (1f,1f,1f,0.5f));
-                        invTable.add(new ImageButton(styleFullSlot)).size(ItemSizeInv).fill().pad(2);
+                        ImageButton itemImageButton = new ImageButton(styleFullSlot);
+                        itemImageButton.addListener(new ClickListener() {
+                            @Override
+                            public void clicked(InputEvent event, float x,float y) {
+                            objectInfo(InventoryItemList.get(theCount));
+                            System.out.println("objet selectionner");
+                            }
+                        });                        
+                        invTable.add(itemImageButton).size(ItemSizeInv).fill().pad(2);
                         spaceInRowAvailable -= ItemSizeInv +2;
                     }
                     else{
@@ -209,8 +230,9 @@ public class InventoryPlayer {
                         invTable.add(new ImageButton(styleEmptySlot)).size(ItemSizeInv).fill().pad(2);
                         spaceInRowAvailable -= ItemSizeInv +2;
                     }
-                    
+                    theCount ++;
                 }
+                theCount =0;
                 //afficher la partie equipement
                 for (String key : equipeItem.keySet()){
                     //System.out.println(key);
@@ -224,16 +246,18 @@ public class InventoryPlayer {
                         //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
                         styleFullSlot.up = new TextureRegionDrawable(currentTexture);
                         styleFullSlot.down = new TextureRegionDrawable(currentTexture).tint(new Color (1f,1f,1f,0.5f));
-                        equipeTable.add(new ImageButton(styleFullSlot)).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
+                        ImageButton itemImageButton = new ImageButton(styleFullSlot);
+                        equipeTable.add(itemImageButton).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
                         equipeTable.row();
                     }
-                }
+                }            
             }
             else{
                 invTable.clear();
                 equipeTable.clear();
                 InventoryItemList.clear();
             }
+            this.reload = false;
             this.showInventory = !showInventory;
         }
 
@@ -258,49 +282,278 @@ public class InventoryPlayer {
             InventoryItem.clear();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
-            System.out.println(InventoryItem);
+            //System.out.println(InventoryItem);
+            if (!objectInfoMenu){objectInfo(theHat);} else{objectInfoMenu=false;}
+            //System.out.println(statStuff);
         }
 
-        //equiper
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
-            //System.out.println(InventoryItem.keySet());
-            //System.out.println(equipeItem.keySet());
-            for (Item<?> a:InventoryItem.keySet()){
-                System.out.println(a.getObject().getType());
-                System.out.println(equipeItem.containsKey(a.getObject().getType()));
-                setEquipeItem(a.getObject().getType(), a);
-                InventoryItem.remove(a);
-                break;
+        
+        
+        
+        
+    }
+    
+    
+    
+    private boolean objectInfoMenu = false;
+    private Stage objectStage;
+    //variable des stuff
+    HashMap<String,String> statStuff = new HashMap<String,String>(){{
+        put("oldName",null);
+        put("oldType",null);
+        put("oldDurability",null);
+        put("oldDamage",null);
+        put("oldHealth",null);
+        put("oldDefense",null);
+        put("oldAgility",null);
+        put("oldStamina",null);
+        put("oldMana",null);
+        put("oldSpecialPerk",null);
+        put("newName",null);
+        put("newType",null);
+        put("newDurability",null);
+        put("newDamage",null);
+        put("newHealth",null);
+        put("newDefense",null);
+        put("newAgility",null);
+        put("newStamina",null);
+        put("newMana",null);
+        put("newSpecialPerk",null);
+        
+    }};
+    private String category;
+    //bulle d'info de l'object selectionner dans l'inventaire
+    private void objectInfo(Item<? extends Stuff> selected){
+        this.objectInfoMenu = true;
+        Item<? extends Stuff> objectSelected = selected;
+        
+        
+        //table
+        objectStage = new Stage(new ScreenViewport());
+        Table objectRootTable = new Table();
+        objectRootTable.align(Align.center);
+        objectRootTable.setBounds((Gdx.graphics.getWidth() - Gdx.graphics.getWidth() / 2f)/2f, (Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2f)/2f, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        objectStage.addActor(objectRootTable);
+        Table objectLeftTable = new Table();
+        Table objectRightTable = new Table();
+        Table objectButtonTable = new Table();
+        objectRootTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))));
+        objectLeftTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))).tint(new Color (0.5f,0.5f,0.5f,1f)));
+        objectRightTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Pix))).tint(new Color (0.2f,0.2f,0.2f,0.3f)));
+        objectRootTable.add(objectLeftTable).width(Value.percentWidth(0.5f,objectRootTable)).maxWidth(Value.percentWidth(0.5f,objectRootTable)).fillY();//.left();
+        objectRootTable.add(objectRightTable).width(Value.percentWidth(0.5f,objectRootTable)).maxWidth(Value.percentWidth(0.5f,objectRootTable)).fillY();//.right();
+        objectRootTable.row();
+        objectRootTable.add(objectButtonTable).colspan(2).fillX();
+        objectButtonTable.defaults().expandX();
+        
+        TextButton stuffManageEquip = new TextButton("Equiper", skin);
+        TextButton stuffManageCancel = new TextButton("Annuler", skin);
+        TextButton stuffManagetrash = new TextButton("Jeter", skin);
+        
+        stuffManageEquip.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x,float y) {
+                objectInfoMenu=false;
+                Item<? extends Stuff> temp = equipeItem.get(objectSelected.getObject().getClass().getSuperclass().getSimpleName());
+                if (temp.getObject() != null){
+                    addInventory(temp);
+                }
+                equipeItem.replace(objectSelected.getObject().getClass().getSuperclass().getSimpleName(), objectSelected);
+                InventoryItem.remove(objectSelected);
+                System.out.println("objet équiper");
+                reload = true;
+                InventoryInput();
+                reload = true;
+                InventoryInput();
+                
+            }     
+        });
+        stuffManageCancel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x,float y) {
+                objectInfoMenu=false;
+                System.out.println("objet annuler");
+            }     
+        });
+        stuffManagetrash.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x,float y) {
+                System.out.println("objet jeter");
+                InventoryItem.remove(objectSelected);
+                
+            }     
+        });
+        
+        
+        objectButtonTable.add(stuffManageEquip);
+        objectButtonTable.add(stuffManageCancel);
+        objectButtonTable.add(stuffManagetrash);
+        objectRootTable.setDebug(true);
+        
+        //comparaison
+        //String category = "";
+        //verification de weapon + récupération des valeurs
+        if(objectSelected.getObject().getClass().getSuperclass().getSimpleName().equals("Weapon")){
+            Item<? extends Stuff> oldEquiped = equipeItem.get("Weapon");
+            if (oldEquiped.getObject() instanceof Weapon){
+                Weapon oldWeapon = (Weapon) equipeItem.get("Weapon").getObject();
+                statStuff.put("oldName", oldWeapon.getName());
+                statStuff.put("oldType", oldWeapon.getType());
+                statStuff.put("oldDurability", Integer.toString(oldWeapon.getDurability()));
+                statStuff.put("oldDamage", Integer.toString(oldWeapon.getDamage()));
+                statStuff.put("oldSpecialPerk", oldWeapon.getSpecialPerk());
                 
             }
-
+            Weapon newWeapon = (Weapon) selected.getObject();
+            statStuff.put("newName", newWeapon.getName());
+            statStuff.put("newType", newWeapon.getType());
+            statStuff.put("newDurability", Integer.toString(newWeapon.getDurability()));
+            statStuff.put("newDamage", Integer.toString(newWeapon.getDamage()));
+            statStuff.put("newSpecialPerk", newWeapon.getSpecialPerk());
+            category = "Weapon";
+            //objectLeftTable.add(new Label("Actuellement équipé", skin));
+            System.out.println("test");
+            //System.out.println(selected.getObject().getClass().getSuperclass().getSimpleName());
+        }
+        //verification de armor + récupération des valeurs
+        else if (objectSelected.getObject().getClass().getSuperclass().getSuperclass().getSimpleName().equals("Armor")){
+            System.out.println(objectSelected.getObject() instanceof Armor);
+            Item<? extends Stuff> oldEquiped = equipeItem.get(selected.getObject().getClass().getSuperclass().getSimpleName());
+            if (oldEquiped.getObject() instanceof Armor){
+                Armor oldArmor = (Armor) equipeItem.get(selected.getObject().getClass().getSuperclass().getSimpleName()).getObject();
+                statStuff.put("oldName", oldArmor.getName());
+                statStuff.put("oldType", oldArmor.getType());
+                statStuff.put("oldDurability", Integer.toString(oldArmor.getDurability()));
+                statStuff.put("oldHealth", Integer.toString(oldArmor.getHealth()));
+                statStuff.put("oldDefense", Integer.toString(oldArmor.getDefense()));
+                statStuff.put("oldAgility", Integer.toString(oldArmor.getAgility()));
+                statStuff.put("oldStamina", Integer.toString(oldArmor.getStamina()));
+                statStuff.put("oldMana", Integer.toString(oldArmor.getMana()));
+                statStuff.put("oldSpecialPerk", oldArmor.getSpecialPerk());
+            }
+            Armor newArmor = (Armor) selected.getObject();
+            statStuff.put("newName", newArmor.getName());
+            statStuff.put("newType", newArmor.getType());
+            statStuff.put("newDurability", Integer.toString(newArmor.getDurability()));
+            statStuff.put("newHealth", Integer.toString(newArmor.getHealth()));
+            statStuff.put("newDefense", Integer.toString(newArmor.getDefense()));
+            statStuff.put("newAgility", Integer.toString(newArmor.getAgility()));
+            statStuff.put("newStamina", Integer.toString(newArmor.getStamina()));
+            statStuff.put("newMana", Integer.toString(newArmor.getMana()));
+            statStuff.put("newSpecialPerk",newArmor.getSpecialPerk());
+            System.out.println("test 2");
+            category = "Armor";
         }
         
-
-
+        //ancien item
+        {objectLeftTable.add(new Label("Ancien",skin)).right();
+        objectLeftTable.row();
+        objectLeftTable.add(new Label("Nom : ",skin)).left().padLeft(0);
+        objectLeftTable.add(new Label(statStuff.get("oldName"),skin)).center();
+        objectLeftTable.row();
+        objectLeftTable.add(new Label("Type : ",skin)).left().padLeft(0);
+        objectLeftTable.add(new Label(statStuff.get("oldType"),skin)).center();
+        objectLeftTable.row();
+        objectLeftTable.add(new Label("Durabilite : ",skin)).left().padLeft(0);
+        objectLeftTable.add(new Label(statStuff.get("oldDurability"),skin)).center();
+        objectLeftTable.row();
+        if(category == "Weapon"){
+            objectLeftTable.add(new Label("Attaque : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label(statStuff.get("oldDamage"),skin)).center();
+            objectLeftTable.row();
+        }
+        if(category == "Armor"){
+            
+            objectLeftTable.add(new Label("HP : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label(statStuff.get("oldHealth"),skin)).center();
+            objectLeftTable.row();
+            objectLeftTable.add(new Label("Defense : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label(statStuff.get("oldDefense"),skin)).center();
+            objectLeftTable.row();
+            objectLeftTable.add(new Label("Agilité : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label(statStuff.get("oldAgility"),skin)).center();
+            objectLeftTable.row();
+            objectLeftTable.add(new Label("Endurence : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label(statStuff.get("oldStamina"),skin)).center();
+            objectLeftTable.row();
+            objectLeftTable.add(new Label("Mana : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label(statStuff.get("oldMana"),skin)).center();
+            objectLeftTable.row();
+        }
+        objectLeftTable.add(new Label("Perk Special : ",skin)).left().padLeft(0);
+        objectLeftTable.add(new Label(statStuff.get("oldSpecialPerk"),skin)).center();
+        objectLeftTable.row();
+    }
+    //nouveau item
+    {objectRightTable.add(new Label("Nouveau",skin)).right();
+    objectRightTable.row();
+    objectRightTable.add(new Label("Nom : ",skin)).left().padLeft(0);
+    objectRightTable.add(new Label(statStuff.get("newName"),skin)).center();
+    objectRightTable.row();
+    objectRightTable.add(new Label("Type : ",skin)).left().padLeft(0);
+    objectRightTable.add(new Label(statStuff.get("newType"),skin)).center();
+    objectRightTable.row();
+    objectRightTable.add(new Label("Durabilite : ",skin)).left().padLeft(0);
+    objectRightTable.add(new Label(statStuff.get("newDurability"),skin)).center();
+    objectRightTable.row();
+    if(category == "Weapon"){
+        objectRightTable.add(new Label("Attaque : ",skin)).left().padLeft(0);
+        objectRightTable.add(new Label(statStuff.get("newDamage"),skin)).center();
+        objectRightTable.row();
+    }
+    if(category == "Armor"){
         
+            objectRightTable.add(new Label("HP : ",skin)).left().padLeft(0);
+            objectRightTable.add(new Label(statStuff.get("newHealth"),skin)).center();
+            objectRightTable.row();
+            objectRightTable.add(new Label("Defense : ",skin)).left().padLeft(0);
+            objectRightTable.add(new Label(statStuff.get("newDefense"),skin)).center();
+            objectRightTable.row();
+            objectRightTable.add(new Label("Agilité : ",skin)).left().padLeft(0);
+            objectRightTable.add(new Label(statStuff.get("newAgility"),skin)).center();
+            objectRightTable.row();
+            objectRightTable.add(new Label("Endurence : ",skin)).left().padLeft(0);
+            objectRightTable.add(new Label(statStuff.get("newStamina"),skin)).center();
+            objectRightTable.row();
+            objectRightTable.add(new Label("Mana : ",skin)).left().padLeft(0);
+            objectRightTable.add(new Label(statStuff.get("newMana"),skin)).center();
+            objectRightTable.row();
+        }
+        objectRightTable.add(new Label("Perk Special : ",skin)).left().padLeft(0);
+        objectRightTable.add(new Label(statStuff.get("newSpecialPerk"),skin)).center();
+        objectRightTable.row();
     }
-
+    //objectRootTable.setDebug(true);
     
-    //gestin d'affichage
-    public void rdMenu(float delta) {
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
-        stage.draw();
-    }
-    public void dpMenu(){stage.dispose(); /*skin.dispose();*/}   
-
-    public void rsMenu(int width, int height) { 
-        stage.getViewport().update(width, height, true);
-    }
-    public void shMenu() {}
-    public void pMenu() {}
-    public void rMenu() {}
-    public void hMenu() {}
-
-
     
+}
+
+    private void statCharacter(){
+
+    }
+//gestion d'affichage
+public void rdMenu(float delta) {
+    //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    
+    stage.act(delta);
+    stage.draw();
+    if (objectInfoMenu){
+        objectStage.act(delta);
+        objectStage.draw();
+    }
+}
+public void dpMenu(){stage.dispose(); /*skin.dispose();*/}   
+
+public void rsMenu(int width, int height) { 
+    stage.getViewport().update(width, height, true);
+}
+public void shMenu() {}
+public void pMenu() {}
+public void rMenu() {}
+public void hMenu() {}
+
+
+
 }
 //class de gestion des items
 class Item<T extends Entity & Stuff>{
@@ -309,17 +562,17 @@ class Item<T extends Entity & Stuff>{
         CONSUMABLE,
         EQUIPMENT
     }
-
+    
     private T object;
     private Type type;
     
-
+    
     public Item(T object,Type type) {
         this.object = object;
         this.type = type;
         
     }
-
+    
     public T getObject() { return object; }
     public Type getType() { return type; }
     
@@ -333,6 +586,21 @@ Gdx.input.setInputProcessor(new InputAdapter() {
 public boolean keyDown(int keycode) {
     System.out.println("Touche pressée : " + Input.Keys.toString(keycode));
     return true;
-}
-});
-*/
+    }
+    });
+    */
+/*
+    //equiper
+    if (Gdx.input.isKeyJustPressed(Input.Keys.Z)){
+        //System.out.println(InventoryItem.keySet());
+        //System.out.println(equipeItem.keySet());
+        for (Item<?> a:InventoryItem.keySet()){
+            System.out.println(a.getObject().getClass().getSuperclass().getSimpleName());
+            System.out.println(equipeItem.containsKey(a.getObject().getClass().getSuperclass().getSimpleName()));
+            setEquipeItem(a.getObject().getClass().getSuperclass().getSimpleName(), a);
+            InventoryItem.remove(a);
+            break;
+            
+        }
+    
+    }*/

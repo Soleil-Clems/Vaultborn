@@ -79,6 +79,9 @@ public class GameScreen implements Screen {
         if (inv.isShowInventory()&&!PauseMenuScreen.isActivated()){
             inv.rdMenu(delta);
             Gdx.input.setInputProcessor(inv.getStage());
+            if(inv.getObjectInfoMenu()){
+                Gdx.input.setInputProcessor(inv.getObjectStage());
+            }
 
         }
 
