@@ -76,6 +76,9 @@ public abstract class Character extends Entity {
     public int getMaxHp() {
         return maxHp;
     }
+    public void setMaxHp(int maxHp){
+        this.maxHp = maxHp;
+    }
 
     public void setHp(int hp) {
         this.hp = hp;
