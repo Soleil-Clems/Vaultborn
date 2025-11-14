@@ -42,20 +42,17 @@ public abstract class BaseWorld {
     protected float tileSize;
     protected float mapHeightInPixels;
 
-    protected float offsetX;
-    protected float offsetY;
-
     protected String levelName;
     protected GameScreen screen;
-
+    protected float oldPosY = 0f;
+    protected float timer = 0f;
 
     public BaseWorld(String levelName, String backgroundPath) {
         this.levelName = levelName;
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
         this.background = new Texture(backgroundPath);
-        offsetX = -30f;
-        offsetY = -10f;
+
         loadMap();
         initCameras();
         initPlayer();
@@ -77,6 +74,10 @@ public abstract class BaseWorld {
         int mapHeight = map.getProperties().get("height", Integer.class);
         tileSize = map.getProperties().get("tilewidth", Integer.class);
         mapHeightInPixels = mapHeight * tileSize;
+
+        System.out.println("=== MAP INFO ===");
+        System.out.println("Tile size: " + tileSize);
+        System.out.println("Map dimensions: " + mapWidth + "x" + mapHeight);
     }
 
     protected void initCameras() {
@@ -95,14 +96,12 @@ public abstract class BaseWorld {
         player = (Warrior) factory.createPlayer("warrior", 350, 800, this);
     }
 
-    /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
     protected abstract void initMobs();
-    /** 💡 Méthode abstraite à implémenter dans chaque sous-monde */
     protected abstract void initObjects();
 
     public void update(float delta) {
-
         player.update(delta);
+
         Iterator<Mob> it = mobs.iterator();
         while (it.hasNext()) {
             Mob mob = it.next();
@@ -124,7 +123,7 @@ public abstract class BaseWorld {
 
             float distance = Vector2.dst(px, py, ox, oy);
 
-            if (distance < 40f && !(obj instanceof SpecialDoor)) {
+            if (distance < 70f && !(obj instanceof SpecialDoor)) {
                 obj.pickUp(player);
                 objectIterator.remove();
             }
@@ -137,14 +136,10 @@ public abstract class BaseWorld {
                 }
 
                 if (mobs.isEmpty() && door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
-//                    changeToWorld(door.getTargetWorld());
-//                    break;
-                    System.out.println("contact");
+                    changeToWorld(door.getTargetWorld());
+                    break;
                 }
             }
-
-
-
         }
 
         updateCamera();
@@ -158,33 +153,12 @@ public abstract class BaseWorld {
         float cameraY = 730f;
         cameraY = Math.max(cameraY, h / 2f);
 
+
         worldCamera.position.set(cameraX, cameraY, 0);
         worldCamera.update();
     }
 
-//    public void render(SpriteBatch batch) {
-//        batch.setProjectionMatrix(uiCamera.combined);
-//        batch.begin();
-//        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        batch.end();
-//
-//        tiledMapRenderer.setView(worldCamera);
-//        tiledMapRenderer.render();
-//
-//        batch.setProjectionMatrix(worldCamera.combined);
-//        batch.begin();
-//        for (GameObject obj : gameObjects) {
-//            obj.render(batch);
-//        }
-//        player.render(batch);
-//        for (Mob mob : mobs) mob.render(batch);
-//
-//        batch.end();
-//    }
-
-
     public void render(SpriteBatch batch) {
-        // rendu normal
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -200,33 +174,74 @@ public abstract class BaseWorld {
         for (Mob mob : mobs) mob.render(batch);
         batch.end();
 
-        // ---- DEBUG: trigger zones ----
+        // === DEBUG VISUEL ===
         ShapeRenderer sr = new ShapeRenderer();
         sr.setProjectionMatrix(worldCamera.combined);
+
+        // Hitbox complète du joueur (Rectangle bounds)
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(Color.GREEN);
+        Rectangle playerBounds = player.getBounds();
+        sr.rect(playerBounds.x, playerBounds.y, playerBounds.width, playerBounds.height);
+        sr.end();
+
+        // Les 4 coins utilisés pour la collision
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        float px = player.getPosition().x;
+        float py = player.getPosition().y;
+        float cw = player.characterWidth;
+        float ch = player.characterHeight;
+
+        sr.setColor(Color.YELLOW);
+        sr.circle(px, py, 5); // Bas gauche
+        sr.circle(px + cw, py, 5); // Bas droit
+        sr.circle(px, py + ch, 5); // Haut gauche
+        sr.circle(px + cw, py + ch, 5); // Haut droit
+        System.out.println("Gauche: "+py+" Droit: "+cw + px);
+        System.out.println("pGauche: "+cw+" pDroit: " + ch);
+        sr.end();
+
+        // Afficher les tiles de collision en ROUGE
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.RED);
-        for (GameObject obj : gameObjects) {
-            if (obj instanceof SpecialDoor) {
-                SpecialDoor door = (SpecialDoor) obj;
-                Rectangle r = door.getTriggerZone();
-                sr.rect(r.x, r.y, r.width, r.height);
+        if (collisionLayer != null) {
+            int startX = Math.max(0, (int)(px / tileSize) - 10);
+            int endX = Math.min(collisionLayer.getWidth(), (int)(px / tileSize) + 10);
+            int startY = Math.max(0, (int)(py / tileSize) - 10);
+            int endY = Math.min(collisionLayer.getHeight(), (int)(py / tileSize) + 10);
+
+            for (int x = startX; x < endX; x++) {
+                for (int y = startY; y < endY; y++) {
+                    TiledMapTileLayer.Cell cell = collisionLayer.getCell(x, y);
+                    if (cell != null && cell.getTile() != null &&
+                        cell.getTile().getProperties().containsKey("blocked")) {
+                        float tileX = x * tileSize;
+                        float tileY = y * tileSize;
+                        sr.rect(tileX, tileY, tileSize, tileSize);
+                    }
+                }
             }
         }
         sr.end();
         sr.dispose();
     }
 
-
     public boolean isCellBlocked(float worldX, float worldY) {
         if (collisionLayer == null) return false;
-        float adjustedX = worldX - offsetX;
-        float adjustedY = worldY - offsetY;
-        int x = (int) (adjustedX / tileSize);
-        int y = (int) (adjustedY / tileSize);
-        if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) return false;
-        TiledMapTileLayer.Cell cell = collisionLayer.getCell(x, y);
+
+        float x = (float) ((worldX / (tileSize)) + 0.8f);
+        float y =  ((worldY / tileSize) + 0.3f);
+
+        if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) {
+            return false;
+        }
+
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int)x, (int) y);
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
     }
+
+
+
 
     public Character getNearestEnemy(Character attacker, float range) {
         if (attacker == player) {
@@ -259,7 +274,6 @@ public abstract class BaseWorld {
         map.dispose();
         background.dispose();
     }
-
 
     public void setScreen(GameScreen screen) {
         this.screen = screen;

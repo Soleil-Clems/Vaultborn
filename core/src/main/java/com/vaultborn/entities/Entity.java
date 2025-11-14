@@ -34,6 +34,10 @@ public abstract class Entity {
     public abstract void render(SpriteBatch batch);
     public Rectangle getBounds() { return bounds; }
 
+    public void updateBounds() {
+        bounds.setPosition(position.x, position.y);
+    }
+
     public Vector2 getPosition() { return position; }
     public void setPosition(Vector2 position) {
         this.position = position;

@@ -34,9 +34,7 @@ public class MenuScreen{
         this.element = element;
         this.activated = false;
         stage = new Stage(new ScreenViewport());
-        //initie les inputs
         Gdx.input.setInputProcessor(stage);
-        //System.out.println(Gdx.files.internal(skin).exists());
 
         table = new Table();
         table.setFillParent(true);
@@ -49,7 +47,7 @@ public class MenuScreen{
             Button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Bouton : " + e);
+
                 onClick(e);
                 }
                 });

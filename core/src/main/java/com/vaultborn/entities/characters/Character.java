@@ -28,12 +28,12 @@ public abstract class Character extends Entity {
     private float speed = 200f;
     protected boolean isPlayerControlled = false;
     protected BaseWorld world;
-    protected float characterWidth = 32f;
-    protected float characterHeight = 48f;
+    public float characterWidth = 32f;
+    public float characterHeight = 48f;
 
     protected float velocityY = 0f;
     protected float gravity = -1000f;
-    protected float jumpSpeed = 450f;
+    protected float jumpSpeed = 550f;
     protected boolean onGround = false;
     protected String attack = "";
     protected boolean isProtected = false;
@@ -63,7 +63,7 @@ public abstract class Character extends Entity {
         this.level = 1;
         this.portrait = texture;
         this.bounds.set(position.x, position.y, characterWidth, characterHeight);
-        this.hitbox = new Rectangle(position.x, position.y, texture.getRegionWidth(), texture.getRegionHeight());
+        this.hitbox = new Rectangle(position.x, position.y, 90, 60);
 
     }
 
@@ -226,6 +226,8 @@ public abstract class Character extends Entity {
         applyGravity(delta);
         updateAnimationState();
         updateHitbox();
+//        updateBounds();
+
 
     }
 
