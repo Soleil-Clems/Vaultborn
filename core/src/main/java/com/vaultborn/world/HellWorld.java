@@ -5,7 +5,7 @@ import com.vaultborn.entities.characters.mobs.Gorgon;
 public class HellWorld extends BaseWorld {
 
     public HellWorld() {
-        super("HellMap/map", "backgrounds/background_hell.png");
+        super("HellMap/maptest", "backgrounds/background_hell.png");
     }
 
     @Override
@@ -13,6 +13,11 @@ public class HellWorld extends BaseWorld {
         mobs.add(factory.createMob("gorgon", 300, 580, this));
         mobs.add(factory.createMob("gorgon", 600, 580, this));
         mobs.add(factory.createMob("gorgon", 900, 580, this));
+    }
+
+    @Override
+    protected void initObjects() {
+        gameObjects.add(factory.createObject("sword", 650, 600, this));
     }
 
 

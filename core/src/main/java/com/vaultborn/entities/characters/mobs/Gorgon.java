@@ -8,7 +8,7 @@ import com.vaultborn.entities.characters.Character;
 public class Gorgon extends Mob{
     public Gorgon(Vector2 position, TextureRegion texture) {
         super(position, texture, "Elvia");
-        this.hp = 5;
+        this.hp = 100;
         this.damage = 4;
         this.defense = 5;
         this.level = 1;

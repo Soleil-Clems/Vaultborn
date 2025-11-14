@@ -14,4 +14,7 @@ public class ForestWorld extends BaseWorld {
         mobs.add(factory.createMob("gorgon", 600, 580, this));
         mobs.add(factory.createMob("gorgon", 850, 580, this));
     }
+
+    @Override
+    protected void initObjects() {}
 }

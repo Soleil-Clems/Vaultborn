@@ -11,12 +11,14 @@ public class Warrior extends Player {
 
     public Warrior(Vector2 position, TextureRegion texture) {
         super(position, texture, "Lancelot");
-        this.hp = 20;
+        this.maxHp = 100;
+        this.hp = this.maxHp;
         this.damage = 20;
         this.defense = 8;
         this.level = 1;
         this.agility = 2;
         this.range = 1;
+
 
     }
 

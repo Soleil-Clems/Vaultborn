@@ -4,9 +4,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 //import com.badlogic.gdx.graphics.Texture;
+import com.vaultborn.entities.characters.Character;
+import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
 
-public abstract class Armor extends Entity implements Stuff{
+public abstract class Armor extends GameObject {
     protected String type;
     protected String name;
     protected int durability;
@@ -17,13 +20,12 @@ public abstract class Armor extends Entity implements Stuff{
     protected int stamina;
     protected int mana;
 
-    
     public Armor(Vector2 position, TextureRegion texture, String type, String name){
         super(position, texture);
         this.type = type;
         this.name = name;
         this.durability = 100;
-        
+
     }
 
     //getter
@@ -46,7 +48,7 @@ public abstract class Armor extends Entity implements Stuff{
     public void setDurability(boolean death){
         if (death){
             this.durability -= 20;
-        } 
+        }
         else {this.durability -=1;
         }
         if (this.durability<0){
@@ -89,6 +91,13 @@ public abstract class Armor extends Entity implements Stuff{
 
     @Override
     public void update(float delta) {
-        
+
+    }
+
+    @Override
+    public void pickUp(Character character) {
+        if (character instanceof Player) {
+           character.setAgility(this.agility+ character.getAgility());
+        }
     }
 }

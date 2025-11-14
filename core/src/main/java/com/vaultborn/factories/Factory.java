@@ -7,6 +7,8 @@ import com.vaultborn.entities.characters.mobs.Gorgon;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
 
@@ -15,6 +17,7 @@ public class Factory {
     private final AssetManager assetsManager;
     private TextureRegion warriorRegion;
     private TextureRegion gorgonRegion;
+    private TextureRegion swordRegion;
 
     public Factory() {
         assetsManager = new AssetManager();
@@ -26,6 +29,8 @@ public class Factory {
 
         Texture gorgonTexture = new Texture("gorgon/Idle.png");
         gorgonRegion = new TextureRegion(gorgonTexture);
+        Texture swordTexture = new Texture("objects/weapons/sword.png");
+        swordRegion = new TextureRegion(swordTexture);
     }
 
 
@@ -51,6 +56,19 @@ public class Factory {
                 mob.setWorld(world);
                 return mob;
 
+            default:
+                throw new IllegalArgumentException("Unknown mob type: " + type);
+        }
+    }
+
+
+    public GameObject createObject(String type, float x, float y, BaseWorld world) {
+        switch (type.toLowerCase()) {
+            case "sword":
+                Sword sword = new Sword(new Vector2(x, y), swordRegion);
+                sword.loadAnimations();
+                sword.setWorld(world);
+                return sword;
             default:
                 throw new IllegalArgumentException("Unknown mob type: " + type);
         }

@@ -9,17 +9,15 @@ public class Wand extends Weapon{
         super(position, texture, "wand");
         this.range = 10;
 
-        
+
 
     }
     public Wand(Vector2 position, TextureRegion texture,String specialPerk) {
         super(position, texture, "wand",specialPerk);
         this.range = 10;
-
-
     }
 
-    
-    
+
+
 
 }
