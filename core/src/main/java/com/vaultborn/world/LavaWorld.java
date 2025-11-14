@@ -7,7 +7,7 @@ public class LavaWorld extends BaseWorld {
     private float timer = 0f;
 
     public LavaWorld() {
-        super("LavaMap/map1", "backgrounds/background_hell.png");
+        super("LavaMap/map2", "backgrounds/background_hell.png");
     }
 
     @Override
