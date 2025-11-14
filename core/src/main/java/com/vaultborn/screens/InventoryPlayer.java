@@ -127,6 +127,8 @@ public class InventoryPlayer {
 
     //setter dans inventory
     public void addInventory(Item<? extends Stuff> object){
+        /*if (test2 instanceof )
+        Stuff test = (Stuff) */
         if(object.getType().equals(Item.Type.EQUIPMENT) && !InventoryItem.containsKey(object)){
             if(InventoryItem.size()<=15){
                 System.err.println(object.getObject().getName()+ " récolté.");
@@ -215,7 +217,7 @@ public class InventoryPlayer {
         put("HP",1);
         put("Defense",1);
         put("Attaque",1);
-        put("Agility",1);
+        put("Agilité",1);
         put("Endurence",1);
         put("Mana",1);
     }};
@@ -301,6 +303,7 @@ public class InventoryPlayer {
                 statTable.defaults().pad(5).expandX();
                 int count=1;
                 int AllPointAdded =0;
+                int nbAdded =0;
                 //statTable.setDebug(true);
 
                 for (int value : nameValueStat.values()){
@@ -352,6 +355,25 @@ public class InventoryPlayer {
                         statTable.add(actualName).left();
                         statTable.add(actualValue).center();
                         statTable.add(actualAddingStat).right();
+                        switch(name){
+                            case "HP": 
+                                nbAdded = 10;
+                                break;
+                            case "Defense": 
+                                nbAdded = 3;
+                                break;
+                            case "Attaque": 
+                                nbAdded = 5;
+                                break;
+                            case "Agilité": 
+                                nbAdded = 1;
+                                break;
+                            default:
+                                nbAdded = 0;
+                                break;
+                        }
+                        Label addingValue = new Label("(+ "+Integer.toString(nbAdded)+")", skin);
+                        statTable.add(addingValue).left();
                         statTable.row();
                         statExploitable.add(nameValueStat.get(name));
                     }
