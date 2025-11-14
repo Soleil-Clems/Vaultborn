@@ -29,7 +29,7 @@ public class Factory {
         warriorRegion = new TextureRegion(new Texture("warrior/Idle.png"));
         gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
         swordRegion   = new TextureRegion(new Texture("objects/weapons/sword.png"));
-        specialDoorRegion = new TextureRegion(new Texture("specialDoor/closeddoor.png"));
+        specialDoorRegion = new TextureRegion(new Texture("specialdoor/closeddoor.png"));
     }
 
     public Player createPlayer(String type, float x, float y, BaseWorld world) {

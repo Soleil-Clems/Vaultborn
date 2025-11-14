@@ -97,6 +97,7 @@ public abstract class BaseWorld {
     }
 
     protected abstract void initMobs();
+
     protected abstract void initObjects();
 
     public void update(float delta) {
@@ -197,18 +198,18 @@ public abstract class BaseWorld {
         sr.circle(px + cw, py, 5); // Bas droit
         sr.circle(px, py + ch, 5); // Haut gauche
         sr.circle(px + cw, py + ch, 5); // Haut droit
-        System.out.println("Gauche: "+py+" Droit: "+cw + px);
-        System.out.println("pGauche: "+cw+" pDroit: " + ch);
+        System.out.println("Gauche: " + py + " Droit: " + cw + px);
+        System.out.println("pGauche: " + cw + " pDroit: " + ch);
         sr.end();
 
         // Afficher les tiles de collision en ROUGE
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.setColor(Color.RED);
         if (collisionLayer != null) {
-            int startX = Math.max(0, (int)(px / tileSize) - 10);
-            int endX = Math.min(collisionLayer.getWidth(), (int)(px / tileSize) + 10);
-            int startY = Math.max(0, (int)(py / tileSize) - 10);
-            int endY = Math.min(collisionLayer.getHeight(), (int)(py / tileSize) + 10);
+            int startX = Math.max(0, (int) (px / tileSize) - 10);
+            int endX = Math.min(collisionLayer.getWidth(), (int) (px / tileSize) + 10);
+            int startY = Math.max(0, (int) (py / tileSize) - 10);
+            int endY = Math.min(collisionLayer.getHeight(), (int) (py / tileSize) + 10);
 
             for (int x = startX; x < endX; x++) {
                 for (int y = startY; y < endY; y++) {
@@ -230,17 +231,15 @@ public abstract class BaseWorld {
         if (collisionLayer == null) return false;
 
         float x = (float) ((worldX / (tileSize)) + 0.8f);
-        float y =  ((worldY / tileSize) + 0.3f);
+        float y = ((worldY / tileSize) + 0.3f);
 
         if (x < 0 || y < 0 || x >= collisionLayer.getWidth() || y >= collisionLayer.getHeight()) {
             return false;
         }
 
-        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int)x, (int) y);
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) x, (int) y);
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
     }
-
-
 
 
     public Character getNearestEnemy(Character attacker, float range) {
@@ -267,7 +266,9 @@ public abstract class BaseWorld {
         return null;
     }
 
-    public Warrior getPlayer() { return player; }
+    public Warrior getPlayer() {
+        return player;
+    }
 
     public void dispose() {
         assetsManager.dispose();
