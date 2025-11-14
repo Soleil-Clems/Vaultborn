@@ -217,7 +217,7 @@ public class InventoryPlayer {
         put("HP",1);
         put("Defense",1);
         put("Attaque",1);
-        put("Agilité",1);
+        put("Agilite",1);
         put("Endurence",1);
         put("Mana",1);
     }};
@@ -365,7 +365,7 @@ public class InventoryPlayer {
                             case "Attaque": 
                                 nbAdded = 5;
                                 break;
-                            case "Agilité": 
+                            case "Agilite": 
                                 nbAdded = 1;
                                 break;
                             default:
@@ -473,7 +473,7 @@ public class InventoryPlayer {
         System.out.println("HP : "+player.getHp());
         System.out.println("Def : "+player.getDefense());
         System.out.println("Dégat : "+player.getDamage());
-        System.out.println("Agilité : "+player.getAgility());
+        System.out.println("Agilite : "+player.getAgility());
         //System.out.println(player.getHp());
         //System.out.println(player.getDefense());
         //System.out.println(player.getDamage());
@@ -654,7 +654,7 @@ public class InventoryPlayer {
             objectLeftTable.add(new Label("Defense : ",skin)).left().padLeft(0);
             objectLeftTable.add(new Label(statStuff.get("oldDefense"),skin)).center();
             objectLeftTable.row();
-            objectLeftTable.add(new Label("Agilité : ",skin)).left().padLeft(0);
+            objectLeftTable.add(new Label("Agilite : ",skin)).left().padLeft(0);
             objectLeftTable.add(new Label(statStuff.get("oldAgility"),skin)).center();
             objectLeftTable.row();
             objectLeftTable.add(new Label("Endurence : ",skin)).left().padLeft(0);
@@ -693,7 +693,7 @@ public class InventoryPlayer {
             objectRightTable.add(new Label("Defense : ",skin)).left().padLeft(0);
             objectRightTable.add(new Label(statStuff.get("newDefense"),skin)).center();
             objectRightTable.row();
-            objectRightTable.add(new Label("Agilité : ",skin)).left().padLeft(0);
+            objectRightTable.add(new Label("Agilite : ",skin)).left().padLeft(0);
             objectRightTable.add(new Label(statStuff.get("newAgility"),skin)).center();
             objectRightTable.row();
             objectRightTable.add(new Label("Endurence : ",skin)).left().padLeft(0);
