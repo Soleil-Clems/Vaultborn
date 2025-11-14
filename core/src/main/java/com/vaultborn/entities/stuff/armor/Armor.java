@@ -8,6 +8,7 @@ import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
+import com.vaultborn.screens.InventoryPlayer;
 
 public abstract class Armor extends GameObject {
     protected String type;
@@ -95,9 +96,8 @@ public abstract class Armor extends GameObject {
     }
 
     @Override
-    public void pickUp(Character character) {
-        if (character instanceof Player) {
-           character.setAgility(this.agility+ character.getAgility());
-        }
+    public void pickUp(Player player) {
+        InventoryPlayer inv = player.getInventory();
+        inv.addInventory(this);
     }
 }

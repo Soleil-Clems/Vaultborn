@@ -95,13 +95,9 @@ public abstract class Weapon extends GameObject implements Stuff{
     }
 
     @Override
-    public void pickUp(Character character) {
-        if (character instanceof Player) {
-            //character.setDamage(this.damage+ character.getDamage());
-            InventoryPlayer inv = character.getInventory();
-            inv.addInventory(this);
-            
-        }
+    public void pickUp(Player player) {
+        InventoryPlayer inv = player.getInventory();
+        inv.addInventory(this);
     }
 
     public void setWorld(BaseWorld world) {

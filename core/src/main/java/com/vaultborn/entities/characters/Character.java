@@ -24,7 +24,6 @@ public abstract class Character extends Entity {
     protected int level;
     protected int agility;
     protected int range;
-    protected InventoryPlayer inv;
     public boolean facingRight = true;
     private float speed = 200f;
     protected boolean isPlayerControlled = false;
@@ -122,12 +121,7 @@ public abstract class Character extends Entity {
     public void setRange(int range) {
         this.range = range;
     }
-    public InventoryPlayer getInventory(){
-        return inv;
-    }
-    public void setInventory(InventoryPlayer inv){
-        this.inv = inv;
-    }
+    
     protected void addAnimation(String key, Texture spriteSheet, int frameCount, float frameDuration) {
         int frameWidth = spriteSheet.getWidth() / frameCount;
         int frameHeight = spriteSheet.getHeight();
