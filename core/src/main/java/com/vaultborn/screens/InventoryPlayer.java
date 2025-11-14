@@ -256,11 +256,12 @@ public class InventoryPlayer {
                 int inventorySlotOccuped = InventoryItem.size();
                 for (int count = 0; count<numberOfSlot; count++){
                     if(count<inventorySlotOccuped){
+                        final int inventoryCount = count;
                         if(spaceInRowAvailable<ItemSizeInv){
                             invTable.row();
                             spaceInRowAvailable = Math.round(WidthCalculation+100);
                         }
-                        TextureRegion currentTexture = InventoryItemList.get(count).getObject().getTexture();
+                        TextureRegion currentTexture = InventoryItemList.get(inventoryCount).getObject().getTexture();
                         //bouton avec item
                         //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
                         styleFullSlot.up = new TextureRegionDrawable(currentTexture);
@@ -269,7 +270,9 @@ public class InventoryPlayer {
                         itemImageButton.addListener(new ClickListener() {
                             @Override
                             public void clicked(InputEvent event, float x,float y) {
-                            objectInfo(InventoryItemList.get(theCount));
+                            objectInfo(InventoryItemList.get(inventoryCount));
+                            System.out.println(InventoryItemList.get(inventoryCount).getObject().getName());
+                            System.out.println(inventoryCount);
                             System.out.println("objet selectionner");
                             }
                         });                        
@@ -284,9 +287,7 @@ public class InventoryPlayer {
                         invTable.add(new ImageButton(styleEmptySlot)).size(ItemSizeInv).fill().pad(2);
                         spaceInRowAvailable -= ItemSizeInv +2;
                     }
-                    theCount ++;
                 }
-                theCount =0;
                 //afficher la partie equipement
                 for (String key : equipeItem.keySet()){
                     //System.out.println(key);
