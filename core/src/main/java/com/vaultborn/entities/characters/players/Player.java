@@ -20,5 +20,8 @@ public abstract  class Player extends Character {
     public void setInventory(InventoryPlayer inv){
         this.inv = inv;
     }
+    public void expGain(int nbExp){
+        inv.addExp(nbExp);
+    }
 
 }

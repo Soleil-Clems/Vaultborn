@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
+import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.screens.InventoryPlayer;
 import com.badlogic.gdx.graphics.Texture;
 import com.vaultborn.world.BaseWorld;
@@ -56,12 +58,17 @@ public abstract class Character extends Entity {
     public float stateTime = 0f;
     protected String currentAnimation = "idle";
 
+    private Player player = null;
+    private Mob mob = null;
+
     public Character(Vector2 position, TextureRegion texture, String name) {
         super(position, texture);
         this.name = name;
         this.level = 1;
         this.portrait = texture;
         this.bounds.set(position.x, position.y, characterWidth, characterHeight);
+        if(this instanceof Player){player = (Player) this;}
+        
     }
 
     public abstract void attack(Character target);
@@ -194,9 +201,11 @@ public abstract class Character extends Entity {
             if (attackTimer >= 0.2f && !hasHit) {
                 if (world != null) {
                     Character target = world.getNearestEnemy(this, range);
+                    if(!(target instanceof Player)){mob = (Mob) target;}
                     if (target != null && !target.isDead) {
                         attack(target);
                         hasHit = true;
+                        if(target.getHp()<=0 && !(target instanceof Player)){player.expGain(mob.giveExp());}
                     }
                 }
             }

@@ -57,7 +57,7 @@ public class Factory {
     public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
-                Gorgon mob = new Gorgon(new Vector2(x, y), gorgonRegion);
+                Gorgon mob = new Gorgon(new Vector2(x, y), gorgonRegion,3);
                 mob.loadAnimations();
                 mob.setWorld(world);
                 return mob;
