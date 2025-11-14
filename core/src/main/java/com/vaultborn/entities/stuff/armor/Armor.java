@@ -9,6 +9,7 @@ import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.screens.InventoryPlayer;
+import com.vaultborn.world.BaseWorld;
 
 public abstract class Armor extends GameObject {
     protected String type;
@@ -20,6 +21,7 @@ public abstract class Armor extends GameObject {
     protected int agility;
     protected int stamina;
     protected int mana;
+    public BaseWorld world;
 
     public Armor(Vector2 position, TextureRegion texture, String type, String name){
         super(position, texture);
@@ -99,5 +101,8 @@ public abstract class Armor extends GameObject {
     public void pickUp(Player player) {
         InventoryPlayer inv = player.getInventory();
         inv.addInventory(this);
+    }
+    public void setWorld(BaseWorld world) {
+        this.world = world;
     }
 }

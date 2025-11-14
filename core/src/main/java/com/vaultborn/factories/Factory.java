@@ -8,6 +8,7 @@ import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.entities.stuff.armor.Hat;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
@@ -69,6 +70,10 @@ public class Factory {
                 sword.loadAnimations();
                 sword.setWorld(world);
                 return sword;
+            case "hat":
+                Hat hat = new Hat(new Vector2(x, y), swordRegion,"","Mon chapeau");
+                hat.setWorld(world);
+                return hat;
             default:
                 throw new IllegalArgumentException("Unknown mob type: " + type);
         }

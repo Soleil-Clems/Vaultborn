@@ -18,6 +18,7 @@ public class HellWorld extends BaseWorld {
     @Override
     protected void initObjects() {
         gameObjects.add(factory.createObject("sword", 650, 600, this));
+        gameObjects.add(factory.createObject("hat", 550, 600, this));
     }
 
 
