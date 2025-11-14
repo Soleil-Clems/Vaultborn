@@ -27,6 +27,8 @@ public class GameScreen implements Screen {
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
 
+    private SettingScreen SettingMenuScreen;
+
 
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
@@ -43,6 +45,7 @@ public class GameScreen implements Screen {
             inv.setPlayer(world.getPlayer());
             world.getPlayer().setInventory(inv);
         }
+        SettingMenuScreen = new SettingScreen(game, btnSkin);
 
     }
 
@@ -66,9 +69,17 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(null);
 
         } else {
-            PauseMenuScreen.rdMenu(delta);
-            Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
-            if(inv.isShowInventory()){inv.setShowInventory(false);inv.InventoryReload();}
+            if(!SettingMenuScreen.isActivated()){
+                SettingMenuScreen.setActivated(PauseMenuScreen.isSettings());
+                PauseMenuScreen.rdMenu(delta);
+                Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
+                if(inv.isShowInventory()){inv.setShowInventory(false);inv.InventoryReload();}
+            }
+            else{
+                PauseMenuScreen.setSettings(false);
+                Gdx.input.setInputProcessor(SettingMenuScreen.getStage());
+                SettingMenuScreen.rdMenu(delta);
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
