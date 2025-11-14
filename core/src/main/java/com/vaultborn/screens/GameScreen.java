@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.vaultborn.MainGame;
+import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
 
@@ -38,7 +39,9 @@ public class GameScreen implements Screen {
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
         inv = new InventoryPlayer();
-
+        if(world.getPlayer() instanceof Player){
+            inv.setPlayer(world.getPlayer());
+        }
 
     }
 
@@ -64,7 +67,7 @@ public class GameScreen implements Screen {
         } else {
             PauseMenuScreen.rdMenu(delta);
             Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
-            if(inv.isShowInventory()){inv.setShowInventory(false);}
+            if(inv.isShowInventory()){inv.setShowInventory(false);inv.InventoryReload();}
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
@@ -76,7 +79,7 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(inv.getStage());
             if(inv.getObjectInfoMenu()){
                 Gdx.input.setInputProcessor(inv.getObjectStage());
-            }
+            }   
 
         }
 

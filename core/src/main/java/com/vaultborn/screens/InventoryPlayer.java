@@ -28,10 +28,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.Entity;
+import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.entities.stuff.weapon.Weapon;
 import com.vaultborn.entities.stuff.armor.Armor;
+import com.vaultborn.entities.stuff.armor.Breastplate;
 import com.vaultborn.entities.stuff.armor.Hat;
 import com.vaultborn.entities.stuff.armor.Robe;
 
@@ -43,6 +46,7 @@ import java.util.HashMap;
 import java.lang.SuppressWarnings;
 
 public class InventoryPlayer {
+    private Player player;
     private boolean putIn;
     Item<? extends Stuff> nonItemEquip = new Item<>(null, Item.Type.EQUIPMENT);
     
@@ -105,7 +109,7 @@ public class InventoryPlayer {
         rootTable.pad(30);
         rootTable.defaults().padBottom(100).padTop(100).width(WidthCalculation).height(HeightCalculation).maxWidth(WidthCalculation).maxHeight(HeightCalculation);
         rootTable.add(equipeTable).expand().padLeft(10);
-        rootTable.add(statTable).expand();
+        rootTable.add(statTable).expand().width(WidthCalculation).pad(0, 10, 0, 10).maxHeight(HeightCalculation);
         rootTable.add(invTable).expand().width(WidthCalculation).padRight(10);
         
         //bouton de couleur
@@ -123,6 +127,8 @@ public class InventoryPlayer {
 
     //setter dans inventory
     public void addInventory(Item<? extends Stuff> object){
+        /*if (test2 instanceof )
+        Stuff test = (Stuff) */
         if(object.getType().equals(Item.Type.EQUIPMENT) && !InventoryItem.containsKey(object)){
             if(InventoryItem.size()<=15){
                 System.err.println(object.getObject().getName()+ " récolté.");
@@ -154,6 +160,11 @@ public class InventoryPlayer {
             
         }
     }
+
+    public void setPlayer(Player player){
+        this.player = player;
+    }
+    
     //getter inventory global
     public LinkedHashMap<Item<? extends Stuff>,Integer> getInventory(){
         return InventoryItem;
@@ -176,9 +187,42 @@ public class InventoryPlayer {
     public boolean getObjectInfoMenu(){
         return this.objectInfoMenu;
     }
+    public int getIndexKeyStat(String key){
+        int index=0;
+        for (String k : nameValueStat.keySet()){
+            if (k.equals(key)){
+                return index;
+            }
+            index ++;
+        }
+        return -1;
+    }
+
+    public void addExp(int nbGain){
+        nameValueStat.replace("Exp",nameValueStat.get("Exp")+nbGain);
+        if(nameValueStat.get("Exp")>nameValueStat.get("Niveau")*100){
+            nameValueStat.replace("Niveau",nameValueStat.get("Niveau")+1);
+            nameValueStat.replace("Exp",nameValueStat.get("Exp")-nameValueStat.get("Niveau")*100+100);
+        }
+    }
 
     private int theCount =0;
     private boolean reload = false;
+    //stat du joueur
+    LinkedHashMap<String,Integer> nameValueStat = new LinkedHashMap<String,Integer>(){{
+        put("Statistique",0);
+        put("Niveau",1);
+        put("Exp",0);
+        put("Point disponible",0);
+        put("HP",1);
+        put("Defense",1);
+        put("Attaque",1);
+        put("Agilité",1);
+        put("Endurence",1);
+        put("Mana",1);
+    }};
+
+    List<Integer> statExploitable = new ArrayList<>();
     public void InventoryInput(){
         //afficher l'inventaire
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)||reload == true){
@@ -251,10 +295,96 @@ public class InventoryPlayer {
                         equipeTable.row();
                     }
                 }            
+                
+                //afficher la partie Stat du joueur
+                Pix.setColor(new Color(66 / 255f, 55 / 255f, 54 / 255f, 100 / 255f));
+                statTable.setBackground(new TextureRegionDrawable(new Texture(Pix)).tint(new Color (1f,1f,1f,0.5f)));
+                
+                statTable.defaults().pad(5).expandX();
+                int count=1;
+                int AllPointAdded =0;
+                int nbAdded =0;
+                //statTable.setDebug(true);
+
+                for (int value : nameValueStat.values()){
+                    if (count <=4){
+                        count ++;
+                        continue;
+                    }
+                    AllPointAdded += value;
+                    
+                }
+                nameValueStat.put("Point disponible",nameValueStat.get("Niveau")*10+6-AllPointAdded);
+                
+                for (String name : nameValueStat.keySet()) {
+                    Label actualName = new Label(name, skin);
+                    Label actualValue = new Label(Integer.toString(nameValueStat.get(name)), skin);
+                    TextButton actualAddingStat = new TextButton("+", skin);
+                    actualAddingStat.setName(name);
+                    actualAddingStat.addListener(new ClickListener() {
+                            @Override
+                            public void clicked(InputEvent event, float x,float y){
+                                String statName = ((Actor) event.getListenerActor()).getName();
+                                if (nameValueStat.get("Point disponible") >0){
+                                    nameValueStat.replace(statName,nameValueStat.get(statName)+1);
+                                    statExploitable.set(getIndexKeyStat(name)-4,statExploitable.get(getIndexKeyStat(name)-4)+1);
+                                    InventoryReload();
+                                }
+                            }
+                        });
+                
+                    if (name.equals("Statistique")) {
+                        statTable.add(actualName).colspan(3).center();
+                        statTable.row();
+                    } 
+                    else if (name.equals("Niveau")){
+                        statTable.add(actualName).left();
+                        statTable.add(actualValue).center();
+                        statTable.add(new Label(Integer.toString(nameValueStat.get("Exp"))+" / "+Integer.toString(nameValueStat.get("Niveau")*100),skin)).right();
+                        statTable.row();
+                    }
+                    else if (name.equals("Point disponible")) {
+                        statTable.add(actualName).left();
+                        statTable.add(actualValue).center();
+                        statTable.row();
+                    } 
+                    else if(name.equals("Exp")){
+                        continue;
+                    }
+                    else {
+                        statTable.add(actualName).left();
+                        statTable.add(actualValue).center();
+                        statTable.add(actualAddingStat).right();
+                        switch(name){
+                            case "HP": 
+                                nbAdded = 10;
+                                break;
+                            case "Defense": 
+                                nbAdded = 3;
+                                break;
+                            case "Attaque": 
+                                nbAdded = 5;
+                                break;
+                            case "Agilité": 
+                                nbAdded = 1;
+                                break;
+                            default:
+                                nbAdded = 0;
+                                break;
+                        }
+                        Label addingValue = new Label("(+ "+Integer.toString(nbAdded)+")", skin);
+                        statTable.add(addingValue).left();
+                        statTable.row();
+                        statExploitable.add(nameValueStat.get(name));
+                    }
+                }
+                
+
             }
             else{
                 invTable.clear();
                 equipeTable.clear();
+                statTable.clear();
                 InventoryItemList.clear();
             }
             this.reload = false;
@@ -275,16 +405,20 @@ public class InventoryPlayer {
             addInventory(theRobe);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
-            addInventory(theRobe);
+            applyStat();
         }
         //reset l'inventaire
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             InventoryItem.clear();
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
-            //System.out.println(InventoryItem);
-            if (!objectInfoMenu){objectInfo(theHat);} else{objectInfoMenu=false;}
-            //System.out.println(statStuff);
+            addExp(22);
+            System.out.println(showInventory);
+            if(showInventory){
+            reload = true;
+            
+        }
+            
         }
 
         
@@ -293,7 +427,60 @@ public class InventoryPlayer {
         
     }
     
-    
+    public void applyStat(){
+        int Hp = 90;
+        int Def = 3;
+        int dmg = 5;
+        int agi = 1;
+
+        Hp = Hp + (statExploitable.get(0)*10);
+        Def = Def +(statExploitable.get(1)*3);
+        dmg = dmg +(statExploitable.get(2)*5);
+        agi = agi +(statExploitable.get(3));
+        
+        for(String name : equipeItem.keySet()){
+            
+            
+            if(equipeItem.get(name).getObject() == null){
+                
+            }
+            else{
+                if(equipeItem.get(name).getObject() instanceof Weapon){
+                    Weapon w = (Sword) equipeItem.get(name).getObject();
+                    dmg = dmg + w.getDamage();
+                }
+                else if(equipeItem.get(name).getObject() instanceof Armor){
+                    Armor a = (Armor) equipeItem.get(name).getObject();
+                    Hp = Hp + a.getHealth();
+                    Def = Def + a.getDefense();
+                    agi = agi + a.getAgility();
+                    //a.getStamina();
+                    //a.getMana();
+                }
+            }
+            
+            
+            //Hp = Hp + 
+        }
+        this.player.setHp(Hp);
+        this.player.setDefense(Def);
+        this.player.setDamage(dmg);
+        this.player.setAgility(agi);
+        //player.setStamina(statExploitable.get(4));
+        //player.setMana(statExploitable.get(5));
+
+        System.out.println("---- Stat du joueur ----");
+        System.out.println("HP : "+player.getHp());
+        System.out.println("Def : "+player.getDefense());
+        System.out.println("Dégat : "+player.getDamage());
+        System.out.println("Agilité : "+player.getAgility());
+        //System.out.println(player.getHp());
+        //System.out.println(player.getDefense());
+        //System.out.println(player.getDamage());
+        //System.out.println(player.getAgility());
+    }
+
+
     
     private boolean objectInfoMenu = false;
     private Stage objectStage;
@@ -321,8 +508,10 @@ public class InventoryPlayer {
         put("newSpecialPerk",null);
         
     }};
+    //quand pas de stuff équipé
+    HashMap<String,String> statStuffVide = new HashMap<>(statStuff);
     private String category;
-    //bulle d'info de l'object selectionner dans l'inventaire
+//bulle d'info de l'object selectionner dans l'inventaire
     private void objectInfo(Item<? extends Stuff> selected){
         this.objectInfoMenu = true;
         Item<? extends Stuff> objectSelected = selected;
@@ -353,7 +542,6 @@ public class InventoryPlayer {
         stuffManageEquip.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {
-                objectInfoMenu=false;
                 Item<? extends Stuff> temp = equipeItem.get(objectSelected.getObject().getClass().getSuperclass().getSimpleName());
                 if (temp.getObject() != null){
                     addInventory(temp);
@@ -361,10 +549,7 @@ public class InventoryPlayer {
                 equipeItem.replace(objectSelected.getObject().getClass().getSuperclass().getSimpleName(), objectSelected);
                 InventoryItem.remove(objectSelected);
                 System.out.println("objet équiper");
-                reload = true;
-                InventoryInput();
-                reload = true;
-                InventoryInput();
+                InventoryReload();
                 
             }     
         });
@@ -380,6 +565,7 @@ public class InventoryPlayer {
             public void clicked(InputEvent event, float x,float y) {
                 System.out.println("objet jeter");
                 InventoryItem.remove(objectSelected);
+                InventoryReload();
                 
             }     
         });
@@ -412,7 +598,6 @@ public class InventoryPlayer {
             statStuff.put("newSpecialPerk", newWeapon.getSpecialPerk());
             category = "Weapon";
             //objectLeftTable.add(new Label("Actuellement équipé", skin));
-            System.out.println("test");
             //System.out.println(selected.getObject().getClass().getSuperclass().getSimpleName());
         }
         //verification de armor + récupération des valeurs
@@ -441,7 +626,6 @@ public class InventoryPlayer {
             statStuff.put("newStamina", Integer.toString(newArmor.getStamina()));
             statStuff.put("newMana", Integer.toString(newArmor.getMana()));
             statStuff.put("newSpecialPerk",newArmor.getSpecialPerk());
-            System.out.println("test 2");
             category = "Armor";
         }
         
@@ -525,12 +709,19 @@ public class InventoryPlayer {
     }
     //objectRootTable.setDebug(true);
     
-    
-}
-
-    private void statCharacter(){
-
+    statStuff.putAll(statStuffVide);
     }
+
+    //reload l'inventaire pour l'afficher
+    public void InventoryReload(){
+        objectInfoMenu=false;
+        reload = true;
+        InventoryInput();
+        reload = true;
+        InventoryInput();
+        applyStat();
+    }
+
 //gestion d'affichage
 public void rdMenu(float delta) {
     //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
