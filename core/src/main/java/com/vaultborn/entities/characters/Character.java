@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
+import com.vaultborn.screens.InventoryPlayer;
 import com.badlogic.gdx.graphics.Texture;
 import com.vaultborn.world.BaseWorld;
 
@@ -23,6 +24,7 @@ public abstract class Character extends Entity {
     protected int level;
     protected int agility;
     protected int range;
+    protected InventoryPlayer inv;
     public boolean facingRight = true;
     private float speed = 200f;
     protected boolean isPlayerControlled = false;
@@ -120,7 +122,12 @@ public abstract class Character extends Entity {
     public void setRange(int range) {
         this.range = range;
     }
-
+    public InventoryPlayer getInventory(){
+        return inv;
+    }
+    public void setInventory(InventoryPlayer inv){
+        this.inv = inv;
+    }
     protected void addAnimation(String key, Texture spriteSheet, int frameCount, float frameDuration) {
         int frameWidth = spriteSheet.getWidth() / frameCount;
         int frameHeight = spriteSheet.getHeight();

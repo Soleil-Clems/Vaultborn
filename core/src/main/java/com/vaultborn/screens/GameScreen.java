@@ -41,6 +41,7 @@ public class GameScreen implements Screen {
         inv = new InventoryPlayer();
         if(world.getPlayer() instanceof Player){
             inv.setPlayer(world.getPlayer());
+            world.getPlayer().setInventory(inv);
         }
 
     }

@@ -10,6 +10,7 @@ import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
+import com.vaultborn.screens.InventoryPlayer;
 import com.vaultborn.world.BaseWorld;
 
 import java.util.HashMap;
@@ -96,7 +97,10 @@ public abstract class Weapon extends GameObject implements Stuff{
     @Override
     public void pickUp(Character character) {
         if (character instanceof Player) {
-            character.setDamage(this.damage+ character.getDamage());
+            //character.setDamage(this.damage+ character.getDamage());
+            InventoryPlayer inv = character.getInventory();
+            inv.addInventory(this);
+            
         }
     }
 

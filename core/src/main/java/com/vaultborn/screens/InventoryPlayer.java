@@ -126,7 +126,17 @@ public class InventoryPlayer {
     }
 
     //setter dans inventory
-    public void addInventory(Item<? extends Stuff> object){
+    public void addInventory(Stuff obj){
+        Item<? extends Stuff> object;
+        if(obj instanceof Weapon){
+            object = new Item<>((Weapon)obj,Item.Type.EQUIPMENT);
+        }
+        else if(obj instanceof Armor){
+            object = new Item<>((Armor)obj,Item.Type.EQUIPMENT);
+        }
+        else{
+            return;
+        }
         /*if (test2 instanceof )
         Stuff test = (Stuff) */
         if(object.getType().equals(Item.Type.EQUIPMENT) && !InventoryItem.containsKey(object)){
@@ -392,7 +402,7 @@ public class InventoryPlayer {
         }
 
         //test d'ajout
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+        /*if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
             addInventory(theSword);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.W)){
@@ -403,7 +413,7 @@ public class InventoryPlayer {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)){
             addInventory(theRobe);
-        }
+        }*/
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
             applyStat();
         }
@@ -543,8 +553,9 @@ public class InventoryPlayer {
             @Override
             public void clicked(InputEvent event, float x,float y) {
                 Item<? extends Stuff> temp = equipeItem.get(objectSelected.getObject().getClass().getSuperclass().getSimpleName());
+                Stuff temp2 = temp.getObject();
                 if (temp.getObject() != null){
-                    addInventory(temp);
+                    addInventory(temp2);
                 }
                 equipeItem.replace(objectSelected.getObject().getClass().getSuperclass().getSimpleName(), objectSelected);
                 InventoryItem.remove(objectSelected);
