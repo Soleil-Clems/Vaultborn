@@ -2,50 +2,41 @@ package com.vaultborn.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.particles.values.WeightMeshSpawnShapeValue;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.vaultborn.MainGame;
-import com.vaultborn.entities.Entity;
+import com.vaultborn.entities.stuff.Item;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.entities.stuff.weapon.Weapon;
 import com.vaultborn.entities.stuff.armor.Armor;
 import com.vaultborn.entities.stuff.armor.Hat;
 import com.vaultborn.entities.stuff.armor.Robe;
+import com.vaultborn.entities.stuff.Item;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.lang.SuppressWarnings;
 
 public class InventoryPlayer {
     private boolean putIn;
     Item<? extends Stuff> nonItemEquip = new Item<>(null, Item.Type.EQUIPMENT);
-    
+
     //list
     private LinkedHashMap<Item<? extends Stuff>,Integer> InventoryItem;
     private List<Item<? extends Stuff>> InventoryItemList = new ArrayList<>();
@@ -57,7 +48,7 @@ public class InventoryPlayer {
     put("Foot",nonItemEquip);
     put("Weapon",nonItemEquip);
     }};
-    
+
     private Stage stage;
     //les tables
     private Table rootTable;
@@ -69,12 +60,12 @@ public class InventoryPlayer {
     private Skin skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
     private float WidthCalculation = Gdx.graphics.getWidth() / 3f;
     private float HeightCalculation = Gdx.graphics.getHeight()-60;
-    
+
     //affichage de l'inventaire
     private int numberOfSlot = 15;
     public ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
     public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
-    
+
     Item<Sword> theSword = new Item<>(new Sword(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png"))),Item.Type.EQUIPMENT);
     Item<Hat> theHat = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau"),Item.Type.EQUIPMENT);
     Item<Hat> theHat2 = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon chapeau moche"),Item.Type.EQUIPMENT);
@@ -84,7 +75,7 @@ public class InventoryPlayer {
 
     private Pixmap Pix;
     public InventoryPlayer(){
-        
+
         InventoryItem = new LinkedHashMap<Item<? extends Stuff>,Integer>();
         this.putIn = false;
         stage = new Stage(new ScreenViewport());
@@ -107,7 +98,7 @@ public class InventoryPlayer {
         rootTable.add(equipeTable).expand().padLeft(10);
         rootTable.add(statTable).expand();
         rootTable.add(invTable).expand().width(WidthCalculation).padRight(10);
-        
+
         //bouton de couleur
         //choix de couleur
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -118,7 +109,7 @@ public class InventoryPlayer {
         //pour faire le style du bouton
         TextureRegionDrawable drawableEmptySlot = new TextureRegionDrawable(new TextureRegion(textureEmptySlot));
         styleEmptySlot.up = drawableEmptySlot;
-        
+
     }
 
     //setter dans inventory
@@ -151,7 +142,7 @@ public class InventoryPlayer {
                 System.err.println(object.getObject().getName()+ " récolté.");
                 this.putIn = false;
             }
-            
+
         }
     }
     //getter inventory global
@@ -191,7 +182,7 @@ public class InventoryPlayer {
                 //savoir ce qu'il y a dans l'inventaire
                 for (Item<? extends Stuff> itm : InventoryItem.keySet()){
                     if (InventoryItem.get(itm)>1){
-                        System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));                    
+                        System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));
                     }
                     else{
                         System.out.println(itm.getObject().getName());
@@ -218,7 +209,7 @@ public class InventoryPlayer {
                             objectInfo(InventoryItemList.get(theCount));
                             System.out.println("objet selectionner");
                             }
-                        });                        
+                        });
                         invTable.add(itemImageButton).size(ItemSizeInv).fill().pad(2);
                         spaceInRowAvailable -= ItemSizeInv +2;
                     }
@@ -250,7 +241,7 @@ public class InventoryPlayer {
                         equipeTable.add(itemImageButton).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
                         equipeTable.row();
                     }
-                }            
+                }
             }
             else{
                 invTable.clear();
@@ -287,14 +278,14 @@ public class InventoryPlayer {
             //System.out.println(statStuff);
         }
 
-        
-        
-        
-        
+
+
+
+
     }
-    
-    
-    
+
+
+
     private boolean objectInfoMenu = false;
     private Stage objectStage;
     //variable des stuff
@@ -319,15 +310,15 @@ public class InventoryPlayer {
         put("newStamina",null);
         put("newMana",null);
         put("newSpecialPerk",null);
-        
+
     }};
     private String category;
     //bulle d'info de l'object selectionner dans l'inventaire
     private void objectInfo(Item<? extends Stuff> selected){
         this.objectInfoMenu = true;
         Item<? extends Stuff> objectSelected = selected;
-        
-        
+
+
         //table
         objectStage = new Stage(new ScreenViewport());
         Table objectRootTable = new Table();
@@ -345,11 +336,11 @@ public class InventoryPlayer {
         objectRootTable.row();
         objectRootTable.add(objectButtonTable).colspan(2).fillX();
         objectButtonTable.defaults().expandX();
-        
+
         TextButton stuffManageEquip = new TextButton("Equiper", skin);
         TextButton stuffManageCancel = new TextButton("Annuler", skin);
         TextButton stuffManagetrash = new TextButton("Jeter", skin);
-        
+
         stuffManageEquip.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {
@@ -365,31 +356,31 @@ public class InventoryPlayer {
                 InventoryInput();
                 reload = true;
                 InventoryInput();
-                
-            }     
+
+            }
         });
         stuffManageCancel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {
                 objectInfoMenu=false;
                 System.out.println("objet annuler");
-            }     
+            }
         });
         stuffManagetrash.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {
                 System.out.println("objet jeter");
                 InventoryItem.remove(objectSelected);
-                
-            }     
+
+            }
         });
-        
-        
+
+
         objectButtonTable.add(stuffManageEquip);
         objectButtonTable.add(stuffManageCancel);
         objectButtonTable.add(stuffManagetrash);
         objectRootTable.setDebug(true);
-        
+
         //comparaison
         //String category = "";
         //verification de weapon + récupération des valeurs
@@ -402,7 +393,7 @@ public class InventoryPlayer {
                 statStuff.put("oldDurability", Integer.toString(oldWeapon.getDurability()));
                 statStuff.put("oldDamage", Integer.toString(oldWeapon.getDamage()));
                 statStuff.put("oldSpecialPerk", oldWeapon.getSpecialPerk());
-                
+
             }
             Weapon newWeapon = (Weapon) selected.getObject();
             statStuff.put("newName", newWeapon.getName());
@@ -444,7 +435,7 @@ public class InventoryPlayer {
             System.out.println("test 2");
             category = "Armor";
         }
-        
+
         //ancien item
         {objectLeftTable.add(new Label("Ancien",skin)).right();
         objectLeftTable.row();
@@ -463,7 +454,7 @@ public class InventoryPlayer {
             objectLeftTable.row();
         }
         if(category == "Armor"){
-            
+
             objectLeftTable.add(new Label("HP : ",skin)).left().padLeft(0);
             objectLeftTable.add(new Label(statStuff.get("oldHealth"),skin)).center();
             objectLeftTable.row();
@@ -502,7 +493,7 @@ public class InventoryPlayer {
         objectRightTable.row();
     }
     if(category == "Armor"){
-        
+
             objectRightTable.add(new Label("HP : ",skin)).left().padLeft(0);
             objectRightTable.add(new Label(statStuff.get("newHealth"),skin)).center();
             objectRightTable.row();
@@ -524,8 +515,8 @@ public class InventoryPlayer {
         objectRightTable.row();
     }
     //objectRootTable.setDebug(true);
-    
-    
+
+
 }
 
     private void statCharacter(){
@@ -534,7 +525,7 @@ public class InventoryPlayer {
 //gestion d'affichage
 public void rdMenu(float delta) {
     //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    
+
     stage.act(delta);
     stage.draw();
     if (objectInfoMenu){
@@ -542,9 +533,9 @@ public void rdMenu(float delta) {
         objectStage.draw();
     }
 }
-public void dpMenu(){stage.dispose(); /*skin.dispose();*/}   
+public void dpMenu(){stage.dispose(); /*skin.dispose();*/}
 
-public void rsMenu(int width, int height) { 
+public void rsMenu(int width, int height) {
     stage.getViewport().update(width, height, true);
 }
 public void shMenu() {}
@@ -555,29 +546,6 @@ public void hMenu() {}
 
 
 }
-//class de gestion des items
-class Item<T extends Entity & Stuff>{
-    
-    public enum Type {
-        CONSUMABLE,
-        EQUIPMENT
-    }
-    
-    private T object;
-    private Type type;
-    
-    
-    public Item(T object,Type type) {
-        this.object = object;
-        this.type = type;
-        
-    }
-    
-    public T getObject() { return object; }
-    public Type getType() { return type; }
-    
-}
-
 
 /*
 //détection du bouton pressé
@@ -600,7 +568,7 @@ public boolean keyDown(int keycode) {
             setEquipeItem(a.getObject().getClass().getSuperclass().getSimpleName(), a);
             InventoryItem.remove(a);
             break;
-            
+
         }
-    
+
     }*/

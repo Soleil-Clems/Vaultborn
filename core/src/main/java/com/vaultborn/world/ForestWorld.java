@@ -5,7 +5,7 @@ import com.vaultborn.entities.characters.mobs.Gorgon;
 public class ForestWorld extends BaseWorld {
 
     public ForestWorld() {
-        super("ForestMap/map", "backgrounds/background_forest.png");
+        super("HellMap/map1", "backgrounds/background_hell.png");
     }
 
     @Override

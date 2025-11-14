@@ -1,6 +1,7 @@
 package com.vaultborn.world;
 
 import com.vaultborn.entities.characters.mobs.Gorgon;
+import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 
 public class HellWorld extends BaseWorld {
 
@@ -18,6 +19,11 @@ public class HellWorld extends BaseWorld {
     @Override
     protected void initObjects() {
         gameObjects.add(factory.createObject("sword", 650, 600, this));
+        SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 1120, 560, this, factory.createWorld("forest"));
+        door.setParentWorld(this);
+        door.setTargetWorld(factory.createWorld("forest"));
+        gameObjects.add(door);
+
     }
 
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.vaultborn.MainGame;
+import com.vaultborn.factories.Factory;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
 
@@ -20,8 +21,8 @@ public class GameScreen implements Screen {
 
     private final MainGame game;
     private final SpriteBatch batch;
-    private final BaseWorld world;
-
+    private BaseWorld world;
+    private Factory factory;
 
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
@@ -31,13 +32,16 @@ public class GameScreen implements Screen {
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
 
-    public GameScreen(MainGame game) {
+    public GameScreen(MainGame game, BaseWorld world) {
         this.game = game;
         this.batch = new SpriteBatch();
-        this.world = new HellWorld();
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
         inv = new InventoryPlayer();
+
+        this.world = world;
+        this.world.setScreen(this);
+        factory = new Factory();
 
 
     }
@@ -143,4 +147,10 @@ public class GameScreen implements Screen {
         world.dispose();
         inv.dpMenu();
     }
+
+    public void changeWorld(BaseWorld newWorld) {
+        this.world = newWorld;
+        this.world.setScreen(this);
+    }
+
 }

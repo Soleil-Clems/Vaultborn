@@ -12,12 +12,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import com.vaultborn.MainGame;
+import com.vaultborn.world.BaseWorld;
+import com.vaultborn.world.HellWorld;
 
 import java.util.List;
 
 
 public class MenuScreen{
-    
+
     protected MainGame game;
     protected Stage stage;
     protected Skin skin;
@@ -35,7 +37,7 @@ public class MenuScreen{
         //initie les inputs
         Gdx.input.setInputProcessor(stage);
         //System.out.println(Gdx.files.internal(skin).exists());
-    
+
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -43,7 +45,7 @@ public class MenuScreen{
             TextButton Button = new TextButton(e, skin);
             Button.getLabel().setFontScale(2f);
             table.add(Button).pad(10).width(500).height(Gdx.graphics.getHeight()*0.2f).row();
-        
+
             Button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -51,7 +53,7 @@ public class MenuScreen{
                 onClick(e);
                 }
                 });
-        }    
+        }
     }
     public boolean isActivated(){
         return activated;
@@ -66,7 +68,8 @@ public class MenuScreen{
     public void onClick(String name){
         switch (name) {
             case "Jouer" :
-                game.setScreen(new GameScreen(game));
+                BaseWorld world = new HellWorld();
+                game.setScreen(new GameScreen(game, world));
                 break;
             case "Continuer" :
                 this.activated = !this.activated;
@@ -86,7 +89,7 @@ public class MenuScreen{
         stage.act(delta);
         stage.draw();
     }
-    public void dpMenu(){stage.dispose(); skin.dispose();}   
+    public void dpMenu(){stage.dispose(); skin.dispose();}
 
     public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
     public void shMenu() {}

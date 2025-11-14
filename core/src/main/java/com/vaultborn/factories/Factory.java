@@ -8,9 +8,12 @@ import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
+import com.vaultborn.world.ForestWorld;
+import com.vaultborn.world.HellWorld;
 
 public class Factory {
 
@@ -18,21 +21,16 @@ public class Factory {
     private TextureRegion warriorRegion;
     private TextureRegion gorgonRegion;
     private TextureRegion swordRegion;
+    private TextureRegion specialDoorRegion;
 
     public Factory() {
         assetsManager = new AssetManager();
 
-
-        Texture warriorTexture = new Texture("warrior/Idle.png");
-        warriorRegion = new TextureRegion(warriorTexture);
-
-
-        Texture gorgonTexture = new Texture("gorgon/Idle.png");
-        gorgonRegion = new TextureRegion(gorgonTexture);
-        Texture swordTexture = new Texture("objects/weapons/sword.png");
-        swordRegion = new TextureRegion(swordTexture);
+        warriorRegion = new TextureRegion(new Texture("warrior/Idle.png"));
+        gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
+        swordRegion   = new TextureRegion(new Texture("objects/weapons/sword.png"));
+        specialDoorRegion = new TextureRegion(new Texture("specialDoor/closeddoor.png"));
     }
-
 
     public Player createPlayer(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
@@ -47,7 +45,6 @@ public class Factory {
         }
     }
 
-
     public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
@@ -61,16 +58,48 @@ public class Factory {
         }
     }
 
-
-    public GameObject createObject(String type, float x, float y, BaseWorld world) {
+   public GameObject createObject(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
+
             case "sword":
                 Sword sword = new Sword(new Vector2(x, y), swordRegion);
                 sword.loadAnimations();
                 sword.setWorld(world);
                 return sword;
+
+            case "special_door":
+                SpecialDoor door = new SpecialDoor(new Vector2(x, y), specialDoorRegion);
+                door.loadAnimations();
+                door.setWorld(world);
+                return door;
+
             default:
-                throw new IllegalArgumentException("Unknown mob type: " + type);
+                throw new IllegalArgumentException("Unknown object type: " + type);
+        }
+    }
+
+    public GameObject createSpecialDoor(String type, float x, float y, BaseWorld worldFrom, BaseWorld worldTo) {
+        if (!type.equalsIgnoreCase("special_door"))
+            throw new IllegalArgumentException("Unknown object type: " + type);
+
+        SpecialDoor door = new SpecialDoor(new Vector2(x,y), specialDoorRegion);
+        door.loadAnimations();
+        door.setWorld(worldFrom);
+        door.setTargetWorld(worldTo);
+        return door;
+    }
+
+    public BaseWorld createWorld(String name) {
+        switch (name.toLowerCase()) {
+
+            case "hell":
+                return new HellWorld();
+
+            case "forest":
+                return new ForestWorld();
+
+            default:
+                throw new IllegalArgumentException("Unknown world: " + name);
         }
     }
 }

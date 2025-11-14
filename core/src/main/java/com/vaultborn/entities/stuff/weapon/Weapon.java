@@ -12,6 +12,7 @@ import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.world.BaseWorld;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public abstract class Weapon extends GameObject implements Stuff{
     public BaseWorld world;
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
 
+
     //weapon sans specialPerk
     public Weapon(Vector2 position, TextureRegion texture, String type){
         super(position, texture);
@@ -34,6 +36,7 @@ public abstract class Weapon extends GameObject implements Stuff{
         this.name = type;
         this.durability = 100;
         this.specialPerk = null;
+
     }
     //weapon avec specialPerk
     public Weapon(Vector2 position, TextureRegion texture, String type,String specialPerk){
@@ -97,6 +100,7 @@ public abstract class Weapon extends GameObject implements Stuff{
     public void pickUp(Character character) {
         if (character instanceof Player) {
             character.setDamage(this.damage+ character.getDamage());
+            /*this.inventoryPlayer.addInventory(this);*/
         }
     }
 

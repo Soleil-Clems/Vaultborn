@@ -3,10 +3,12 @@ package com.vaultborn;
 import com.badlogic.gdx.Game;
 //import com.vaultborn.screens.GameScreen;
 //import com.vaultborn.screens.MenuScreen;
+import com.vaultborn.screens.GameScreen;
 import com.vaultborn.screens.MainScreen;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.vaultborn.world.BaseWorld;
 
 public class MainGame extends Game {
     private static Texture whitePixel;
@@ -40,6 +42,10 @@ public class MainGame extends Game {
         if (whitePixel != null) whitePixel.dispose();
         if (font != null) font.dispose();
         super.dispose();
+    }
+
+    public void setWorld(BaseWorld newWorld) {
+        setScreen(new GameScreen(this, newWorld));
     }
 
 }

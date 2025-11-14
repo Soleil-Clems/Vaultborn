@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,6 +50,7 @@ public abstract class Character extends Entity {
     protected boolean isHurt = false;
     protected float hurtTimer = 0f;
     protected float hurtDuration = 0.5f;
+    protected Rectangle hitbox;
 
     protected TextureRegion portrait;
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
@@ -61,7 +63,10 @@ public abstract class Character extends Entity {
         this.level = 1;
         this.portrait = texture;
         this.bounds.set(position.x, position.y, characterWidth, characterHeight);
+        this.hitbox = new Rectangle(position.x, position.y, texture.getRegionWidth(), texture.getRegionHeight());
+
     }
+
 
     public abstract void attack(Character target);
 
@@ -220,6 +225,8 @@ public abstract class Character extends Entity {
 
         applyGravity(delta);
         updateAnimationState();
+        updateHitbox();
+
     }
 
     protected void handleInput(float delta) {
@@ -403,5 +410,13 @@ public abstract class Character extends Entity {
 
     public void setWorld(BaseWorld world) {
         this.world = world;
+    }
+
+    protected void updateHitbox() {
+        hitbox.setPosition(position.x, position.y);
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox;
     }
 }

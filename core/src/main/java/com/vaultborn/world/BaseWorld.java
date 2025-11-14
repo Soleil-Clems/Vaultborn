@@ -1,20 +1,25 @@
 package com.vaultborn.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.factories.Factory;
 import com.vaultborn.managers.AssetManager;
+import com.vaultborn.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,6 +46,8 @@ public abstract class BaseWorld {
     protected float offsetY;
 
     protected String levelName;
+    protected GameScreen screen;
+
 
     public BaseWorld(String levelName, String backgroundPath) {
         this.levelName = levelName;
@@ -94,8 +101,8 @@ public abstract class BaseWorld {
     protected abstract void initObjects();
 
     public void update(float delta) {
-        player.update(delta);
 
+        player.update(delta);
         Iterator<Mob> it = mobs.iterator();
         while (it.hasNext()) {
             Mob mob = it.next();
@@ -117,10 +124,27 @@ public abstract class BaseWorld {
 
             float distance = Vector2.dst(px, py, ox, oy);
 
-            if (distance < 40f) {
+            if (distance < 40f && !(obj instanceof SpecialDoor)) {
                 obj.pickUp(player);
                 objectIterator.remove();
             }
+
+            if (obj instanceof SpecialDoor) {
+                SpecialDoor door = (SpecialDoor) obj;
+
+                if (mobs.isEmpty()) {
+                    door.setAnimation("open");
+                }
+
+                if (mobs.isEmpty() && door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
+//                    changeToWorld(door.getTargetWorld());
+//                    break;
+                    System.out.println("contact");
+                }
+            }
+
+
+
         }
 
         updateCamera();
@@ -138,7 +162,29 @@ public abstract class BaseWorld {
         worldCamera.update();
     }
 
+//    public void render(SpriteBatch batch) {
+//        batch.setProjectionMatrix(uiCamera.combined);
+//        batch.begin();
+//        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        batch.end();
+//
+//        tiledMapRenderer.setView(worldCamera);
+//        tiledMapRenderer.render();
+//
+//        batch.setProjectionMatrix(worldCamera.combined);
+//        batch.begin();
+//        for (GameObject obj : gameObjects) {
+//            obj.render(batch);
+//        }
+//        player.render(batch);
+//        for (Mob mob : mobs) mob.render(batch);
+//
+//        batch.end();
+//    }
+
+
     public void render(SpriteBatch batch) {
+        // rendu normal
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -149,15 +195,27 @@ public abstract class BaseWorld {
 
         batch.setProjectionMatrix(worldCamera.combined);
         batch.begin();
+        for (GameObject obj : gameObjects) obj.render(batch);
         player.render(batch);
         for (Mob mob : mobs) mob.render(batch);
-
-        for (GameObject obj : gameObjects) {
-            obj.render(batch);
-            System.out.println("arm");
-        }
         batch.end();
+
+        // ---- DEBUG: trigger zones ----
+        ShapeRenderer sr = new ShapeRenderer();
+        sr.setProjectionMatrix(worldCamera.combined);
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(Color.RED);
+        for (GameObject obj : gameObjects) {
+            if (obj instanceof SpecialDoor) {
+                SpecialDoor door = (SpecialDoor) obj;
+                Rectangle r = door.getTriggerZone();
+                sr.rect(r.x, r.y, r.width, r.height);
+            }
+        }
+        sr.end();
+        sr.dispose();
     }
+
 
     public boolean isCellBlocked(float worldX, float worldY) {
         if (collisionLayer == null) return false;
@@ -200,5 +258,16 @@ public abstract class BaseWorld {
         assetsManager.dispose();
         map.dispose();
         background.dispose();
+    }
+
+
+    public void setScreen(GameScreen screen) {
+        this.screen = screen;
+    }
+
+    public void changeToWorld(BaseWorld newWorld) {
+        if (screen != null) {
+            screen.changeWorld(newWorld);
+        }
     }
 }
