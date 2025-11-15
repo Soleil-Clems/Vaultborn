@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.world.BaseWorld;
 
 import java.util.HashMap;
@@ -243,12 +244,12 @@ public abstract class Character extends Entity {
             facingRight = true;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) attack = "attack";
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) attack = "attack";
         if (Gdx.input.isKeyPressed(Input.Keys.D)) attack = "attack2";
-        if (Gdx.input.isKeyPressed(Input.Keys.X)) attack = "attack3";
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) attack = "attack3";
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) isProtected = true;
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP) && onGround) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && onGround) {
             velocityY = jumpSpeed + agility;
             onGround = false;
         }
@@ -264,7 +265,6 @@ public abstract class Character extends Entity {
         if (isDead) return;
 
         hp -= amount;
-//        System.out.println(name + " prend " + amount + " dégâts → HP = " + hp);
 
         if (hp <= 0) {
             hp = 0;
@@ -349,13 +349,19 @@ public abstract class Character extends Entity {
     private boolean isColliding(Vector2 pos) {
         if (world == null) return false;
 
-        boolean topLeft = world.isCellBlocked(pos.x, pos.y + characterHeight);
-        boolean topRight = world.isCellBlocked(pos.x + characterWidth, pos.y + characterHeight);
-        boolean bottomLeft = world.isCellBlocked(pos.x, pos.y);
-        boolean bottomRight = world.isCellBlocked(pos.x + characterWidth, pos.y);
+        boolean mapCollide =
+            world.isCellBlocked(pos.x, pos.y + characterHeight) ||
+                world.isCellBlocked(pos.x + characterWidth, pos.y + characterHeight) ||
+                world.isCellBlocked(pos.x, pos.y) ||
+                world.isCellBlocked(pos.x + characterWidth, pos.y);
 
-        return topLeft || topRight || bottomLeft || bottomRight;
+        if (mapCollide) return true;
+
+        if (this instanceof Mob && world.isMobAt(pos, (Mob)this)) return true;
+
+        return false;
     }
+
 
     protected boolean isMovingHorizontally() {
         if (isPlayerControlled) {
@@ -365,21 +371,6 @@ public abstract class Character extends Entity {
     }
 
 
-//    @Override
-//    public void render(SpriteBatch batch) {
-//        Animation<TextureRegion> anim = animations.get(currentAnimation);
-//        if (anim != null) {
-//            TextureRegion frame = anim.getKeyFrame(stateTime, true);
-//
-//            if ((facingRight && frame.isFlipX()) || (!facingRight && !frame.isFlipX())) {
-//                frame.flip(true, false);
-//            }
-//
-//            batch.draw(frame, position.x, position.y);
-//        } else if (portrait != null) {
-//            batch.draw(portrait, position.x, position.y);
-//        }
-//    }
 
     @Override
     public void render(SpriteBatch batch) {
@@ -387,19 +378,17 @@ public abstract class Character extends Entity {
         if (anim != null) {
             boolean looping = true;
 
-            // On ne boucle PAS l’animation de mort
             if (currentAnimation.equals("dead")) {
                 looping = false;
             }
 
             TextureRegion frame = anim.getKeyFrame(stateTime, looping);
 
-            // Si mort et animation terminée → garde la dernière frame
             if (currentAnimation.equals("dead") && anim.isAnimationFinished(stateTime)) {
                 frame = anim.getKeyFrames()[anim.getKeyFrames().length - 1];
             }
 
-            // Flip selon la direction
+
             if ((facingRight && frame.isFlipX()) || (!facingRight && !frame.isFlipX())) {
                 frame.flip(true, false);
             }

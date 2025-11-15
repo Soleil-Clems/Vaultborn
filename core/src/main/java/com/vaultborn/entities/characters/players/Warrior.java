@@ -31,9 +31,9 @@ public class Warrior extends Player {
     public void loadAnimations() {
         addAnimation("idle", new Texture("warrior/Idle.png"), 5, 0.1f);
         addAnimation("walk", new Texture("warrior/Walk.png"), 9, 0.1f);
-        addAnimation("attack", new Texture("warrior/Attack_1.png"), 4, 0.20f);
-        addAnimation("attack2", new Texture("warrior/Attack_2.png"), 5, 0.20f);
-        addAnimation("attack3", new Texture("warrior/Attack_3.png"), 4, 0.20f);
+        addAnimation("attack", new Texture("warrior/Attack_1.png"), 4, 0.15f);
+        addAnimation("attack2", new Texture("warrior/Attack_2.png"), 5, 0.10f);
+        addAnimation("attack3", new Texture("warrior/Attack_3.png"), 4, 0.15f);
         addAnimation("run", new Texture("warrior/Run.png"), 8, 0.08f);
         addAnimation("jump", new Texture("warrior/Jump.png"), 7, 0.09f);
         addAnimation("protect", new Texture("warrior/Protect.png"), 2, 2f);

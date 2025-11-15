@@ -176,35 +176,16 @@ public abstract class BaseWorld {
         batch.end();
 
         // === DEBUG VISUEL ===
-        ShapeRenderer sr = new ShapeRenderer();
-        sr.setProjectionMatrix(worldCamera.combined);
 
-        // Hitbox complète du joueur (Rectangle bounds)
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(Color.GREEN);
-        Rectangle playerBounds = player.getBounds();
-        sr.rect(playerBounds.x, playerBounds.y, playerBounds.width, playerBounds.height);
-        sr.end();
 
-        // Les 4 coins utilisés pour la collision
-        sr.begin(ShapeRenderer.ShapeType.Filled);
+        // Les 4 coins utilisés pour la
         float px = player.getPosition().x;
         float py = player.getPosition().y;
         float cw = player.characterWidth;
         float ch = player.characterHeight;
 
-        sr.setColor(Color.YELLOW);
-        sr.circle(px, py, 5); // Bas gauche
-        sr.circle(px + cw, py, 5); // Bas droit
-        sr.circle(px, py + ch, 5); // Haut gauche
-        sr.circle(px + cw, py + ch, 5); // Haut droit
-        System.out.println("Gauche: " + py + " Droit: " + cw + px);
-        System.out.println("pGauche: " + cw + " pDroit: " + ch);
-        sr.end();
 
-        // Afficher les tiles de collision en ROUGE
-        sr.begin(ShapeRenderer.ShapeType.Line);
-        sr.setColor(Color.RED);
+
         if (collisionLayer != null) {
             int startX = Math.max(0, (int) (px / tileSize) - 10);
             int endX = Math.min(collisionLayer.getWidth(), (int) (px / tileSize) + 10);
@@ -218,13 +199,10 @@ public abstract class BaseWorld {
                         cell.getTile().getProperties().containsKey("blocked")) {
                         float tileX = x * tileSize;
                         float tileY = y * tileSize;
-                        sr.rect(tileX, tileY, tileSize, tileSize);
                     }
                 }
             }
         }
-        sr.end();
-        sr.dispose();
     }
 
     public boolean isCellBlocked(float worldX, float worldY) {
@@ -285,4 +263,15 @@ public abstract class BaseWorld {
             screen.changeWorld(newWorld);
         }
     }
+
+    public boolean isMobAt(Vector2 pos, Mob self) {
+        for (Mob mob : mobs) {
+            if (mob == self || mob.isDead) continue;
+            if (mob.getBounds().overlaps(new Rectangle(pos.x, pos.y, mob.characterWidth, mob.characterHeight))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

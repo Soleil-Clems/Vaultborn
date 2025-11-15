@@ -13,10 +13,12 @@ public abstract class Mob extends Character {
     protected int weapon;
     private float attackCooldown = 1.5f;
     private float attackTimer = 0f;
+    private float aiOffset;
 
     public Mob(Vector2 position, TextureRegion texture, String name) {
         super(position, texture, name);
         this.isPlayerControlled = false;
+        aiOffset = (float)(Math.random() * 0.5f);
     }
 
     @Override
@@ -33,9 +35,9 @@ public abstract class Mob extends Character {
         float distanceY = playerPos.y - position.y;
         float distance = (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        float speed = 100f;
+        float speed = 100f + aiOffset * 40f;
         float attackRange = 50f;
-        float followRange = 300f;
+        float followRange = 300f+ aiOffset * 20f;
 
         if (player.getHp() <= 0) {
             setAnimation("idle");
