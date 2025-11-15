@@ -85,43 +85,48 @@ public abstract class Character extends Entity {
     }
     public void setMaxHp(int maxHp){
         this.maxHp = maxHp;
+        if (this.maxHp <= 1) this.maxHp = 1;
+        if (this.hp >= this.maxHp) this.hp = maxHp;
     }
 
     public void setHp(int hp) {
         this.hp = hp;
-        if (this.maxHp == 0) this.maxHp = hp;
+        if (this.hp <= 0) this.hp = 0;
+        if (this.hp >= this.maxHp) this.hp = maxHp;
     }
-
+    
     public int getDefense() {
         return defense;
     }
-
+    
     public void setDefense(int defense) {
         this.defense = defense;
+        if (this.defense <= 0) this.defense = 0;
     }
-
+    
     public int getDamage() {
         return damage;
     }
-
+    
     public void setDamage(int damage) {
         this.damage = damage;
     }
-
+    
     public int getLevel() {
         return level;
     }
-
+    
     public void setLevel(int level) {
         this.level = level;
     }
-
+    
     public int getAgility() {
         return agility;
     }
-
+    
     public void setAgility(int agility) {
         this.agility = agility;
+        if (this.agility <= 0) this.agility = 0;
     }
 
     public int getRange() {

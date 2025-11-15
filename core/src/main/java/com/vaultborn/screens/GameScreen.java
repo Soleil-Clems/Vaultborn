@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
         this.world = new HellWorld();
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
-        inv = new InventoryPlayer();
+        inv = new InventoryPlayer(false);
         if(world.getPlayer() instanceof Player){
             inv.setPlayer(world.getPlayer());
             world.getPlayer().setInventory(inv);
