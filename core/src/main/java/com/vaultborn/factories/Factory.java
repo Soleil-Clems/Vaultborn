@@ -89,17 +89,17 @@ public class Factory {
         return door;
     }
 
-    public BaseWorld createWorld(String name) {
-        switch (name.toLowerCase()) {
-
-            case "hell":
-                return new HellWorld();
-
-            case "forest":
-                return new ForestWorld();
-
-            default:
-                throw new IllegalArgumentException("Unknown world: " + name);
-        }
-    }
+//    public BaseWorld createWorld(String name) {
+//        switch (name.toLowerCase()) {
+//
+//            case "hell":
+//                return new HellWorld();
+//
+//            case "forest":
+//                return new ForestWorld();
+//
+//            default:
+//                throw new IllegalArgumentException("Unknown world: " + name);
+//        }
+//    }
 }

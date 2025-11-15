@@ -1,13 +1,16 @@
 package com.vaultborn.world;
 
+import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.mobs.Gorgon;
 import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 
 public class ForestWorld extends BaseWorld {
 
-    public ForestWorld() {
-        super("LavaMap/map1", "backgrounds/background_hell.png");
+    public ForestWorld(MainGame game) {
+        super(game,"LavaMap/map", "backgrounds/background_hell.png");
+        this.game = game;
     }
 
     @Override
@@ -19,18 +22,25 @@ public class ForestWorld extends BaseWorld {
     protected void initMobs() {
         mobs.add(factory.createMob("gorgon", 730, 580, this));
         mobs.add(factory.createMob("gorgon", 600, 580, this));
-        mobs.add(factory.createMob("gorgon", 850, 580, this));
     }
 
     @Override
     protected void initObjects() {
-        gameObjects.add(factory.createObject("sword", 750, 400, this));
+        gameObjects.add(factory.createObject("sword", 750, 400, null));
 
-//        SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 460, 560, this, factory.createWorld("hell"));
-//        door.setParentWorld(this);
-//        door.setTargetWorld(factory.createWorld("hell"));
-//        gameObjects.add(door);
+        SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 460, 560, this, game.hellWorld);
+        door.setParentWorld(this);
+//        door.setTargetWorld(game.hellWorld);
+        gameObjects.add(door);
     }
 
 
+    public void linkWorlds() {
+        for (GameObject obj : gameObjects) {
+            if (obj instanceof SpecialDoor) {
+                SpecialDoor door = (SpecialDoor) obj;
+                door.setTargetWorld(game.hellWorld);
+            }
+        }
+    }
 }

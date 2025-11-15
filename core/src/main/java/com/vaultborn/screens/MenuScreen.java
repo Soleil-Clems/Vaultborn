@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.vaultborn.MainGame;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
+import com.vaultborn.world.ForestWorld;
 
 import java.util.List;
 
@@ -66,7 +67,8 @@ public class MenuScreen{
     public void onClick(String name){
         switch (name) {
             case "Jouer" :
-                BaseWorld world = new HellWorld();
+//                BaseWorld world = new HellWorld();
+                BaseWorld world = new ForestWorld(game);
                 game.setScreen(new GameScreen(game, world));
                 break;
             case "Continuer" :

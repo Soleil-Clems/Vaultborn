@@ -1,8 +1,10 @@
 package com.vaultborn.world;
 
+import com.vaultborn.MainGame;
+
 public class DungeonWorld extends BaseWorld{
-    public DungeonWorld() {
-        super("DesertMap/map", "backgrounds/background_desert.png");
+    public DungeonWorld(MainGame  game) {
+        super(game,"DesertMap/map", "backgrounds/background_desert.png");
     }
 
     @Override

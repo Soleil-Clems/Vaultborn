@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Warrior;
@@ -46,13 +47,14 @@ public abstract class BaseWorld {
     protected GameScreen screen;
     protected float oldPosY = 0f;
     protected float timer = 0f;
+    public MainGame game;
 
-    public BaseWorld(String levelName, String backgroundPath) {
+    public BaseWorld(MainGame game, String levelName, String backgroundPath) {
         this.levelName = levelName;
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
         this.background = new Texture(backgroundPath);
-
+        this.game = game;
         loadMap();
         initCameras();
         initPlayer();
@@ -136,7 +138,7 @@ public abstract class BaseWorld {
                     door.setAnimation("open");
                 }
 
-                if (mobs.isEmpty() && door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
+                if ( door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
                     changeToWorld(door.getTargetWorld());
                     break;
                 }
@@ -274,4 +276,7 @@ public abstract class BaseWorld {
         return false;
     }
 
+    public void linkWorlds() {
+
+    }
 }
