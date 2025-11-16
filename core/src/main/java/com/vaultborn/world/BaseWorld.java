@@ -15,7 +15,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.projectiles.Projectile;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.factories.Factory;
@@ -30,9 +32,10 @@ public abstract class BaseWorld {
 
     protected final AssetManager assetsManager;
     protected final Factory factory;
-    protected Warrior player;
-    protected List<Mob> mobs = new ArrayList<>();
+    protected Player player;
+    public List<Mob> mobs = new ArrayList<>();
     protected List<GameObject> gameObjects = new ArrayList<>();
+    public List<Projectile> projectiles = new ArrayList<>();
 
     protected TiledMap map;
     protected TiledMapTileLayer collisionLayer;
@@ -145,6 +148,15 @@ public abstract class BaseWorld {
             }
         }
 
+        Iterator<Projectile> projIt = projectiles.iterator();
+        while (projIt.hasNext()) {
+            Projectile proj = projIt.next();
+            proj.update(delta);
+            if (proj.toRemove) {
+                projIt.remove();
+            }
+        }
+
         updateCamera();
     }
 
@@ -175,6 +187,8 @@ public abstract class BaseWorld {
         for (GameObject obj : gameObjects) obj.render(batch);
         player.render(batch);
         for (Mob mob : mobs) mob.render(batch);
+        for (Projectile proj : projectiles) proj.render(batch);
+
         batch.end();
 
         // === DEBUG VISUEL ===
@@ -222,31 +236,65 @@ public abstract class BaseWorld {
     }
 
 
+//    public Character getNearestEnemy(Character attacker, float range) {
+//        if (attacker == player) {
+//            Character nearest = null;
+//            float nearestDist = Float.MAX_VALUE;
+//            for (Mob mob : mobs) {
+//                if (mob.isDead) continue;
+//                float dist = mob.getPosition().dst(player.getPosition());
+//                if (dist < nearestDist && dist <= range * 64f) {
+//                    nearest = mob;
+//                    nearestDist = dist;
+//                }
+//            }
+//            return nearest;
+//        }
+//
+//        if (attacker instanceof Mob && !player.isDead) {
+//            float dist = player.getPosition().dst(attacker.getPosition());
+//            if (dist <= range * 64f) {
+//                return player;
+//            }
+//        }
+//        return null;
+//    }
+
     public Character getNearestEnemy(Character attacker, float range) {
-        if (attacker == player) {
-            Character nearest = null;
-            float nearestDist = Float.MAX_VALUE;
+        Character nearest = null;
+        float nearestDist = Float.MAX_VALUE;
+
+        if (attacker == player || attacker instanceof Player) {
             for (Mob mob : mobs) {
                 if (mob.isDead) continue;
-                float dist = mob.getPosition().dst(player.getPosition());
+
+                float dx = mob.getPosition().x - attacker.getPosition().x;
+
+                if ((attacker.facingRight && dx < 0) || (!attacker.facingRight && dx > 0)) continue;
+
+                float dist = mob.getPosition().dst(attacker.getPosition());
                 if (dist < nearestDist && dist <= range * 64f) {
                     nearest = mob;
                     nearestDist = dist;
                 }
             }
-            return nearest;
         }
+        else if (attacker instanceof Mob) {
+            if (!player.isDead) {
+                float dx = player.getPosition().x - attacker.getPosition().x;
 
-        if (attacker instanceof Mob && !player.isDead) {
-            float dist = player.getPosition().dst(attacker.getPosition());
-            if (dist <= range * 64f) {
-                return player;
+                if ((attacker.facingRight && dx > 0) || (!attacker.facingRight && dx < 0)) {
+                    float dist = player.getPosition().dst(attacker.getPosition());
+                    if (dist <= range * 64f) {
+                        nearest = player;
+                    }
+                }
             }
         }
-        return null;
-    }
 
-    public Warrior getPlayer() {
+        return nearest;
+    }
+    public Player getPlayer() {
         return player;
     }
 

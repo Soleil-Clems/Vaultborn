@@ -19,14 +19,14 @@ public abstract class Character extends Entity {
 
     protected String name;
     protected int hp;
-    protected int maxHp=100;
+    protected int maxHp = 100;
     protected int defense;
     protected int damage;
     protected int level;
     protected int agility;
     protected int range;
     public boolean facingRight = true;
-    private float speed = 500f;
+    protected float speed = 200f;
     protected boolean isPlayerControlled = false;
     protected BaseWorld world;
     public float characterWidth = 32f;
@@ -78,6 +78,7 @@ public abstract class Character extends Entity {
     public int getHp() {
         return hp;
     }
+
     public int getMaxHp() {
         return maxHp;
     }
@@ -175,7 +176,6 @@ public abstract class Character extends Entity {
         }
 
 
-
         if (isHurt) {
             hurtTimer -= delta;
             setAnimation("hurt");
@@ -196,12 +196,13 @@ public abstract class Character extends Entity {
             if (attackTimer >= 0.2f && !hasHit) {
                 if (world != null) {
                     Character target = world.getNearestEnemy(this, range);
-                    if (target != null && !target.isDead) {
+                    if (target != null && !target.isDead && target != this) {
                         attack(target);
                         hasHit = true;
                     }
                 }
             }
+
 
             if (attackTimer >= attackCooldown) {
                 isAttacking = false;
@@ -243,6 +244,7 @@ public abstract class Character extends Entity {
             moveX += 1f;
             facingRight = true;
         }
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.A)) attack = "attack";
         if (Gdx.input.isKeyPressed(Input.Keys.D)) attack = "attack2";
@@ -286,7 +288,6 @@ public abstract class Character extends Entity {
     }
 
 
-
     protected void applyGravity(float delta) {
         velocityY += gravity * delta;
         if (velocityY < -800f) velocityY = -800f;
@@ -322,12 +323,14 @@ public abstract class Character extends Entity {
         } else if (Math.abs(velocityY) < 10 && isMovingHorizontally()) {
 
             setAnimation("walk");
-        }  else if (attack.equals("attack")) {
+        } else if (attack.equals("attack")) {
             startAttack("attack");
         } else if (attack.equals("attack2")) {
             startAttack("attack2");
         } else if (attack.equals("attack3")) {
             startAttack("attack3");
+        } else if (attack.equals("attack4")) {
+            startAttack("attack4");
         } else if (isProtected) {
             setAnimation("protect");
             isProtected = false;
@@ -357,7 +360,7 @@ public abstract class Character extends Entity {
 
         if (mapCollide) return true;
 
-        if (this instanceof Mob && world.isMobAt(pos, (Mob)this)) return true;
+        if (this instanceof Mob && world.isMobAt(pos, (Mob) this)) return true;
 
         return false;
     }
@@ -369,7 +372,6 @@ public abstract class Character extends Entity {
         }
         return false;
     }
-
 
 
     @Override

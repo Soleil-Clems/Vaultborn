@@ -7,11 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public abstract  class Player extends Character {
-
     public Player(Vector2 position, TextureRegion texture, String name) {
         super(position, texture, name);
         this.isPlayerControlled = true;
 
     }
+
+
 
 }

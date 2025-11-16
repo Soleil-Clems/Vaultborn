@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.mobs.Gorgon;
+import com.vaultborn.entities.characters.mobs.Minotaur;
 import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.players.DarkMage;
 import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.characters.players.Satyr;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
@@ -19,16 +22,22 @@ public class Factory {
 
     private final AssetManager assetsManager;
     private TextureRegion warriorRegion;
+    private TextureRegion satyrRegion;
     private TextureRegion gorgonRegion;
+    private TextureRegion minotaurRegion;
     private TextureRegion swordRegion;
+    private TextureRegion darkMageRegion;
     private TextureRegion specialDoorRegion;
 
     public Factory() {
         assetsManager = new AssetManager();
 
         warriorRegion = new TextureRegion(new Texture("warrior/Idle.png"));
+        satyrRegion = new TextureRegion(new Texture("satyr/Idle.png"));
+        darkMageRegion = new TextureRegion(new Texture("darkmage/Idle.png"));
         gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
-        swordRegion   = new TextureRegion(new Texture("objects/weapons/sword.png"));
+        minotaurRegion = new TextureRegion(new Texture("minotaur/Idle.png"));
+        swordRegion = new TextureRegion(new Texture("objects/weapons/sword.png"));
         specialDoorRegion = new TextureRegion(new Texture("specialdoor/closeddoor.png"));
     }
 
@@ -40,6 +49,16 @@ public class Factory {
                 player.setWorld(world);
                 return player;
 
+            case "satyr":
+                Satyr satyr = new Satyr(new Vector2(x, y), satyrRegion);
+                satyr.loadAnimations();
+                satyr.setWorld(world);
+                return satyr;
+            case "darkmage":
+                DarkMage darkMage = new DarkMage(new Vector2(x, y), darkMageRegion);
+                darkMage.loadAnimations();
+                darkMage.setWorld(world);
+                return darkMage;
             default:
                 throw new IllegalArgumentException("Unknown player type: " + type);
         }
@@ -48,17 +67,21 @@ public class Factory {
     public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
-                Gorgon mob = new Gorgon(new Vector2(x, y), gorgonRegion);
-                mob.loadAnimations();
-                mob.setWorld(world);
-                return mob;
-
+                Gorgon gorgon = new Gorgon(new Vector2(x, y), gorgonRegion);
+                gorgon.loadAnimations();
+                gorgon.setWorld(world);
+                return gorgon;
+            case "minotaur":
+                Minotaur minotaur = new Minotaur(new Vector2(x, y), minotaurRegion);
+                minotaur.loadAnimations();
+                minotaur.setWorld(world);
+                return minotaur;
             default:
                 throw new IllegalArgumentException("Unknown mob type: " + type);
         }
     }
 
-   public GameObject createObject(String type, float x, float y, BaseWorld world) {
+    public GameObject createObject(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
 
             case "sword":
@@ -82,7 +105,7 @@ public class Factory {
         if (!type.equalsIgnoreCase("special_door"))
             throw new IllegalArgumentException("Unknown object type: " + type);
 
-        SpecialDoor door = new SpecialDoor(new Vector2(x,y), specialDoorRegion);
+        SpecialDoor door = new SpecialDoor(new Vector2(x, y), specialDoorRegion);
         door.loadAnimations();
         door.setWorld(worldFrom);
         door.setTargetWorld(worldTo);

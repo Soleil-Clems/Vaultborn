@@ -2,6 +2,7 @@ package com.vaultborn.world;
 
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.mobs.Gorgon;
+import com.vaultborn.entities.characters.players.DarkMage;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
@@ -15,13 +16,14 @@ public class ForestWorld extends BaseWorld {
 
     @Override
     protected void initPlayer() {
-        player = (Warrior) factory.createPlayer("warrior", 450, 800, this);
+//        player = (Warrior) factory.createPlayer("warrior", 450, 800, this);
+        player = (DarkMage) factory.createPlayer("darkMage", 450, 800, this);
     }
 
     @Override
     protected void initMobs() {
         mobs.add(factory.createMob("gorgon", 730, 580, this));
-        mobs.add(factory.createMob("gorgon", 600, 580, this));
+        mobs.add(factory.createMob("minotaur", 600, 580, this));
     }
 
     @Override
