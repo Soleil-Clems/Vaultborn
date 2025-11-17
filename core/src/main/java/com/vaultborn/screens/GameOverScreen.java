@@ -22,7 +22,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
-public class GameOverSreen implements Screen{
+public class GameOverScreen implements Screen{
     private MainGame game;
     private Stage stage;
     private Skin skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
@@ -31,7 +31,7 @@ public class GameOverSreen implements Screen{
     private BitmapFont txtFont;
     private BitmapFont btnFont;
 
-    public GameOverSreen(MainGame game){
+    public GameOverScreen(MainGame game){
         this.game = game;
         stage = new Stage(new ScreenViewport());
         //System.out.println(Gdx.files.internal("menu/gameOverFont/Outline Style.ttf").exists());
