@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.world.BaseWorld;
 
 import java.util.HashMap;
@@ -52,6 +53,9 @@ public abstract class Character extends Entity {
     protected float hurtTimer = 0f;
     protected float hurtDuration = 0.5f;
     protected Rectangle hitbox;
+    private Player player=null;
+    private Mob mob=null;
+
 
     protected TextureRegion portrait;
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
@@ -65,6 +69,10 @@ public abstract class Character extends Entity {
         this.portrait = texture;
         this.bounds.set(position.x, position.y, characterWidth, characterHeight);
         this.hitbox = new Rectangle(position.x, position.y, 90, 60);
+
+        if (this instanceof Player) {
+            player = (Player) this;
+        }
 
     }
 
@@ -83,10 +91,23 @@ public abstract class Character extends Entity {
         return maxHp;
     }
 
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+        if (this.hp >= maxHp) {
+            this.hp = maxHp;
+        }
+        if (this.maxHp <= 1) {
+            this.maxHp = 1;
+        }
+    }
+
     public void setHp(int hp) {
         this.hp = hp;
-        if (this.maxHp == 0) this.maxHp = hp;
+        if (this.hp <= 0) this.hp = 0;
+        if (this.hp >= this.maxHp) this.hp = maxHp;
     }
+
 
     public int getDefense() {
         return defense;
@@ -94,6 +115,7 @@ public abstract class Character extends Entity {
 
     public void setDefense(int defense) {
         this.defense = defense;
+        if (this.defense <= 0) this.defense = 0;
     }
 
     public int getDamage() {
@@ -118,8 +140,8 @@ public abstract class Character extends Entity {
 
     public void setAgility(int agility) {
         this.agility = agility;
+        if (this.agility <= 0) this.agility = 0;
     }
-
     public int getRange() {
         return range;
     }
@@ -279,6 +301,7 @@ public abstract class Character extends Entity {
                     if (target != null && !target.isDead && target != this) {
                         attack(target);
                         hasHit = true;
+                        if(target.getHp()<=0 && !(target instanceof Player)){player.expGain(mob.giveExp());}
                     }
                 }
             }

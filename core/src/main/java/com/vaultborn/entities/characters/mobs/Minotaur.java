@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
 
 public class Minotaur extends Mob{
-    public Minotaur(Vector2 position, TextureRegion texture) {
-        super(position, texture, "Gorm");
+    public Minotaur(Vector2 position, TextureRegion texture, int lvl) {
+        super(position, texture, "Gorm", lvl, 33);
         this.hp = 100;
         this.damage = 20;
         this.defense = 15;

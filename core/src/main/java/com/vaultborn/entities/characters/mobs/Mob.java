@@ -14,10 +14,14 @@ public abstract class Mob extends Character {
     private float attackCooldown = 1.5f;
     private float attackTimer = 0f;
     private float aiOffset;
+    private int lvl;
+    private int exp;
 
-    public Mob(Vector2 position, TextureRegion texture, String name) {
+    public Mob(Vector2 position, TextureRegion texture, String name, int lvl, int exp) {
         super(position, texture, name);
         this.isPlayerControlled = false;
+        this.exp = exp*lvl;
+        this.lvl = lvl;
         aiOffset = (float)(Math.random() * 0.5f);
     }
 
@@ -75,6 +79,10 @@ public abstract class Mob extends Character {
         if (!isDead) {
             renderHealthBar(batch);
         }
+    }
+
+    public int giveExp(){
+        return exp;
     }
 
     private void renderHealthBar(SpriteBatch batch) {

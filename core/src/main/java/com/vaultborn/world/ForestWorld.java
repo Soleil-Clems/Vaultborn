@@ -32,7 +32,7 @@ public class ForestWorld extends BaseWorld {
 
     @Override
     protected void initObjects() {
-        gameObjects.add(factory.createObject("sword", 750, 400, null));
+        gameObjects.add(factory.createObject("sword", 450, 800, null));
 
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 460, 560, this, game.hellWorld);
         door.setParentWorld(this);

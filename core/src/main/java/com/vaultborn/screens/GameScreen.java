@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
         this.batch = new SpriteBatch();
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
-        inv = new InventoryPlayer();
+        inv = new InventoryPlayer(false);
 
         this.world = world;
         this.world.setScreen(this);

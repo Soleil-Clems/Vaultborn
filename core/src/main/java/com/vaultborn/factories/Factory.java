@@ -84,12 +84,12 @@ public class Factory {
     public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
-                Gorgon gorgon = new Gorgon(new Vector2(x, y), gorgonRegion);
+                Gorgon gorgon = new Gorgon(new Vector2(x, y), gorgonRegion, 1);
                 gorgon.loadAnimations();
                 gorgon.setWorld(world);
                 return gorgon;
             case "minotaur":
-                Minotaur minotaur = new Minotaur(new Vector2(x, y), minotaurRegion);
+                Minotaur minotaur = new Minotaur(new Vector2(x, y), minotaurRegion, 1);
                 minotaur.loadAnimations();
                 minotaur.setWorld(world);
                 return minotaur;
