@@ -8,6 +8,12 @@ import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
 import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.entities.stuff.armor.Breastplate;
+import com.vaultborn.entities.stuff.armor.GauteletPlate;
+import com.vaultborn.entities.stuff.armor.Hat;
+import com.vaultborn.entities.stuff.armor.Helmet;
+import com.vaultborn.entities.stuff.armor.IronFoot;
+import com.vaultborn.entities.stuff.armor.LegPlate;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
@@ -51,7 +57,7 @@ public class Factory {
     public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
-                Gorgon mob = new Gorgon(new Vector2(x, y), gorgonRegion);
+                Gorgon mob = new Gorgon(new Vector2(x, y), gorgonRegion,3);
                 mob.loadAnimations();
                 mob.setWorld(world);
                 return mob;
@@ -69,6 +75,26 @@ public class Factory {
                 sword.loadAnimations();
                 sword.setWorld(world);
                 return sword;
+            case "helmet":
+                Helmet helmet = new Helmet(new Vector2(x, y), swordRegion,"","Le magnifique casque");
+                helmet.setWorld(world);
+                return helmet;
+            case "breastplate":
+                Breastplate breastpalte = new Breastplate(new Vector2(x, y), swordRegion,"","Le plastron lustre");
+                breastpalte.setWorld(world);
+                return breastpalte;
+            case "gauteletplate":
+                GauteletPlate gauteletPlate = new GauteletPlate(new Vector2(x, y), swordRegion,"","Les poings");
+                gauteletPlate.setWorld(world);
+                return gauteletPlate;
+            case "legplate":
+                LegPlate legPlate = new LegPlate(new Vector2(x, y), swordRegion,"","Les jambes lourdes");
+                legPlate.setWorld(world);
+                return legPlate;
+            case "ironfoot":
+                IronFoot ironFoot = new IronFoot(new Vector2(x, y), swordRegion,"","Des petits chaussons");
+                ironFoot.setWorld(world);
+                return ironFoot;
             default:
                 throw new IllegalArgumentException("Unknown mob type: " + type);
         }

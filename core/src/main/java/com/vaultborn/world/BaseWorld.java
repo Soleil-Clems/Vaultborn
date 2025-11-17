@@ -154,7 +154,7 @@ public abstract class BaseWorld {
 
         for (GameObject obj : gameObjects) {
             obj.render(batch);
-            System.out.println("arm");
+            //System.out.println("arm");
         }
         batch.end();
     }

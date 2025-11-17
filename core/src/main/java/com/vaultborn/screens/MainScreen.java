@@ -14,24 +14,45 @@ import com.vaultborn.MainGame;
 
 public class MainScreen implements Screen{
     private MenuScreen MainMenuScreen;
+    private SettingScreen SettingMenuScreen;
+
     private static final List<String> buttonMain = Arrays.asList("Jouer", "Parametres", "Exit");
     Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     public MainScreen(MainGame game){
         MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);
+        SettingMenuScreen = new SettingScreen(game, btnSkin);
     }
 
     @Override public void render(float delta) {
-        MainMenuScreen.rdMenu(delta);
-
+        if(!SettingMenuScreen.isActivated()){
+            SettingMenuScreen.setActivated(MainMenuScreen.isSettings());
+            Gdx.input.setInputProcessor(MainMenuScreen.getStage());
+            MainMenuScreen.rdMenu(delta);
+        }
+        else{
+            MainMenuScreen.setSettings(false);
+            Gdx.input.setInputProcessor(SettingMenuScreen.getStage());
+            SettingMenuScreen.rdMenu(delta);
+        }
         }
 
-    @Override public void resize(int width, int height) {MainMenuScreen.rsMenu(width, height);}
+    @Override public void resize(int width, int height) {
+        if(!SettingMenuScreen.isActivated()){
+            MainMenuScreen.rsMenu(width, height);
+        }
+        else{
+            SettingMenuScreen.rsMenu(width, height);
+        }
+    }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
     @Override public void show() {}
-    @Override public void dispose() {MainMenuScreen.dpMenu();}
+    @Override public void dispose() {
+        MainMenuScreen.dpMenu();
+
+    }
 
 
 
