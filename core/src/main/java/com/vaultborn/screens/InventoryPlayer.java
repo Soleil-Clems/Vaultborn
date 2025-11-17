@@ -67,7 +67,7 @@ public class InventoryPlayer {
         put("Statistique",0);
         put("Niveau",1);
         put("Exp",0);
-        put("Point disponible",0);
+        put("Point disponible",10);
         put("HP",1);
         put("Defense",1);
         put("Attaque",1);
@@ -104,8 +104,13 @@ public class InventoryPlayer {
     public InventoryPlayer(boolean testUnit){
         
         InventoryItem = new LinkedHashMap<Item<? extends Stuff>,Integer>();
+        int count = 0;
         for (int value : nameValueStat.values()){
-            statExploitable.add(value);
+            if(count <4){}
+            else{
+            statExploitable.add(value);}
+            count ++;
+
         }
         this.putIn = false;
         verifyPointDisponibility();
@@ -220,8 +225,10 @@ public class InventoryPlayer {
         }
         int count =0;
         for (int value : nameValueStat.values()){
-            if(count <3){continue;}
+            if(count <4){}else{
             statExploitable.set(count-4, value);
+            }
+            count++;
         }
     }
     public void addValueStat(String name){
@@ -273,6 +280,9 @@ public class InventoryPlayer {
     }
     public LinkedHashMap<String,Integer> getNameValueStat(){
         return nameValueStat;
+    }
+    public List<Integer> getStatExploitable(){
+        return statExploitable;
     }
     //autre getter
     public boolean isShowInventory(){

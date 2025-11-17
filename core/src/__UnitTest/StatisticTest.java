@@ -4,16 +4,9 @@ import java.util.LinkedHashMap;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.vaultborn.entities.Entity;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
-import com.vaultborn.entities.stuff.Item;
-import com.vaultborn.entities.stuff.Stuff;
-import com.vaultborn.factories.Factory;
 import com.vaultborn.screens.InventoryPlayer;
-import com.vaultborn.world.BaseWorld;
-import com.vaultborn.world.HellWorld;
-import com.vaultborn.world.World;
 
 
 
@@ -133,6 +126,9 @@ public class StatisticTest {
 
         System.out.println("---- Réactualise les stats du joueur ----");
         inv.applyStat();
+        System.out.println(inv.getNameValueStat());
+        System.out.println("Stat exploitable : " +inv.getStatExploitable());
+        modeledWarior.setHp(100000);
 
         System.out.println("---- Stat du Player ----");
         System.out.println("HP : "+modeledWarior.getHp());
@@ -160,19 +156,31 @@ public class StatisticTest {
         inv.addValueStat("hp");
         inv.addValueStat("hp");
         System.out.println("Nom et valeur des stats : "+inv.getNameValueStat());
+        inv.verifyPointDisponibility();
         
+
         System.out.println("---- boost de niveau ----");
         inv.setNameValueStat(statHighLvl);
+        System.out.println("Stat exploitable : "+inv.getStatExploitable());
         System.out.println("Nom et valeur des stats : "+inv.getNameValueStat());
+
         System.out.println("---- point impossible ----");
         inv.setNameValueStat(statTooMuchPointDisplay);
+        System.out.println("Stat exploitable : "+inv.getStatExploitable());
         System.out.println("Nom et valeur des stats : "+inv.getNameValueStat());
+
         System.out.println("---- trop d'experience + 100 point en attaque ----");
         inv.setNameValueStat(statTooMuchExperience);
+        System.out.println("Stat exploitable : "+inv.getStatExploitable());
         System.out.println("Nom et valeur des stats : "+inv.getNameValueStat());
+
         System.out.println("---- ajout d'expérience ----");
         inv.setNameValueStat(statBase);
+        System.out.println("Stat exploitable : "+inv.getStatExploitable());
         inv.addExp(10000);
+        System.out.println("Nom et valeur des stats : "+inv.getNameValueStat());
+        System.out.println("    ---- ajouter 1 d'attaque ----");
+        inv.addValueStat("attaque");
         System.out.println("Nom et valeur des stats : "+inv.getNameValueStat());
         
         
