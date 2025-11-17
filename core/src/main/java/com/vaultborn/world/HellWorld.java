@@ -1,0 +1,30 @@
+package com.vaultborn.world;
+
+import com.vaultborn.entities.characters.mobs.Gorgon;
+
+public class HellWorld extends BaseWorld {
+
+    public HellWorld() {
+        super("HellMap/maptest", "backgrounds/background_hell.png");
+    }
+
+    @Override
+    protected void initMobs() {
+        mobs.add(factory.createMob("gorgon", 300, 580, this));
+        mobs.add(factory.createMob("gorgon", 600, 580, this));
+        mobs.add(factory.createMob("gorgon", 900, 580, this));
+    }
+
+    @Override
+    protected void initObjects() {
+        gameObjects.add(factory.createObject("sword", 650, 600, this));
+        gameObjects.add(factory.createObject("helmet", 550, 600, this));
+        gameObjects.add(factory.createObject("breastplate", 550, 600, this));
+        gameObjects.add(factory.createObject("gauteletPlate", 550, 600, this));
+        gameObjects.add(factory.createObject("legPlate", 550, 600, this));
+        gameObjects.add(factory.createObject("ironFoot", 550, 600, this));
+        //gameObjects.add(factory.createObject("hat", 550, 600, this));
+    }
+
+
+}

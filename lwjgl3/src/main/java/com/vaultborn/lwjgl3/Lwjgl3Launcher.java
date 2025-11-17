@@ -28,10 +28,11 @@ public class Lwjgl3Launcher {
         //// useful for testing performance, but can also be very stressful to some hardware.
         //// You may also need to configure GPU drivers to fully disable Vsync; this can cause screen tearing.
 
-        configuration.setWindowedMode(640, 480);
+        configuration.setWindowedMode(1200, 800);
+//        configuration.setWindowedMode(740, 580);
         //// You can change these files; they are in lwjgl3/src/main/resources/ .
         //// They can also be loaded from the root of assets/ .
-        configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+        configuration.setWindowIcon("Vaultborn icon (128 x 126).png", "Vaultborn icon (64 x 63).png", "Vaultborn icon (32).png", "Vaultborn icon (16).png");
 
         //// This should improve compatibility with Windows machines with buggy OpenGL drivers, Macs
         //// with Apple Silicon that have to emulate compatibility with OpenGL anyway, and more.
@@ -42,4 +43,5 @@ public class Lwjgl3Launcher {
 
         return configuration;
     }
+
 }
