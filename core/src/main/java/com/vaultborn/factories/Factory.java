@@ -9,6 +9,12 @@ import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.*;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
+import com.vaultborn.entities.stuff.armor.Breastplate;
+import com.vaultborn.entities.stuff.armor.GauteletPlate;
+import com.vaultborn.entities.stuff.armor.Hat;
+import com.vaultborn.entities.stuff.armor.Helmet;
+import com.vaultborn.entities.stuff.armor.IronFoot;
+import com.vaultborn.entities.stuff.armor.LegPlate;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
@@ -84,12 +90,12 @@ public class Factory {
     public Mob createMob(String type, float x, float y, BaseWorld world) {
         switch (type.toLowerCase()) {
             case "gorgon":
-                Gorgon gorgon = new Gorgon(new Vector2(x, y), gorgonRegion);
+                Gorgon gorgon = new Gorgon(new Vector2(x, y), gorgonRegion, 1);
                 gorgon.loadAnimations();
                 gorgon.setWorld(world);
                 return gorgon;
             case "minotaur":
-                Minotaur minotaur = new Minotaur(new Vector2(x, y), minotaurRegion);
+                Minotaur minotaur = new Minotaur(new Vector2(x, y), minotaurRegion, 1);
                 minotaur.loadAnimations();
                 minotaur.setWorld(world);
                 return minotaur;
@@ -113,6 +119,26 @@ public class Factory {
                 door.setWorld(world);
                 return door;
 
+            case "helmet":
+                Helmet helmet = new Helmet(new Vector2(x, y), swordRegion,"","Le magnifique casque");
+                helmet.setWorld(world);
+                return helmet;
+            case "breastplate":
+                Breastplate breastpalte = new Breastplate(new Vector2(x, y), swordRegion,"","Le plastron lustre");
+                breastpalte.setWorld(world);
+                return breastpalte;
+            case "gauteletplate":
+                GauteletPlate gauteletPlate = new GauteletPlate(new Vector2(x, y), swordRegion,"","Les poings");
+                gauteletPlate.setWorld(world);
+                return gauteletPlate;
+            case "legplate":
+                LegPlate legPlate = new LegPlate(new Vector2(x, y), swordRegion,"","Les jambes lourdes");
+                legPlate.setWorld(world);
+                return legPlate;
+            case "ironfoot":
+                IronFoot ironFoot = new IronFoot(new Vector2(x, y), swordRegion,"","Des petits chaussons");
+                ironFoot.setWorld(world);
+                return ironFoot;
             default:
                 throw new IllegalArgumentException("Unknown object type: " + type);
         }

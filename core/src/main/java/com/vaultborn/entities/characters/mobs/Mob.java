@@ -14,11 +14,20 @@ public abstract class Mob extends Character {
     private float attackCooldown = 1.5f;
     private float attackTimer = 0f;
     private float aiOffset;
+    private int exp;
+    private int lvl;
 
-    public Mob(Vector2 position, TextureRegion texture, String name) {
+    public Mob(Vector2 position, TextureRegion texture, String name,int lvl,int exp) {
         super(position, texture, name);
         this.isPlayerControlled = false;
         aiOffset = (float)(Math.random() * 0.5f);
+        this.lvl = lvl;
+        this.exp = lvl*exp;
+
+    }
+
+    public int giveExp(){
+        return exp;
     }
 
     @Override

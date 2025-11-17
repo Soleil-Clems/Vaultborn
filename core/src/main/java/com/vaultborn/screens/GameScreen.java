@@ -27,6 +27,8 @@ public class GameScreen implements Screen {
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
 
+    private SettingScreen SettingMenuScreen;
+
 
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
@@ -37,18 +39,24 @@ public class GameScreen implements Screen {
         this.batch = new SpriteBatch();
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
-        inv = new InventoryPlayer();
+        inv = new InventoryPlayer(false);
 
         this.world = world;
         this.world.setScreen(this);
         factory = new Factory();
 
 
+        if(world.getPlayer() instanceof Player){
+            inv.setPlayer(world.getPlayer());
+            world.getPlayer().setInventory(inv);
+        }
+        SettingMenuScreen = new SettingScreen(game, btnSkin);
+
     }
 
     @Override
     public void render(float delta) {
-
+        if(world.getPlayer().isDead){game.setScreen(new GameOverSreen(game));}
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -66,9 +74,17 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(null);
 
         } else {
-            PauseMenuScreen.rdMenu(delta);
-            Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
-            if(inv.isShowInventory()){inv.setShowInventory(false);}
+            if(!SettingMenuScreen.isActivated()){
+                SettingMenuScreen.setActivated(PauseMenuScreen.isSettings());
+                PauseMenuScreen.rdMenu(delta);
+                Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
+                if(inv.isShowInventory()){inv.setShowInventory(false);inv.InventoryReload();}
+            }
+            else{
+                PauseMenuScreen.setSettings(false);
+                Gdx.input.setInputProcessor(SettingMenuScreen.getStage());
+                SettingMenuScreen.rdMenu(delta);
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());
@@ -80,7 +96,7 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(inv.getStage());
             if(inv.getObjectInfoMenu()){
                 Gdx.input.setInputProcessor(inv.getObjectStage());
-            }
+            }   
 
         }
 

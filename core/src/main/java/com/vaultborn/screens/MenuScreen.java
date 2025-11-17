@@ -26,6 +26,7 @@ public class MenuScreen{
     protected Skin skin;
     protected List<String> element;
     private boolean activated;
+    private boolean settings = false;
     private Table table;
 
 
@@ -63,6 +64,12 @@ public class MenuScreen{
     public void setActivated(boolean a){
         this.activated = a;
     }
+    public boolean isSettings(){
+        return settings;
+    }
+    public void setSettings(boolean a){
+        this.settings = a;
+    }
 
     public void onClick(String name){
         switch (name) {
@@ -75,6 +82,7 @@ public class MenuScreen{
                 this.activated = !this.activated;
                 break;
             case "Parametres":
+                this.settings = !this.settings;
                 break;
             case "Exit" :
                 Gdx.app.exit();

@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
+import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.screens.InventoryPlayer;
 import com.badlogic.gdx.graphics.Texture;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.world.BaseWorld;
@@ -58,6 +61,9 @@ public abstract class Character extends Entity {
     public float stateTime = 0f;
     protected String currentAnimation = "idle";
 
+    private Player player = null;
+    private Mob mob = null;
+
     public Character(Vector2 position, TextureRegion texture, String name) {
         super(position, texture);
         this.name = name;
@@ -66,6 +72,8 @@ public abstract class Character extends Entity {
         this.bounds.set(position.x, position.y, characterWidth, characterHeight);
         this.hitbox = new Rectangle(position.x, position.y, 90, 60);
 
+        if(this instanceof Player){player = (Player) this;}
+        
     }
 
 
@@ -82,42 +90,50 @@ public abstract class Character extends Entity {
     public int getMaxHp() {
         return maxHp;
     }
+    public void setMaxHp(int maxHp){
+        this.maxHp = maxHp;
+        if (this.maxHp <= 1) this.maxHp = 1;
+        if (this.hp >= this.maxHp) this.hp = maxHp;
+    }
 
     public void setHp(int hp) {
         this.hp = hp;
-        if (this.maxHp == 0) this.maxHp = hp;
+        if (this.hp <= 0) this.hp = 0;
+        if (this.hp >= this.maxHp) this.hp = maxHp;
     }
-
+    
     public int getDefense() {
         return defense;
     }
-
+    
     public void setDefense(int defense) {
         this.defense = defense;
+        if (this.defense <= 0) this.defense = 0;
     }
-
+    
     public int getDamage() {
         return damage;
     }
-
+    
     public void setDamage(int damage) {
         this.damage = damage;
     }
-
+    
     public int getLevel() {
         return level;
     }
-
+    
     public void setLevel(int level) {
         this.level = level;
     }
-
+    
     public int getAgility() {
         return agility;
     }
-
+    
     public void setAgility(int agility) {
         this.agility = agility;
+        if (this.agility <= 0) this.agility = 0;
     }
 
     public int getRange() {
@@ -127,7 +143,7 @@ public abstract class Character extends Entity {
     public void setRange(int range) {
         this.range = range;
     }
-
+    
     protected void addAnimation(String key, Texture spriteSheet, int frameCount, float frameDuration) {
         int frameWidth = spriteSheet.getWidth() / frameCount;
         int frameHeight = spriteSheet.getHeight();
@@ -151,6 +167,84 @@ public abstract class Character extends Entity {
 
     public Animation<TextureRegion> getAnimation(String key) {
         return animations.get(key);
+    }
+
+    @Override
+    public void update(float delta) {
+        stateTime += delta;
+
+        if (isDead) {
+            Animation<TextureRegion> deadAnim = animations.get("dead");
+
+            if (deadAnim != null && !deadAnim.isAnimationFinished(stateTime)) {
+                setAnimation("dead");
+                stateTime += delta;
+            }
+
+            deadTimer += delta;
+
+            if (deadTimer >= deadDuration) {
+                readyToRemove = true;
+            }
+
+            velocityY = 0;
+            return;
+        }
+
+
+
+        if (isHurt) {
+            hurtTimer -= delta;
+            setAnimation("hurt");
+
+            if (hurtTimer <= 0) {
+                isHurt = false;
+            }
+
+            applyGravity(delta);
+            moveAndCollide(0, velocityY * delta);
+            return;
+        }
+
+
+        if (isAttacking) {
+            attackTimer += delta;
+
+            if (attackTimer >= 0.2f && !hasHit) {
+                if (world != null) {
+                    Character target = world.getNearestEnemy(this, range);
+                    if(!(target instanceof Player)){mob = (Mob) target;}
+                    if (target != null && !target.isDead) {
+                        attack(target);
+                        hasHit = true;
+                        if(target.getHp()<=0 && !(target instanceof Player)){player.expGain(mob.giveExp());}
+                    }
+                }
+            }
+
+            if (attackTimer >= attackCooldown) {
+                isAttacking = false;
+                attack = "";
+                setAnimation("idle");
+            } else {
+                setAnimation(attack);
+            }
+
+
+            applyGravity(delta);
+            moveAndCollide(0, velocityY * delta);
+            return;
+        }
+
+        if (isPlayerControlled) {
+            handleInput(delta);
+        } else {
+            handleAI(delta);
+        }
+
+
+        applyGravity(delta);
+        updateAnimationState();
     }
 
     protected void handleInput(float delta) {
@@ -236,76 +330,7 @@ public abstract class Character extends Entity {
     }
 
 
-    @Override
-    public void update(float delta) {
-        stateTime += delta;
-
-        if (isDead) {
-            Animation<TextureRegion> deadAnim = animations.get("dead");
-
-            if (deadAnim != null && !deadAnim.isAnimationFinished(stateTime)) {
-                setAnimation("dead");
-            }
-
-            deadTimer += delta;
-
-            if (deadTimer >= deadDuration) {
-                readyToRemove = true;
-            }
-
-            velocityY = 0;
-            return;
-        }
-
-        if (isHurt) {
-            hurtTimer -= delta;
-            setAnimation("hurt");
-
-            if (hurtTimer <= 0) {
-                isHurt = false;
-            }
-
-            applyGravity(delta);
-            moveAndCollide(0, velocityY * delta);
-            return;
-        }
-
-        if (isAttacking) {
-            attackTimer += delta;
-
-            if (attackTimer >= 0.2f && !hasHit) {
-                if (world != null) {
-                    Character target = world.getNearestEnemy(this, range);
-                    if (target != null && !target.isDead && target != this) {
-                        attack(target);
-                        hasHit = true;
-                    }
-                }
-            }
-
-            if (attackTimer >= attackCooldown) {
-                isAttacking = false;
-                attack = "";
-            } else {
-                setAnimation(attack);
-            }
-
-            applyGravity(delta);
-            moveAndCollide(0, velocityY * delta);
-            return;
-        }
-
-        if (isPlayerControlled) {
-            handleInput(delta);
-        } else {
-            handleAI(delta);
-        }
-
-        applyGravity(delta);
-        updateAnimationState();
-        updateHitbox();
-    }
-
+   
     protected void updateAnimationState() {
 
 
