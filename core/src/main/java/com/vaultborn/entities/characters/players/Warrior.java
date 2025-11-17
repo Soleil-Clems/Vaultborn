@@ -8,7 +8,7 @@ import com.vaultborn.entities.characters.Character;
 
 
 public class Warrior extends Player {
-
+    private float meleeRange = 80f;
     public Warrior(Vector2 position, TextureRegion texture) {
         super(position, texture, "Lancelot");
         this.maxHp = 100;
@@ -24,8 +24,16 @@ public class Warrior extends Player {
 
     @Override
     public void attack(Character target) {
-        int dmg = Math.max(1, this.damage - target.getDefense());
-        target.takeDamage(dmg);
+        if (target == null) {
+            return;
+        }
+
+        float distance = position.dst(target.getPosition());
+
+        if (distance <= meleeRange) {
+            int dmg = Math.max(1, this.damage - target.getDefense());
+            target.takeDamage(dmg);
+        }
     }
 
     public void loadAnimations() {

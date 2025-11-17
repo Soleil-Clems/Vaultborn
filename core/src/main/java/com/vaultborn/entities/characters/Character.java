@@ -34,7 +34,7 @@ public abstract class Character extends Entity {
 
     protected float velocityY = 0f;
     protected float gravity = -1000f;
-    protected float jumpSpeed = 550f;
+    protected float jumpSpeed = 650f;
     protected boolean onGround = false;
     protected String attack = "";
     protected boolean isProtected = false;
@@ -153,86 +153,6 @@ public abstract class Character extends Entity {
         return animations.get(key);
     }
 
-    @Override
-    public void update(float delta) {
-        stateTime += delta;
-
-        if (isDead) {
-            Animation<TextureRegion> deadAnim = animations.get("dead");
-
-            if (deadAnim != null && !deadAnim.isAnimationFinished(stateTime)) {
-                setAnimation("dead");
-                stateTime += delta;
-            }
-
-            deadTimer += delta;
-
-            if (deadTimer >= deadDuration) {
-                readyToRemove = true;
-            }
-
-            velocityY = 0;
-            return;
-        }
-
-
-        if (isHurt) {
-            hurtTimer -= delta;
-            setAnimation("hurt");
-
-            if (hurtTimer <= 0) {
-                isHurt = false;
-            }
-
-            applyGravity(delta);
-            moveAndCollide(0, velocityY * delta);
-            return;
-        }
-
-
-        if (isAttacking) {
-            attackTimer += delta;
-
-            if (attackTimer >= 0.2f && !hasHit) {
-                if (world != null) {
-                    Character target = world.getNearestEnemy(this, range);
-                    if (target != null && !target.isDead && target != this) {
-                        attack(target);
-                        hasHit = true;
-                    }
-                }
-            }
-
-
-            if (attackTimer >= attackCooldown) {
-                isAttacking = false;
-                attack = "";
-                setAnimation("idle");
-            } else {
-                setAnimation(attack);
-            }
-
-
-            applyGravity(delta);
-            moveAndCollide(0, velocityY * delta);
-            return;
-        }
-
-        if (isPlayerControlled) {
-            handleInput(delta);
-        } else {
-            handleAI(delta);
-        }
-
-
-        applyGravity(delta);
-        updateAnimationState();
-        updateHitbox();
-//        updateBounds();
-
-
-    }
-
     protected void handleInput(float delta) {
         float moveX = 0;
 
@@ -315,28 +235,114 @@ public abstract class Character extends Entity {
         bounds.setPosition(position);
     }
 
+
+    @Override
+    public void update(float delta) {
+        stateTime += delta;
+
+        if (isDead) {
+            Animation<TextureRegion> deadAnim = animations.get("dead");
+
+            if (deadAnim != null && !deadAnim.isAnimationFinished(stateTime)) {
+                setAnimation("dead");
+            }
+
+            deadTimer += delta;
+
+            if (deadTimer >= deadDuration) {
+                readyToRemove = true;
+            }
+
+            velocityY = 0;
+            return;
+        }
+
+        if (isHurt) {
+            hurtTimer -= delta;
+            setAnimation("hurt");
+
+            if (hurtTimer <= 0) {
+                isHurt = false;
+            }
+
+            applyGravity(delta);
+            moveAndCollide(0, velocityY * delta);
+            return;
+        }
+
+        if (isAttacking) {
+            attackTimer += delta;
+
+            if (attackTimer >= 0.2f && !hasHit) {
+                if (world != null) {
+                    Character target = world.getNearestEnemy(this, range);
+                    if (target != null && !target.isDead && target != this) {
+                        attack(target);
+                        hasHit = true;
+                    }
+                }
+            }
+
+            if (attackTimer >= attackCooldown) {
+                isAttacking = false;
+                attack = "";
+            } else {
+                setAnimation(attack);
+            }
+
+            applyGravity(delta);
+            moveAndCollide(0, velocityY * delta);
+            return;
+        }
+
+        if (isPlayerControlled) {
+            handleInput(delta);
+        } else {
+            handleAI(delta);
+        }
+
+        applyGravity(delta);
+        updateAnimationState();
+        updateHitbox();
+    }
+
     protected void updateAnimationState() {
+
+
+        if (attack.equals("attack")) {
+            startAttack("attack");
+            return;
+        } else if (attack.equals("attack2")) {
+            startAttack("attack2");
+            return;
+        } else if (attack.equals("attack3")) {
+            startAttack("attack3");
+            return;
+        } else if (attack.equals("attack4")) {
+            startAttack("attack4");
+            return;
+        }
+
+        // 2. Protection
+        if (isProtected) {
+            setAnimation("protect");
+            isProtected = false;
+            return;
+        }
 
         if (!onGround) {
             setAnimation("jump");
-
-        } else if (Math.abs(velocityY) < 10 && isMovingHorizontally()) {
-
-            setAnimation("walk");
-        } else if (attack.equals("attack")) {
-            startAttack("attack");
-        } else if (attack.equals("attack2")) {
-            startAttack("attack2");
-        } else if (attack.equals("attack3")) {
-            startAttack("attack3");
-        } else if (attack.equals("attack4")) {
-            startAttack("attack4");
-        } else if (isProtected) {
-            setAnimation("protect");
-            isProtected = false;
-        } else {
-            setAnimation("idle");
+            return;
         }
+
+
+        if (isMovingHorizontally()) {
+            setAnimation("walk");
+            return;
+        }
+
+
+        setAnimation("idle");
     }
 
     protected void startAttack(String type) {

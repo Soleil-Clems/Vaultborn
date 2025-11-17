@@ -6,10 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.mobs.Gorgon;
 import com.vaultborn.entities.characters.mobs.Minotaur;
 import com.vaultborn.entities.characters.mobs.Mob;
-import com.vaultborn.entities.characters.players.DarkMage;
-import com.vaultborn.entities.characters.players.Player;
-import com.vaultborn.entities.characters.players.Satyr;
-import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.characters.players.*;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.entities.stuff.weapon.Sword;
@@ -22,19 +19,25 @@ public class Factory {
 
     private final AssetManager assetsManager;
     private TextureRegion warriorRegion;
+    private TextureRegion darkwarriorRegion;
     private TextureRegion satyrRegion;
     private TextureRegion gorgonRegion;
     private TextureRegion minotaurRegion;
     private TextureRegion swordRegion;
     private TextureRegion darkMageRegion;
+    private TextureRegion lightMageRegion;
+    private TextureRegion archerRegion;
     private TextureRegion specialDoorRegion;
 
     public Factory() {
         assetsManager = new AssetManager();
 
         warriorRegion = new TextureRegion(new Texture("warrior/Idle.png"));
+        darkwarriorRegion = new TextureRegion(new Texture("darkwarrior/Idle.png"));
         satyrRegion = new TextureRegion(new Texture("satyr/Idle.png"));
+        archerRegion = new TextureRegion(new Texture("archer/Idle.png"));
         darkMageRegion = new TextureRegion(new Texture("darkmage/Idle.png"));
+        lightMageRegion = new TextureRegion(new Texture("lightmage/Idle.png"));
         gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
         minotaurRegion = new TextureRegion(new Texture("minotaur/Idle.png"));
         swordRegion = new TextureRegion(new Texture("objects/weapons/sword.png"));
@@ -48,7 +51,16 @@ public class Factory {
                 player.loadAnimations();
                 player.setWorld(world);
                 return player;
-
+            case "darkwarrior":
+                DarkWarrior darkWarrior = new DarkWarrior(new Vector2(x, y), darkwarriorRegion);
+                darkWarrior.loadAnimations();
+                darkWarrior.setWorld(world);
+                return darkWarrior;
+            case "archer":
+                Archer archer = new Archer(new Vector2(x, y), archerRegion);
+                archer.loadAnimations();
+                archer.setWorld(world);
+                return archer;
             case "satyr":
                 Satyr satyr = new Satyr(new Vector2(x, y), satyrRegion);
                 satyr.loadAnimations();
@@ -59,6 +71,11 @@ public class Factory {
                 darkMage.loadAnimations();
                 darkMage.setWorld(world);
                 return darkMage;
+            case "lightmage":
+                LightMage lightMage = new LightMage(new Vector2(x, y), lightMageRegion);
+                lightMage.loadAnimations();
+                lightMage.setWorld(world);
+                return lightMage;
             default:
                 throw new IllegalArgumentException("Unknown player type: " + type);
         }

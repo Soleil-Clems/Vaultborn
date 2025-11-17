@@ -301,8 +301,5 @@
  </tile>
  <tile id="49">
   <image source="tile36.png" width="64" height="64"/>
-  <properties>
-   <property name="blocked" type="bool" value="true"/>
-  </properties>
  </tile>
 </tileset>

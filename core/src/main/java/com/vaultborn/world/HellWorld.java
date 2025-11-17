@@ -2,9 +2,7 @@ package com.vaultborn.world;
 
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.mobs.Gorgon;
-import com.vaultborn.entities.characters.players.DarkMage;
-import com.vaultborn.entities.characters.players.Satyr;
-import com.vaultborn.entities.characters.players.Warrior;
+import com.vaultborn.entities.characters.players.*;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 
@@ -20,8 +18,12 @@ public class HellWorld extends BaseWorld {
     protected void initPlayer() {
 
 //        player = (Warrior) factory.createPlayer("warrior", 500, 3800, this);
+//        player = (DarkWarrior) factory.createPlayer("darkwarrior", 500, 3800, this);
 //        player = (Satyr) factory.createPlayer("satyr", 500, 3800, this);
         player = (DarkMage) factory.createPlayer("darkmage", 500, 3800, this);
+//        player = (LightMage) factory.createPlayer("lightmage", 500, 3800, this);
+//        player = (Archer) factory.createPlayer("archer", 450, 800, this);
+
     }
 
     @Override
@@ -110,7 +112,7 @@ public class HellWorld extends BaseWorld {
 
     @Override
     protected void initObjects() {
-        gameObjects.add(factory.createObject("sword", 3200, 4200, this));
+        gameObjects.add(factory.createObject("sword", 3100, 4200, this));
         gameObjects.add(factory.createObject("sword", 4100, 2500, this));
         gameObjects.add(factory.createObject("sword", 3050, 1750, this));
         gameObjects.add(factory.createObject("sword", 450, 1400, this));
