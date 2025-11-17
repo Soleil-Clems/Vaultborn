@@ -19,7 +19,7 @@ import com.vaultborn.world.ForestWorld;
 import java.util.List;
 
 
-public class MenuScreen{
+public class MenuScreen {
 
     protected MainGame game;
     protected Stage stage;
@@ -27,9 +27,10 @@ public class MenuScreen{
     protected List<String> element;
     private boolean activated;
     private Table table;
+    private boolean settings = false;
 
 
-    public MenuScreen(MainGame game,Skin skin,List<String> element){
+    public MenuScreen(MainGame game, Skin skin, List<String> element) {
         this.game = game;
         this.skin = skin;
         this.element = element;
@@ -40,60 +41,87 @@ public class MenuScreen{
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
-        for (String e : element){
+        for (String e : element) {
             TextButton Button = new TextButton(e, skin);
             Button.getLabel().setFontScale(2f);
-            table.add(Button).pad(10).width(500).height(Gdx.graphics.getHeight()*0.2f).row();
+            table.add(Button).pad(10).width(500).height(Gdx.graphics.getHeight() * 0.2f).row();
 
             Button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-
-                onClick(e);
+                    onClick(e);
                 }
-                });
+            });
         }
     }
-    public boolean isActivated(){
+
+    public boolean isActivated() {
         return activated;
     }
-    public Stage getStage(){
+
+    public Stage getStage() {
         return stage;
     }
-    public void setActivated(boolean a){
+
+    public void setActivated(boolean a) {
         this.activated = a;
     }
 
-    public void onClick(String name){
+    public boolean isSettings() {
+        return settings;
+    }
+
+    public void setSettings(boolean a) {
+        this.settings = a;
+    }
+
+
+    public void onClick(String name) {
         switch (name) {
-            case "Jouer" :
+            case "Jouer":
 //                BaseWorld world = new HellWorld();
                 BaseWorld world = new ForestWorld(game);
                 game.setScreen(new GameScreen(game, world));
                 break;
-            case "Continuer" :
+            case "Continuer":
                 this.activated = !this.activated;
                 break;
             case "Parametres":
+                this.settings = !this.settings;
                 break;
-            case "Exit" :
+            case "Exit":
                 Gdx.app.exit();
                 break;
             default:
                 break;
         }
     }
+
     public void rdMenu(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
         stage.draw();
     }
-    public void dpMenu(){stage.dispose(); skin.dispose();}
 
-    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
-    public void shMenu() {}
-    public void pMenu() {}
-    public void rMenu() {}
-    public void hMenu() {}
+    public void dpMenu() {
+        stage.dispose();
+        skin.dispose();
+    }
+
+    public void rsMenu(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
+    public void shMenu() {
+    }
+
+    public void pMenu() {
+    }
+
+    public void rMenu() {
+    }
+
+    public void hMenu() {
+    }
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.vaultborn.MainGame;
+import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.factories.Factory;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
@@ -31,6 +32,7 @@ public class GameScreen implements Screen {
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
+    private SettingScreen SettingMenuScreen;
 
     public GameScreen(MainGame game, BaseWorld world) {
         this.game = game;
@@ -43,6 +45,11 @@ public class GameScreen implements Screen {
         this.world.setScreen(this);
         factory = new Factory();
 
+        if(world.getPlayer() instanceof Player){
+            inv.setPlayer(world.getPlayer());
+            world.getPlayer().setInventory(inv);
+        }
+        SettingMenuScreen = new SettingScreen(game, btnSkin);
 
     }
 
@@ -66,9 +73,17 @@ public class GameScreen implements Screen {
             Gdx.input.setInputProcessor(null);
 
         } else {
-            PauseMenuScreen.rdMenu(delta);
-            Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
-            if(inv.isShowInventory()){inv.setShowInventory(false);}
+            if(!SettingMenuScreen.isActivated()){
+                SettingMenuScreen.setActivated(PauseMenuScreen.isSettings());
+                PauseMenuScreen.rdMenu(delta);
+                Gdx.input.setInputProcessor(PauseMenuScreen.getStage());
+                if(inv.isShowInventory()){inv.setShowInventory(false);inv.InventoryReload();}
+            }
+            else{
+                PauseMenuScreen.setSettings(false);
+                Gdx.input.setInputProcessor(SettingMenuScreen.getStage());
+                SettingMenuScreen.rdMenu(delta);
+            }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             PauseMenuScreen.setActivated(!PauseMenuScreen.isActivated());

@@ -95,7 +95,7 @@ public abstract class Armor extends GameObject {
     }
 
     @Override
-    public void pickUp(Character character) {
+    public void pickUp(Player character) {
         if (character instanceof Player) {
            character.setAgility(this.agility+ character.getAgility());
         }

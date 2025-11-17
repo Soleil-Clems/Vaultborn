@@ -1,4 +1,5 @@
 package com.vaultborn.entities.stuff.weapon;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
+import com.vaultborn.screens.InventoryPlayer;
 import com.vaultborn.world.BaseWorld;
 
 
@@ -17,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class Weapon extends GameObject implements Stuff{
+public abstract class Weapon extends GameObject implements Stuff {
     protected String type;
     protected String name;
     protected int durability;
@@ -30,7 +32,7 @@ public abstract class Weapon extends GameObject implements Stuff{
 
 
     //weapon sans specialPerk
-    public Weapon(Vector2 position, TextureRegion texture, String type){
+    public Weapon(Vector2 position, TextureRegion texture, String type) {
         super(position, texture);
         this.type = type;
         this.name = type;
@@ -38,47 +40,71 @@ public abstract class Weapon extends GameObject implements Stuff{
         this.specialPerk = null;
 
     }
+
     //weapon avec specialPerk
-    public Weapon(Vector2 position, TextureRegion texture, String type,String specialPerk){
+    public Weapon(Vector2 position, TextureRegion texture, String type, String specialPerk) {
         super(position, texture);
         this.type = type;
         this.name = type;
         this.durability = 100;
         this.specialPerk = specialPerk;
     }
+
     //getter
     @Override
-    public String getName(){return this.name;}
-    @Override
-    public String getType(){return this.type;}
-    @Override
-    public int getDurability(){return this.durability;}
-    @Override
-    public String getSpecialPerk(){return this.specialPerk;}
+    public String getName() {
+        return this.name;
+    }
 
-    public int getDamage(){return this.damage;}
-    public int getRange(){return this.range;}
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    @Override
+    public int getDurability() {
+        return this.durability;
+    }
+
+    @Override
+    public String getSpecialPerk() {
+        return this.specialPerk;
+    }
+
+    public int getDamage() {
+        return this.damage;
+    }
+
+    public int getRange() {
+        return this.range;
+    }
 
     //setter
-    public void setDurability(){this.durability -=1;}
-    public void setDamage(int damage){this.damage =damage;}
-    public void setRange(int range){this.range =range;}
+    public void setDurability() {
+        this.durability -= 1;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
 
     //les différente special perk possible pour les armes
-    public void Bonus(String specialPerk){
-        if (specialPerk.equals(null)){
+    public void Bonus(String specialPerk) {
+        if (specialPerk.equals(null)) {
             return;
-        }
-        else{
-            if (specialPerk.equals("fire")){
+        } else {
+            if (specialPerk.equals("fire")) {
                 // réduit les dagat de 10% mais faire un tic de 5% des dégat/sec pour 5 sec
                 return;
-            }
-            else if (specialPerk.equals("unbreakable")){
+            } else if (specialPerk.equals("unbreakable")) {
                 // toujours this.durability = 100;
                 return;
             }
-            if (specialPerk.equals("moreRange")){
+            if (specialPerk.equals("moreRange")) {
 
                 // augmente la range de 0.2 this.range = Math.round(this.range*1.2f);
                 return;
@@ -97,11 +123,13 @@ public abstract class Weapon extends GameObject implements Stuff{
     }
 
     @Override
-    public void pickUp(Character character) {
-        if (character instanceof Player) {
-            character.setDamage(this.damage+ character.getDamage());
-            /*this.inventoryPlayer.addInventory(this);*/
-        }
+    public void pickUp(Player character) {
+
+//        character.setDamage(this.damage + character.getDamage());
+        /*this.inventoryPlayer.addInventory(this);*/
+        InventoryPlayer inv = character.getInventory();
+        inv.addInventory(this);
+
     }
 
     public void setWorld(BaseWorld world) {

@@ -298,6 +298,7 @@ public abstract class Character extends Entity {
             if (attackTimer >= 0.2f && !hasHit) {
                 if (world != null) {
                     Character target = world.getNearestEnemy(this, range);
+                    if(!(target instanceof Player)){mob = (Mob) target;}
                     if (target != null && !target.isDead && target != this) {
                         attack(target);
                         hasHit = true;

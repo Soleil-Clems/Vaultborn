@@ -70,7 +70,7 @@ public class SpecialDoor extends GameObject {
     }
 
     @Override
-    public void pickUp(Character character) {
+    public void pickUp(Player character) {
 
     }
 
