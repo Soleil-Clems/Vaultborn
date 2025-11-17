@@ -4,12 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.vaultborn.world.BaseWorld;
 
 public abstract class Entity {
     protected Vector2 position;
     protected Vector2 velocity;
     protected TextureRegion texture;
     protected Rectangle bounds;
+    public BaseWorld world;
 
     public Entity(Vector2 position, TextureRegion texture) {
         this.position = position;
@@ -31,6 +33,10 @@ public abstract class Entity {
     public abstract void render(SpriteBatch batch);
     public Rectangle getBounds() { return bounds; }
 
+    public void updateBounds() {
+        bounds.setPosition(position.x, position.y);
+    }
+
     public Vector2 getPosition() { return position; }
     public void setPosition(Vector2 position) {
         this.position = position;
@@ -40,6 +46,9 @@ public abstract class Entity {
     public TextureRegion getTexture() { return texture; }
     public void setTexture(TextureRegion texture) { this.texture = texture; }
 
+    public void setWorld(BaseWorld world) {
+        this.world = world;
+    }
 
 
 }
