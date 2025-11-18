@@ -33,6 +33,7 @@ public class GameScreen implements Screen {
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     private SettingScreen SettingMenuScreen;
+    private SelectPlayerScreen selectPlayerScreen;
 
     public GameScreen(MainGame game, BaseWorld world) {
         this.game = game;
@@ -45,17 +46,18 @@ public class GameScreen implements Screen {
         this.world.setScreen(this);
         factory = new Factory();
 
-        if(world.getPlayer() instanceof Player){
+        if(world.getPlayer() != null){
             inv.setPlayer(world.getPlayer());
             world.getPlayer().setInventory(inv);
         }
         SettingMenuScreen = new SettingScreen(game, btnSkin);
+        selectPlayerScreen = new SelectPlayerScreen(game, btnSkin);
 
     }
 
     @Override
     public void render(float delta) {
-
+        if(world.getPlayer().isDead){game.setScreen(new GameOverScreen(game));}
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

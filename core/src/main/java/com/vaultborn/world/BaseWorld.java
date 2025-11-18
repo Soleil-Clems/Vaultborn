@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.Character;
+import com.vaultborn.entities.characters.mobs.Gorgon;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.characters.players.Warrior;
@@ -31,6 +32,8 @@ import java.util.List;
 public abstract class BaseWorld {
     private float damageTimer = 0f;
     private float damageCooldown = 0.5f;
+    private Class<?> boss = Gorgon.class;
+    private boolean isDeadBoss = false;
 
     protected final AssetManager assetsManager;
     protected final Factory factory;
@@ -63,7 +66,7 @@ public abstract class BaseWorld {
         this.game = game;
         loadMap();
         initCameras();
-        initPlayer();
+//        initPlayer();
         initMobs();
         initObjects();
     }
@@ -97,13 +100,27 @@ public abstract class BaseWorld {
         uiCamera.update();
     }
 
+
     protected void initPlayer() {
-        player = (Warrior) factory.createPlayer("warrior", 350, 800, this);
+        if (game.player != null) {
+            this.player = game.player;
+            this.player.setWorld(this);
+        } else {
+            System.out.println("⚠ initPlayer(): aucun joueur trouvé (normal si monde créé avant selection)");
+        }
     }
 
     protected abstract void initMobs();
 
     protected abstract void initObjects();
+
+    public void setBoss(Class<?> boss) {
+        this.boss = boss;
+    }
+
+    public Class<?> getBoss() {
+        return boss;
+    }
 
     public void update(float delta) {
         player.update(delta);
@@ -116,6 +133,9 @@ public abstract class BaseWorld {
             mob.update(delta);
             if (mob.isDead && mob.getAnimation("dead") != null &&
                 mob.getAnimation("dead").isAnimationFinished(mob.stateTime)) {
+                if (boss.isInstance(mob)) {
+                    isDeadBoss = true;
+                }
                 it.remove();
             }
         }
@@ -139,13 +159,13 @@ public abstract class BaseWorld {
             if (obj instanceof SpecialDoor) {
                 SpecialDoor door = (SpecialDoor) obj;
 
-                if (mobs.isEmpty()) {
-                    door.setAnimation("open");
-                }
 
-                if (door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
-                    changeToWorld(door.getTargetWorld());
-                    break;
+                if (isDeadBoss) {
+                    door.setAnimation("open");
+                    if (door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
+                        changeToWorld(door.getTargetWorld(), door.getSpawnPosition());
+                        break;
+                    }
                 }
             }
         }
@@ -302,14 +322,14 @@ public abstract class BaseWorld {
 
         boolean nearDamage =
             isCellDamaging(px - margin, py - margin) ||
-                isCellDamaging(px + cw/2, py - margin) ||
+                isCellDamaging(px + cw / 2, py - margin) ||
                 isCellDamaging(px + cw + margin, py - margin) ||
-                isCellDamaging(px - margin, py + ch/2) ||
-                isCellDamaging(px + cw + margin, py + ch/2) ||
+                isCellDamaging(px - margin, py + ch / 2) ||
+                isCellDamaging(px + cw + margin, py + ch / 2) ||
                 isCellDamaging(px - margin, py + ch + margin) ||
-                isCellDamaging(px + cw/2, py + ch + margin) ||
+                isCellDamaging(px + cw / 2, py + ch + margin) ||
                 isCellDamaging(px + cw + margin, py + ch + margin) ||
-                isCellDamaging(px + cw/2, py + ch/2);
+                isCellDamaging(px + cw / 2, py + ch / 2);
 
         if (nearDamage) {
             character.takeDamage(1);
@@ -376,6 +396,14 @@ public abstract class BaseWorld {
         return player;
     }
 
+    public Player setPlayer(Player player) {
+        this.player = player;
+        if (player != null) {
+            player.setWorld(this);
+        }
+        return player;
+    }
+
     public void dispose() {
         assetsManager.dispose();
         map.dispose();
@@ -386,11 +414,20 @@ public abstract class BaseWorld {
         this.screen = screen;
     }
 
-    public void changeToWorld(BaseWorld newWorld) {
+    public void changeToWorld(BaseWorld newWorld, Vector2 spawnPosition) {
         if (screen != null) {
+            newWorld.setPlayer(this.player);
+            newWorld.game.player = this.player;
+            this.player.setWorld(newWorld);
+
+            if (spawnPosition != null) {
+                this.player.getPosition().set(spawnPosition);
+            }
+
             screen.changeWorld(newWorld);
         }
     }
+
 
     public boolean isMobAt(Vector2 pos, Mob self) {
         for (Mob mob : mobs) {

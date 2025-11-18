@@ -14,20 +14,17 @@ public class ForestWorld extends BaseWorld {
     public ForestWorld(MainGame game) {
         super(game,"LavaMap/map", "backgrounds/background_hell.png");
         this.game = game;
+        setBoss(Gorgon.class);
     }
 
-    @Override
-    protected void initPlayer() {
-//        player = (Warrior) factory.createPlayer("warrior", 450, 800, this);
-//        player = (DarkMage) factory.createPlayer("darkMage", 450, 800, this);
-//        player = (LightMage) factory.createPlayer("lightMage", 450, 800, this);
-        player = (Archer) factory.createPlayer("archer", 450, 800, this);
-    }
+
 
     @Override
     protected void initMobs() {
         mobs.add(factory.createMob("gorgon", 730, 580, this));
         mobs.add(factory.createMob("minotaur", 600, 580, this));
+        mobs.add(factory.createMob("yokai", 450, 580, this));
+        mobs.add(factory.createMob("tengu", 650, 580, this));
     }
 
     @Override
@@ -36,7 +33,7 @@ public class ForestWorld extends BaseWorld {
 
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 460, 560, this, game.hellWorld);
         door.setParentWorld(this);
-//        door.setTargetWorld(game.hellWorld);
+        door.setSpawnPosition(550, 3800); // Position d'arrivée dans HellWorld
         gameObjects.add(door);
     }
 

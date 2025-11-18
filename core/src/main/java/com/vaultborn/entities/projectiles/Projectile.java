@@ -33,8 +33,8 @@ public class Projectile extends Entity {
         this.velocity = dir.scl(speed);
 
         TextureRegion[][] tmp = TextureRegion.split(texture.getTexture(), texture.getRegionWidth() / chargeFrameCount, texture.getRegionHeight());
-        TextureRegion[] frames = new TextureRegion[chargeFrameCount]; // ← Changé de 8 à chargeFrameCount
-        for (int i = 0; i < chargeFrameCount; i++) frames[i] = tmp[0][i]; // ← Boucle jusqu'à chargeFrameCount
+        TextureRegion[] frames = new TextureRegion[chargeFrameCount];
+        for (int i = 0; i < chargeFrameCount; i++) frames[i] = tmp[0][i];
         animation = new Animation<>(0.09f, frames);
 
         bounds.setSize(projectileWidth, projectileHeight);
@@ -71,7 +71,14 @@ public class Projectile extends Entity {
                     boolean isInCorrectDirection = (facingRight && dx > 0) || (!facingRight && dx < 0);
 
                     if (isInCorrectDirection) {
+                        int oldHp = mob.getHp();
                         mob.takeDamage(damage);
+                        if (oldHp > 0 && mob.getHp() <= 0) {
+                            if (world.getPlayer() != null) {
+                                world.getPlayer().expGain(mob.giveExp());
+                            }
+                            mob.isDead = true;
+                        }
                         toRemove = true;
                         break;
                     }

@@ -36,13 +36,6 @@ public class Sword extends Weapon{
     }
 
 
-//    @Override
-//    public void pickUp(Character character) {
-//        if (character instanceof Player) {
-//            character.setDamage(this.damage+ character.getDamage());
-////            this.inventoryPlayer.addInventory(weapon);
-//        }
-//    }
 
 
 }

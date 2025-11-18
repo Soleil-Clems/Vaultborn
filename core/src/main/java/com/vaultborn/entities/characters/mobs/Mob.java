@@ -20,9 +20,9 @@ public abstract class Mob extends Character {
     public Mob(Vector2 position, TextureRegion texture, String name, int lvl, int exp) {
         super(position, texture, name);
         this.isPlayerControlled = false;
-        this.exp = exp*lvl;
+        this.exp = exp * lvl;
         this.lvl = lvl;
-        aiOffset = (float)(Math.random() * 0.5f);
+        aiOffset = (float) (Math.random() * 0.5f);
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class Mob extends Character {
 
         float speed = 100f + aiOffset * 40f;
         float attackRange = 50f;
-        float followRange = 300f+ aiOffset * 20f;
+        float followRange = 300f + aiOffset * 20f;
 
         if (player.getHp() <= 0) {
             setAnimation("idle");
@@ -81,7 +81,7 @@ public abstract class Mob extends Character {
         }
     }
 
-    public int giveExp(){
+    public int giveExp() {
         return exp;
     }
 

@@ -3,9 +3,7 @@ package com.vaultborn.factories;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.vaultborn.entities.characters.mobs.Gorgon;
-import com.vaultborn.entities.characters.mobs.Minotaur;
-import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.mobs.*;
 import com.vaultborn.entities.characters.players.*;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
@@ -27,6 +25,9 @@ public class Factory {
     private TextureRegion darkMageRegion;
     private TextureRegion lightMageRegion;
     private TextureRegion archerRegion;
+    private TextureRegion tenguRegion;
+    private TextureRegion yokaiRegion;
+    private TextureRegion sunmageRegion;
     private TextureRegion specialDoorRegion;
 
     public Factory() {
@@ -36,7 +37,10 @@ public class Factory {
         darkwarriorRegion = new TextureRegion(new Texture("darkwarrior/Idle.png"));
         satyrRegion = new TextureRegion(new Texture("satyr/Idle.png"));
         archerRegion = new TextureRegion(new Texture("archer/Idle.png"));
+        sunmageRegion = new TextureRegion(new Texture("sunmage/Idle.png"));
         darkMageRegion = new TextureRegion(new Texture("darkmage/Idle.png"));
+        tenguRegion = new TextureRegion(new Texture("tengu/Idle.png"));
+        yokaiRegion = new TextureRegion(new Texture("yokai/Idle.png"));
         lightMageRegion = new TextureRegion(new Texture("lightmage/Idle.png"));
         gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
         minotaurRegion = new TextureRegion(new Texture("minotaur/Idle.png"));
@@ -76,6 +80,11 @@ public class Factory {
                 lightMage.loadAnimations();
                 lightMage.setWorld(world);
                 return lightMage;
+            case "sunmage":
+                SunMage sunMage = new SunMage(new Vector2(x, y), sunmageRegion);
+                sunMage.loadAnimations();
+                sunMage.setWorld(world);
+                return sunMage;
             default:
                 throw new IllegalArgumentException("Unknown player type: " + type);
         }
@@ -93,6 +102,16 @@ public class Factory {
                 minotaur.loadAnimations();
                 minotaur.setWorld(world);
                 return minotaur;
+            case "tengu":
+                Tengu tengu = new Tengu(new Vector2(x, y), tenguRegion, 1);
+                tengu.loadAnimations();
+                tengu.setWorld(world);
+                return tengu;
+            case "yokai":
+                Yokai yokai = new Yokai(new Vector2(x, y), yokaiRegion, 1);
+                yokai.loadAnimations();
+                yokai.setWorld(world);
+                return yokai;
             default:
                 throw new IllegalArgumentException("Unknown mob type: " + type);
         }

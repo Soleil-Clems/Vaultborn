@@ -76,12 +76,16 @@ public class MenuScreen {
     }
 
 
+
     public void onClick(String name) {
         switch (name) {
             case "Jouer":
 //                BaseWorld world = new HellWorld();
-                BaseWorld world = new ForestWorld(game);
-                game.setScreen(new GameScreen(game, world));
+//                BaseWorld world = new ForestWorld(game);
+//                game.setScreen(new GameScreen(game, world));
+
+                game.setScreen(new SelectPlayerScreen(game, skin));
+
                 break;
             case "Continuer":
                 this.activated = !this.activated;

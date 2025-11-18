@@ -487,23 +487,10 @@ public class InventoryPlayer {
             this.showInventory = !showInventory;
         }
 
-        //test d'ajout
-        /*if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
-            addInventory(theSword);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            addInventory(theHat);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-            addInventory(theHat2);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            addInventory(theRobe);
-        }*/
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
             applyStat();
         }
-        //reset l'inventaire
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             InventoryItem.clear();
         }
@@ -516,10 +503,6 @@ public class InventoryPlayer {
             }
 
         }
-
-
-
-
 
     }
 

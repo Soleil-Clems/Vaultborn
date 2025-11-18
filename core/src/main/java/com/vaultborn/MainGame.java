@@ -3,6 +3,7 @@ package com.vaultborn;
 import com.badlogic.gdx.Game;
 //import com.vaultborn.screens.GameScreen;
 //import com.vaultborn.screens.MenuScreen;
+import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.screens.GameScreen;
 import com.vaultborn.screens.MainScreen;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -17,6 +18,7 @@ public class MainGame extends Game {
     private static BitmapFont font;
     public BaseWorld hellWorld;
     public BaseWorld forestWorld;
+    public Player player;
 
     @Override
     public void create() {
@@ -30,10 +32,10 @@ public class MainGame extends Game {
         font.getData().markupEnabled = true;
         font.setUseIntegerPositions(false);
 
-        hellWorld = new HellWorld(this);
-        forestWorld = new ForestWorld(this);
-        hellWorld.linkWorlds();
-        forestWorld.linkWorlds();
+//        hellWorld = new HellWorld(this);
+//        forestWorld = new ForestWorld(this);
+//        hellWorld.linkWorlds();
+//        forestWorld.linkWorlds();
 
         setScreen(new MainScreen(this));
     }

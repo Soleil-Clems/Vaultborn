@@ -16,36 +16,48 @@ import java.util.Map;
 
 public class SpecialDoor extends GameObject {
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
-    String currentAnimation = "close";
+    String currentAnimation = "closed";
     private Rectangle triggerZone;
     private BaseWorld parentWorld;
     private BaseWorld targetWorld;
+    private String targetWorldName;
+    private Vector2 spawnPosition;
+    private float stateTime = 0f;
 
     public SpecialDoor(Vector2 position, TextureRegion texture) {
         super(position, texture);
-        float activeWidth = 30;  // largeur réelle de la porte
-        float activeHeight = 60; // hauteur réelle
+        float activeWidth = 30;
+        float activeHeight = 60;
         float x = position.x + (texture.getRegionWidth() - activeWidth) / 2f;
         float y = position.y + (texture.getRegionHeight() - activeHeight); // si porte du bas vers le haut
         triggerZone = new Rectangle(x, y, activeWidth, activeHeight);
-
+        loadAnimations();
 
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x, position.y);
+        Animation<TextureRegion> anim = animations.get(currentAnimation);
+
+        if (anim != null) {
+            TextureRegion frame = anim.getKeyFrame(stateTime, false);
+            batch.draw(frame, position.x, position.y);
+        } else {
+            batch.draw(texture, position.x, position.y); // fallback
+        }
     }
 
     @Override
     public void update(float delta) {
         if (parentWorld == null || targetWorld == null) return;
 
+        stateTime += delta;
+
         Player player = parentWorld.getPlayer();
         if (player == null) return;
 
         if (triggerZone.overlaps(player.getHitbox())) {
-            parentWorld.changeToWorld(targetWorld);
+            parentWorld.changeToWorld(targetWorld, spawnPosition);
         }
     }
 
@@ -72,6 +84,14 @@ public class SpecialDoor extends GameObject {
     @Override
     public void pickUp(Player character) {
 
+    }
+
+    public void setSpawnPosition(float x, float y) {
+        this.spawnPosition = new Vector2(x, y);
+    }
+
+    public Vector2 getSpawnPosition() {
+        return spawnPosition;
     }
 
 
@@ -111,7 +131,7 @@ public class SpecialDoor extends GameObject {
 
 
     public void loadAnimations() {
-        addAnimation("open", new Texture("specialdoor/openeddoor.png"), 1, 0.1f);
+        addAnimation("open", new Texture("specialdoor/openeddoor.png"), 1, 0.12f);
         addAnimation("closed", new Texture("specialdoor/closeddoor.png"), 1, 0.1f);
     }
 

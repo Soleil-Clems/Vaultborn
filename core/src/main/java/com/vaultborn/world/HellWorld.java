@@ -20,10 +20,11 @@ public class HellWorld extends BaseWorld {
 //        player = (Warrior) factory.createPlayer("warrior", 500, 3800, this);
 //        player = (DarkWarrior) factory.createPlayer("darkwarrior", 500, 3800, this);
 //        player = (Satyr) factory.createPlayer("satyr", 500, 3800, this);
-        player = (DarkMage) factory.createPlayer("darkmage", 500, 3800, this);
+//        player = (DarkMage) factory.createPlayer("darkmage", 500, 3800, this);
+//        player = (SunMage) factory.createPlayer("sunmage", 500, 3800, this);
 //        player = (LightMage) factory.createPlayer("lightmage", 500, 3800, this);
 //        player = (Archer) factory.createPlayer("archer", 450, 800, this);
-
+        player = this.getPlayer();
     }
 
     @Override
@@ -120,8 +121,8 @@ public class HellWorld extends BaseWorld {
         gameObjects.add(factory.createObject("sword", 3150, 1050, this));
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 80, 50, this, null);
         door.setParentWorld(this);
-//        door.setTargetWorld(game.forestWorld);
-        gameObjects.add(door);
+        door.setSpawnPosition(500, 580);//  Position d'arrivée dans ForestWorld
+       gameObjects.add(door);
 
     }
 

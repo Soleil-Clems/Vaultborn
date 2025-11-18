@@ -124,9 +124,6 @@ public abstract class Weapon extends GameObject implements Stuff {
 
     @Override
     public void pickUp(Player character) {
-
-//        character.setDamage(this.damage + character.getDamage());
-        /*this.inventoryPlayer.addInventory(this);*/
         InventoryPlayer inv = character.getInventory();
         inv.addInventory(this);
 
