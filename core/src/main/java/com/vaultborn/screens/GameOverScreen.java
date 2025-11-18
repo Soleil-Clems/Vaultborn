@@ -31,7 +31,8 @@ public class GameOverScreen implements Screen{
     private BitmapFont txtFont;
     private BitmapFont btnFont;
 
-    public GameOverScreen(MainGame game){
+    public GameOverScreen(MainGame game,Skin theSkin){
+        this.skin = theSkin;
         this.game = game;
         stage = new Stage(new ScreenViewport());
         //System.out.println(Gdx.files.internal("menu/gameOverFont/Outline Style.ttf").exists());
@@ -62,15 +63,16 @@ public class GameOverScreen implements Screen{
 
         Label.LabelStyle goStyle = new Label.LabelStyle(txtFont, Color.RED);
         Label.LabelStyle txtStyle = new Label.LabelStyle(btnFont, Color.WHITE);
-        TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
+        /*TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
         btnStyle.font = btnFont;
         btnStyle.up = skin.getDrawable("button");
         btnStyle.over = skin.getDrawable("button-over-c");
-        btnStyle.down = skin.getDrawable("button-pressed-c");
+        btnStyle.down = skin.getDrawable("button-pressed-c");*/
+        
 
         Label gameOver = new Label("Game Over", goStyle);
         Label gameOverMessage = new Label("Le Vault a eu raison de toi ...", txtStyle);
-        TextButton btnMainMenu = new TextButton("Menu principal", btnStyle);
+        TextButton btnMainMenu = new TextButton("Menu principal", skin);
         btnMainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {

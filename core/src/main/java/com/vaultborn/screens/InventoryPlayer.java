@@ -49,6 +49,7 @@ import java.lang.SuppressWarnings;
 public class InventoryPlayer {
     private Player player;
     private boolean putIn;
+    private SettingScreen settings;
     Item<? extends Stuff> nonItemEquip = new Item<>(null, Item.Type.EQUIPMENT);
     
     //list
@@ -101,8 +102,9 @@ public class InventoryPlayer {
 
 
     private Pixmap Pix;
-    public InventoryPlayer(boolean testUnit){
-        
+    public InventoryPlayer(boolean testUnit,SettingScreen Settings){
+        this.settings = Settings;
+        skin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
         InventoryItem = new LinkedHashMap<Item<? extends Stuff>,Integer>();
         int count = 0;
         for (int value : nameValueStat.values()){
@@ -330,6 +332,7 @@ public class InventoryPlayer {
     public void InventoryInput(){
         //afficher l'inventaire
         if (Gdx.input.isKeyJustPressed(Input.Keys.I)||reload == true){
+            //skin = settings.getSkin();
             WidthCalculation = Gdx.graphics.getWidth() / 3f;
             HeightCalculation = Gdx.graphics.getHeight()-60;
             long ItemSizeInv = Math.round(Math.sqrt((WidthCalculation*HeightCalculation)/numberOfSlot))-5;

@@ -7,21 +7,22 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
-
+import com.badlogic.gdx.utils.PauseableThread;
 import com.vaultborn.MainGame;
 
 
 public class MainScreen implements Screen{
     private MenuScreen MainMenuScreen;
     private SettingScreen SettingMenuScreen;
+    private MainGame game;
 
     private static final List<String> buttonMain = Arrays.asList("Jouer", "Parametres", "Exit");
     Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     public MainScreen(MainGame game){
+        this.game = game;
         MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);
-        SettingMenuScreen = new SettingScreen(game, btnSkin);
+        SettingMenuScreen = new SettingScreen(game,btnSkin);
     }
 
     @Override public void render(float delta) {
@@ -31,6 +32,7 @@ public class MainScreen implements Screen{
             MainMenuScreen.rdMenu(delta);
         }
         else{
+            MainMenuScreen.reloadMenu(this.game, SettingMenuScreen.getSkin(), buttonMain);
             MainMenuScreen.setSettings(false);
             Gdx.input.setInputProcessor(SettingMenuScreen.getStage());
             SettingMenuScreen.rdMenu(delta);
@@ -39,6 +41,7 @@ public class MainScreen implements Screen{
 
     @Override public void resize(int width, int height) {
         if(!SettingMenuScreen.isActivated()){
+            this.btnSkin = SettingMenuScreen.getSkin();
             MainMenuScreen.rsMenu(width, height);
         }
         else{

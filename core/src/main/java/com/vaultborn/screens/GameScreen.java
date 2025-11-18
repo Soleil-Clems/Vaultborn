@@ -34,24 +34,25 @@ public class GameScreen implements Screen {
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
 
-    public GameScreen(MainGame game) {
+    public GameScreen(MainGame game,Skin skin) {
+        btnSkin = skin;
         this.game = game;
         this.batch = new SpriteBatch();
         this.world = new HellWorld();
 
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
-        inv = new InventoryPlayer(false);
+        SettingMenuScreen = new SettingScreen(game,skin);
+        inv = new InventoryPlayer(false,SettingMenuScreen);
         if(world.getPlayer() instanceof Player){
             inv.setPlayer(world.getPlayer());
             world.getPlayer().setInventory(inv);
         }
-        SettingMenuScreen = new SettingScreen(game, btnSkin);
 
     }
 
     @Override
     public void render(float delta) {
-        if(world.getPlayer().isDead){game.setScreen(new GameOverScreen(game));}
+        if(world.getPlayer().isDead){game.setScreen(new GameOverScreen(game,btnSkin));}
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -70,6 +71,13 @@ public class GameScreen implements Screen {
 
         } else {
             if(!SettingMenuScreen.isActivated()){
+                
+                if(btnSkin != SettingMenuScreen.getSkin()){
+                    this.btnSkin = SettingMenuScreen.getSkin();
+                    PauseMenuScreen.reloadMenu(game,this.btnSkin, buttonPause);
+                    PauseMenuScreen.setActivated(true);
+                    PauseMenuScreen.setSettings(false);
+                }
                 SettingMenuScreen.setActivated(PauseMenuScreen.isSettings());
                 PauseMenuScreen.rdMenu(delta);
                 Gdx.input.setInputProcessor(PauseMenuScreen.getStage());

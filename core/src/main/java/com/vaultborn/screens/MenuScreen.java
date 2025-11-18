@@ -28,6 +28,31 @@ public class MenuScreen{
 
 
     public MenuScreen(MainGame game,Skin skin,List<String> element){
+        createMenu(game, skin, element);
+    }
+    
+    public boolean isActivated(){
+        return activated;
+    }
+    public Stage getStage(){
+        return stage;
+    }
+    public void setActivated(boolean a){
+        this.activated = a;
+    }
+    public boolean isSettings(){
+        return settings;
+    }
+    public void setSettings(boolean a){
+        this.settings = a;
+    }
+
+    public void reloadMenu(MainGame game,Skin skin,List<String> element){
+        createMenu(game, skin, element);
+        this.settings = true;
+    }
+
+    public void createMenu(MainGame game,Skin skin,List<String> element){
         this.game = game;
         this.skin = skin;
         this.element = element;
@@ -54,26 +79,11 @@ public class MenuScreen{
                 });
         }    
     }
-    public boolean isActivated(){
-        return activated;
-    }
-    public Stage getStage(){
-        return stage;
-    }
-    public void setActivated(boolean a){
-        this.activated = a;
-    }
-    public boolean isSettings(){
-        return settings;
-    }
-    public void setSettings(boolean a){
-        this.settings = a;
-    }
 
     public void onClick(String name){
         switch (name) {
             case "Jouer" :
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game,skin));
                 break;
             case "Continuer" :
                 this.activated = !this.activated;
