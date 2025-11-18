@@ -3,6 +3,7 @@ package com.vaultborn.screens;
 import java.util.LinkedHashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 
 import com.vaultborn.MainGame;
 
@@ -30,7 +32,9 @@ public class SettingScreen {
     protected Stage stage;
     protected Skin Globalskin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
     private boolean activated;
+    private Music backgroundMusic;
     private Table SkinTable;
+    private Table SliderTable;
     private Table bottomRightTable;
     LinkedHashMap<String,Skin> SkinList = new LinkedHashMap<String,Skin>(){{
         put("neon",new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json")));
@@ -68,12 +72,14 @@ public class SettingScreen {
         
         this.game = game;
         this.Globalskin = skin;
+        this.backgroundMusic = game.getBackgroundMusic();
         this.activated = false;
         stage = new Stage(new ScreenViewport());
         //initie les inputs
         Gdx.input.setInputProcessor(stage);
         //System.out.println(Gdx.files.internal(skin).exists());
         SkinTable = new Table();
+        SliderTable = new Table();
         bottomRightTable = new Table();
         activateElement();
         
@@ -82,6 +88,7 @@ public class SettingScreen {
 
     public void activateElement(){
         SkinTable.clear();
+        SliderTable.clear();
         bottomRightTable.clear();
         //ensemble des table
         
@@ -122,6 +129,35 @@ public class SettingScreen {
         scrollPane.setForceScroll(false, true); 
         SkinTable.add(scrollPane).width(300).height(250).row();;
 
+
+        //slider musique
+        Table txtSlider = new Table();
+        txtSlider.padTop(10);
+        SkinTable.add(txtSlider).padBottom(10).row();
+        Label txtSkinSlider = new Label("volume de la musique",Globalskin);
+        txtSkinSlider.setFontScale(1.5f);
+        txtSkinSlider.setColor(1, 1, 1, 1);
+        txtSlider.add(txtSkinSlider).row();
+
+        Slider volumeSlider = new Slider(0, 1, 0.1f, false, Globalskin);
+        volumeSlider.setValue(backgroundMusic.getVolume());
+        txtSlider.add(volumeSlider);
+        volumeSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                double volumeDouble = Math.round(volumeSlider.getValue()*10)/10.0;
+                float volumeFloat= (float) volumeDouble;
+                if(backgroundMusic != null){
+                    backgroundMusic.setVolume(volumeFloat);
+                }
+                System.out.println(volumeSlider.getValue());
+
+            }
+        });
+
+        //stage.addActor(SliderTable);
+        //SliderTable.setFillParent(true);
+        //SliderTable.top().padTop(300).center();
 
         //retour bouton
         

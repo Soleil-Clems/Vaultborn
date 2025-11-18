@@ -1,7 +1,8 @@
 package com.vaultborn.screens;
 
 import com.badlogic.gdx.Gdx;
-
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -25,10 +26,15 @@ public class MenuScreen{
     private boolean activated;
     private boolean settings = false;
     private Table table;
-
+    private Music backgroundMusic;
 
     public MenuScreen(MainGame game,Skin skin,List<String> element){
         createMenu(game, skin, element);
+        game.getBackgroundMusic().play();
+    }
+
+    public Music getBackgroundMusic(){
+        return this.backgroundMusic;
     }
     
     public boolean isActivated(){
@@ -103,11 +109,28 @@ public class MenuScreen{
 
         stage.act(delta);
         stage.draw();
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)){
+            System.out.println("up");
+            System.out.println(backgroundMusic.getVolume());
+            double volumeDouble = Math.round((backgroundMusic.getVolume()+0.1f)*10)/10.0;
+            float volumeFloat= (float) volumeDouble;
+            if(volumeFloat>1){volumeFloat=1;}
+            backgroundMusic.setVolume(volumeFloat);
+            }
+            if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)){
+            System.out.println("down");
+            System.out.println(backgroundMusic.getVolume());
+            double volumeDouble = Math.round((backgroundMusic.getVolume()-0.1f)*10)/10.0;
+            float volumeFloat= (float) volumeDouble;
+            if(volumeFloat<0){volumeFloat=0;}
+            backgroundMusic.setVolume(volumeFloat);
+            }
     }
     public void dpMenu(){stage.dispose(); skin.dispose();}   
 
     public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
-    public void shMenu() {}
+    public void shMenu() {
+        }
     public void pMenu() {}
     public void rMenu() {}
     public void hMenu() {}
