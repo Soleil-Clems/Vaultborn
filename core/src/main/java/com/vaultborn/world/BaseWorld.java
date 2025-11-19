@@ -42,6 +42,8 @@ public abstract class BaseWorld {
     protected List<GameObject> gameObjects = new ArrayList<>();
     public List<Projectile> projectiles = new ArrayList<>();
 
+    public int spawnX = 0;
+    public int spawnY = 0;
     protected TiledMap map;
     protected TiledMapTileLayer collisionLayer;
     //    protected TiledMapTileLayer deadLayer;
@@ -52,14 +54,15 @@ public abstract class BaseWorld {
     protected float tileSize;
     protected float mapHeightInPixels;
 
-    protected String levelName;
+    public String levelName;
+    public String mapName;
     protected GameScreen screen;
     protected float oldPosY = 0f;
     protected float timer = 0f;
     public MainGame game;
 
-    public BaseWorld(MainGame game, String levelName, String backgroundPath) {
-        this.levelName = levelName;
+    public BaseWorld(MainGame game, String mapName, String backgroundPath) {
+        this.mapName = mapName;
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
         this.background = new Texture(backgroundPath);
@@ -76,7 +79,7 @@ public abstract class BaseWorld {
     }
 
     protected void loadMap() {
-        map = new TmxMapLoader().load("maps/" + levelName + ".tmx");
+        map = new TmxMapLoader().load("maps/" + mapName + ".tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1f);
 
         collisionLayer = (TiledMapTileLayer) map.getLayers().get("Collision");
@@ -164,6 +167,9 @@ public abstract class BaseWorld {
                     door.setAnimation("open");
                     if (door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
                         door.pickUp(player);
+                        if (game != null) {
+                            game.saveGame();
+                        }
                         changeToWorld(door.getTargetWorld(), door.getSpawnPosition());
 
                         break;
@@ -458,19 +464,25 @@ public abstract class BaseWorld {
     }
 
     public void changeToWorld(BaseWorld newWorld, Vector2 spawnPosition) {
+
+        if (game != null) {
+            game.saveGame();
+        }
+
+        newWorld.setPlayer(this.player);
+        game.player = this.player;
+        this.player.setWorld(newWorld);
+
+        if (spawnPosition != null) {
+            this.player.getPosition().set(spawnPosition);
+        }
+
         if (screen != null) {
-            newWorld.setPlayer(this.player);
-            newWorld.game.player = this.player;
-            this.player.setWorld(newWorld);
-
-            if (spawnPosition != null) {
-                this.player.getPosition().set(spawnPosition);
-            }
-
             screen.changeWorld(newWorld);
         }
-    }
 
+        game.currentWorld = newWorld;
+    }
 
     public boolean isMobAt(Vector2 pos, Mob self) {
         for (Mob mob : mobs) {
