@@ -200,7 +200,7 @@ public class SelectPlayerScreen implements Screen {
         game.player.setInventory(inv);
         inv.setPlayer(game.player);
 
-        game.setScreen(new GameScreen(game, game.forestWorld));
+        game.setScreen(new GameScreen(game, game.forestWorld,skin));
     }
 
     @Override

@@ -35,7 +35,7 @@ public abstract  class Player extends Character {
 
     @Override
     public void attack(Character target) {
-        attackSound.play(1f);
+        attackSound.play(0.5f);
         if (target == null) {
             return;
         }
@@ -56,7 +56,7 @@ public abstract  class Player extends Character {
         stateTime = 0f;
         velocityY = 0f;
         setAnimation("dead");
-        gameOverSound.play(1f);
+        gameOverSound.play(0.5f);
 
     }
 

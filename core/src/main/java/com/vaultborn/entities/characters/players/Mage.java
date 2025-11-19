@@ -19,7 +19,7 @@ public abstract  class Mage extends Player {
 
     @Override
     public void attack(Character target) {
-        attackSound.play(1f);
+        attackSound.play(0.5f);
 
         if (world == null) {
             return;
