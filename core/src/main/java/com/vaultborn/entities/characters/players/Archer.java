@@ -26,7 +26,7 @@ public class Archer extends Mage{
 
     @Override
     public void attack(Character target) {
-        attackSound.play(1f);
+        attackSound.play(0.5f);
 
         if (world == null) {
             return;

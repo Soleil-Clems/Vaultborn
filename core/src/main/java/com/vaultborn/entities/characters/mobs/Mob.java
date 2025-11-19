@@ -29,6 +29,7 @@ public abstract class Mob extends Character {
 
     }
 
+    
     @Override
     protected void handleAI(float delta) {
         if (world == null || world.getPlayer() == null) {
@@ -130,7 +131,7 @@ public abstract class Mob extends Character {
         velocityY = 0f;
         setAnimation("dead");
         if (isBoss) {
-            gameOverSound.play(1f);
+            gameOverSound.play(0.5f);
         }
 
     }

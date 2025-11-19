@@ -150,6 +150,7 @@ public class SettingScreen {
                 if(backgroundMusic != null){
                     backgroundMusic.setVolume(volumeFloat);
                 }
+
                 System.out.println(volumeSlider.getValue());
 
             }
