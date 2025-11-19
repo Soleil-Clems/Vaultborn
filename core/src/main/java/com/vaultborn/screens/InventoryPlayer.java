@@ -425,6 +425,7 @@ public class InventoryPlayer {
                                     nameValueStat.replace(statName,nameValueStat.get(statName)+1);
                                     statExploitable.set(getIndexKeyStat(name)-4,statExploitable.get(getIndexKeyStat(name)-4)+1);
                                     InventoryReload();
+                                    if(name.equals("HP")){player.setHp(player.getHp()+10);}
                                 }
                             }
                         });
