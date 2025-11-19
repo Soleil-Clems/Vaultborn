@@ -1,5 +1,7 @@
 package com.vaultborn.entities.stuff.trigger;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,6 +25,7 @@ public class SpecialDoor extends GameObject {
     private String targetWorldName;
     private Vector2 spawnPosition;
     private float stateTime = 0f;
+    protected Sound teleportationSound;
 
     public SpecialDoor(Vector2 position, TextureRegion texture) {
         super(position, texture);
@@ -32,6 +35,8 @@ public class SpecialDoor extends GameObject {
         float y = position.y + (texture.getRegionHeight() - activeHeight); // si porte du bas vers le haut
         triggerZone = new Rectangle(x, y, activeWidth, activeHeight);
         loadAnimations();
+        teleportationSound = Gdx.audio.newSound(Gdx.files.internal("sounds/teleportation.mp3"));
+
 
     }
 
@@ -83,6 +88,7 @@ public class SpecialDoor extends GameObject {
 
     @Override
     public void pickUp(Player character) {
+        teleportationSound.play(1f);
 
     }
 

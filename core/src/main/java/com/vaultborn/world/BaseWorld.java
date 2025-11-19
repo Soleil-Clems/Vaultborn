@@ -163,7 +163,9 @@ public abstract class BaseWorld {
                 if (isDeadBoss) {
                     door.setAnimation("open");
                     if (door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
+                        door.pickUp(player);
                         changeToWorld(door.getTargetWorld(), door.getSpawnPosition());
+
                         break;
                     }
                 }
@@ -183,15 +185,56 @@ public abstract class BaseWorld {
     }
 
     protected void updateCamera() {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-
-        float cameraX = player.getPosition().x + 100;
-        float cameraY = 730f;
-        cameraY = Math.max(cameraY, h / 2f);
+        float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime(); // ← tu avais oublié ça !
 
 
-        worldCamera.position.set(cameraX, cameraY, 0);
+        float CamOffsetY = 220f;
+        float CamOffsetX = 50f;
+        float CamSpeedFast = 5f;
+        float CamSpeedSlow = 3f;
+        float DeadZoneYUp = 100f;
+        float DeadZoneX = 170f;
+
+        float camX = worldCamera.position.x;
+        float camY = worldCamera.position.y;
+
+        float targetX = player.getPosition().x + CamOffsetX;
+        float targetY = player.getPosition().y + CamOffsetY;
+
+        float diffX = targetX - camX;
+        float diffY = targetY - camY;
+
+        if (Math.abs(diffX) > DeadZoneX) {
+            camX += (diffX - Math.signum(diffX) * DeadZoneX) * CamSpeedFast * delta;
+        } else {
+            camX += diffX * CamSpeedSlow * delta;
+        }
+
+        float diffPosY = oldPosY - player.getPosition().y;
+        oldPosY = player.getPosition().y;
+
+        boolean isFalling = diffPosY > 0;
+
+        if (!isFalling) {
+            if (diffY > DeadZoneYUp + 10) {
+                camY += (diffY - Math.signum(diffY) * DeadZoneYUp) * CamSpeedFast * delta;
+            } else {
+                camY += diffY * CamSpeedSlow * delta;
+            }
+            timer = 0;
+        } else {
+            timer += delta;
+            if (timer > 0.4f && timer < 1.8f) {
+                camY += diffY * CamSpeedFast * delta;
+            } else if (timer >= 1.8f) {
+                camY += diffY * CamSpeedFast * delta - 30f;
+            } else {
+                camY += diffY * CamSpeedSlow * delta;
+            }
+        }
+
+        worldCamera.position.x = camX;
+        worldCamera.position.y = camY;
         worldCamera.update();
     }
 

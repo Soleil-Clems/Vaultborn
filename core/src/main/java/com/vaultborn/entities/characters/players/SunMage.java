@@ -12,7 +12,7 @@ import com.vaultborn.entities.characters.Character;
 public class SunMage extends Mage {
 
     public SunMage(Vector2 position, TextureRegion texture) {
-        super(position, texture, "Moon");
+        super(position, texture, "Monet");
         this.maxHp = 100;
         this.hp = this.maxHp;
         this.damage = 30;
@@ -29,6 +29,8 @@ public class SunMage extends Mage {
 
     @Override
     protected void handleInput(float delta) {
+        attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/power.mp3"));
+
         this.charge = "sunmage/Fire_1.png";
         this.chargeFrameCount = 14;
         float moveX = 0;
@@ -50,6 +52,8 @@ public class SunMage extends Mage {
             attack = "attack2";
             this.charge = "sunmage/Fire_2.png";
             this.chargeFrameCount = 11;
+            attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/power2.mp3"));
+
         }
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) attack = "attack3";
 

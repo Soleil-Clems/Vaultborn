@@ -1,5 +1,7 @@
 package com.vaultborn.entities.stuff.weapon;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,6 +13,7 @@ import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
+import com.vaultborn.managers.AssetManager;
 import com.vaultborn.screens.InventoryPlayer;
 import com.vaultborn.world.BaseWorld;
 
@@ -28,6 +31,8 @@ public abstract class Weapon extends GameObject implements Stuff {
     protected int range;
     protected Character character;
     public BaseWorld world;
+    private AssetManager assets;
+    protected Sound pickUpSound;
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
 
 
@@ -38,6 +43,7 @@ public abstract class Weapon extends GameObject implements Stuff {
         this.name = type;
         this.durability = 100;
         this.specialPerk = null;
+        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
 
     }
 
@@ -48,6 +54,8 @@ public abstract class Weapon extends GameObject implements Stuff {
         this.name = type;
         this.durability = 100;
         this.specialPerk = specialPerk;
+        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
+
     }
 
     //getter
@@ -124,6 +132,7 @@ public abstract class Weapon extends GameObject implements Stuff {
 
     @Override
     public void pickUp(Player character) {
+        pickUpSound.play(1f);
         InventoryPlayer inv = character.getInventory();
         inv.addInventory(this);
 

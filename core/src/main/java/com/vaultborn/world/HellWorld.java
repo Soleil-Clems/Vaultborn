@@ -2,6 +2,9 @@ package com.vaultborn.world;
 
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.mobs.Gorgon;
+import com.vaultborn.entities.characters.mobs.Minotaur;
+import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.mobs.Tengu;
 import com.vaultborn.entities.characters.players.*;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
@@ -12,6 +15,8 @@ public class HellWorld extends BaseWorld {
 //        super("HellMap/map", "backgrounds/background_hell.png");
         super(game, "HellMap/map", "backgrounds/background_hell.png");
         this.game = game;
+        setBoss(Tengu.class);
+
     }
 
     @Override
@@ -31,30 +36,30 @@ public class HellWorld extends BaseWorld {
     protected void initMobs() {
         mobs.add(factory.createMob("gorgon", 620, 3800, this));
         mobs.add(factory.createMob("gorgon", 760, 3800, this));
-        mobs.add(factory.createMob("gorgon", 710, 3600, this));
+        mobs.add(factory.createMob("minotaur", 710, 3600, this));
         mobs.add(factory.createMob("gorgon", 1000, 3800, this));
 
-        mobs.add(factory.createMob("gorgon", 1900, 3800, this));
-        mobs.add(factory.createMob("gorgon", 1070, 3600, this));
-        mobs.add(factory.createMob("gorgon", 2000, 3600, this));
+        mobs.add(factory.createMob("minotaur", 1900, 3800, this));
+        mobs.add(factory.createMob("minotaur", 1070, 3600, this));
+        mobs.add(factory.createMob("minotaur", 2000, 3600, this));
 
         mobs.add(factory.createMob("gorgon", 2900, 3600, this));
-        mobs.add(factory.createMob("gorgon", 2950, 3600, this));
+        mobs.add(factory.createMob("minotaur", 2950, 3600, this));
         mobs.add(factory.createMob("gorgon", 3100, 3600, this));
-        mobs.add(factory.createMob("gorgon", 3300, 3600, this));
+        mobs.add(factory.createMob("minotaur", 3300, 3600, this));
         mobs.add(factory.createMob("gorgon", 3400, 3600, this));
 
         mobs.add(factory.createMob("gorgon", 2900, 2800, this));
         mobs.add(factory.createMob("gorgon", 3000, 2800, this));
-        mobs.add(factory.createMob("gorgon", 3100, 2800, this));
-        mobs.add(factory.createMob("gorgon", 3300, 2800, this));
-        mobs.add(factory.createMob("gorgon", 3700, 2800, this));
+        mobs.add(factory.createMob("minotaur", 3100, 2800, this));
+        mobs.add(factory.createMob("minotaur", 3300, 2800, this));
+        mobs.add(factory.createMob("minotaur", 3700, 2800, this));
 
         mobs.add(factory.createMob("gorgon", 100, 2500, this));
-        mobs.add(factory.createMob("gorgon", 200, 2500, this));
-        mobs.add(factory.createMob("gorgon", 300, 2500, this));
-        mobs.add(factory.createMob("gorgon", 800, 2800, this));
-        mobs.add(factory.createMob("gorgon", 900, 2800, this));
+        mobs.add(factory.createMob("minotaur", 200, 2500, this));
+        mobs.add(factory.createMob("minotaur", 300, 2500, this));
+        mobs.add(factory.createMob("minotaur", 800, 2800, this));
+        mobs.add(factory.createMob("minotaur", 900, 2800, this));
         mobs.add(factory.createMob("gorgon", 1000, 2800, this));
         mobs.add(factory.createMob("gorgon", 1100, 2800, this));
         mobs.add(factory.createMob("gorgon", 1300, 2800, this));
@@ -62,15 +67,15 @@ public class HellWorld extends BaseWorld {
 
         mobs.add(factory.createMob("gorgon", 1100, 2300, this));
         mobs.add(factory.createMob("gorgon", 1200, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1300, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1400, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1500, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1600, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1700, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1800, 2300, this));
-        mobs.add(factory.createMob("gorgon", 1900, 2300, this));
-        mobs.add(factory.createMob("gorgon", 2900, 2300, this));
-        mobs.add(factory.createMob("gorgon", 2950, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1300, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1400, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1500, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1600, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1700, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1800, 2300, this));
+        mobs.add(factory.createMob("minotaur", 1900, 2300, this));
+        mobs.add(factory.createMob("minotaur", 2900, 2300, this));
+        mobs.add(factory.createMob("minotaur", 2950, 2300, this));
         mobs.add(factory.createMob("gorgon", 3100, 2300, this));
         mobs.add(factory.createMob("gorgon", 3300, 2300, this));
         mobs.add(factory.createMob("gorgon", 3400, 2300, this));
@@ -95,19 +100,21 @@ public class HellWorld extends BaseWorld {
         mobs.add(factory.createMob("gorgon", 810, 100, this));
         mobs.add(factory.createMob("gorgon", 1000, 100, this));
 
-        mobs.add(factory.createMob("gorgon", 1500, 100, this));
-        mobs.add(factory.createMob("gorgon", 1800, 100, this));
-        mobs.add(factory.createMob("gorgon", 2100, 100, this));
-        mobs.add(factory.createMob("gorgon", 2300, 100, this));
-        mobs.add(factory.createMob("gorgon", 2500, 100, this));
-        mobs.add(factory.createMob("gorgon", 3000, 100, this));
+        mobs.add(factory.createMob("minotaur", 1500, 100, this));
+        mobs.add(factory.createMob("minotaur", 1800, 100, this));
+        mobs.add(factory.createMob("minotaur", 2100, 100, this));
+        mobs.add(factory.createMob("minotaur", 2300, 100, this));
+        mobs.add(factory.createMob("minotaur", 2500, 100, this));
+        mobs.add(factory.createMob("minotaur", 3000, 100, this));
 
         mobs.add(factory.createMob("gorgon", 3100, 100, this));
         mobs.add(factory.createMob("gorgon", 3200, 100, this));
-        mobs.add(factory.createMob("gorgon", 3400, 100, this));
-        mobs.add(factory.createMob("gorgon", 3500, 100, this));
+        mobs.add(factory.createMob("minotaur", 3400, 100, this));
+        mobs.add(factory.createMob("minotaur", 3500, 100, this));
         mobs.add(factory.createMob("gorgon", 3800, 100, this));
-        mobs.add(factory.createMob("gorgon", 3900, 100, this));
+        Mob boss = factory.createMob("tengu", 3900, 100, this);
+        boss.setBoss();
+        mobs.add(boss);
 
     }
 

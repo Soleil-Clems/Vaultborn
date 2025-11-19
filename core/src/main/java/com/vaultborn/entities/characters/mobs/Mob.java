@@ -1,5 +1,6 @@
 package com.vaultborn.entities.characters.mobs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.vaultborn.entities.characters.Character;
@@ -11,11 +12,12 @@ import com.vaultborn.MainGame;
 public abstract class Mob extends Character {
 
     protected int weapon;
-    private float attackCooldown = 1.5f;
+    private float attackCooldown = 0.5f;
     private float attackTimer = 0f;
     private float aiOffset;
     private int lvl;
     private int exp;
+    private boolean isBoss = false;
 
     public Mob(Vector2 position, TextureRegion texture, String name, int lvl, int exp) {
         super(position, texture, name);
@@ -23,6 +25,8 @@ public abstract class Mob extends Character {
         this.exp = exp * lvl;
         this.lvl = lvl;
         aiOffset = (float) (Math.random() * 0.5f);
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/bossdead.mp3"));
+
     }
 
     @Override
@@ -41,11 +45,10 @@ public abstract class Mob extends Character {
 
         float speed = 100f + aiOffset * 40f;
         float attackRange = 50f;
-        float followRange = 300f + aiOffset * 20f;
+        float followRange = 400f + aiOffset * 25f;
 
         if (player.getHp() <= 0) {
-            setAnimation("idle");
-            moveAndCollide(0, velocityY * delta); // Gravité même si joueur mort
+            moveAndCollide(0, velocityY * delta);
             return;
         }
 
@@ -56,7 +59,7 @@ public abstract class Mob extends Character {
 
             float moveX = Math.signum(distanceX) * speed * delta;
             moveAndCollide(moveX, velocityY * delta);
-            setAnimation("walk");
+
         } else if (distance <= attackRange) {
 
             if (attackTimer <= 0f) {
@@ -66,10 +69,17 @@ public abstract class Mob extends Character {
 
             moveAndCollide(0, velocityY * delta);
         } else {
-
-            setAnimation("idle");
             moveAndCollide(0, velocityY * delta);
         }
+    }
+
+    public void setBoss() {
+        this.hp = 200;
+        this.maxHp = 200;
+        this.damage = 30;
+        this.defense = 40;
+        this.range = 5;
+        this.isBoss = true;
     }
 
     @Override
@@ -110,4 +120,19 @@ public abstract class Mob extends Character {
 
         batch.setColor(Color.WHITE);
     }
+
+    @Override
+    protected void die() {
+        if (isDead) return;
+
+        isDead = true;
+        stateTime = 0f;
+        velocityY = 0f;
+        setAnimation("dead");
+        if (isBoss) {
+            gameOverSound.play(1f);
+        }
+
+    }
+
 }

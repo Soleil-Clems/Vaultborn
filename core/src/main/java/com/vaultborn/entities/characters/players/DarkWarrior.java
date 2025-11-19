@@ -10,7 +10,7 @@ import com.vaultborn.entities.characters.Character;
 public class DarkWarrior extends Player {
     private float meleeRange = 80f;
     public DarkWarrior(Vector2 position, TextureRegion texture) {
-        super(position, texture, "Lancelot");
+        super(position, texture, "Juzo");
         this.maxHp = 100;
         this.hp = this.maxHp;
         this.damage = 20;
@@ -23,17 +23,8 @@ public class DarkWarrior extends Player {
     }
 
     @Override
-    public void attack(Character target) {
-        if (target == null) {
-            return;
-        }
-
-        float distance = position.dst(target.getPosition());
-
-        if (distance <= meleeRange) {
-            int dmg = Math.max(1, this.damage - target.getDefense());
-            target.takeDamage(dmg);
-        }
+    public void attack(Character character) {
+        super.attack(character);
     }
 
     public void loadAnimations() {

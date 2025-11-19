@@ -1,5 +1,6 @@
 package com.vaultborn.entities.characters.players;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -12,10 +13,14 @@ public abstract  class Mage extends Player {
 
     public Mage(Vector2 position, TextureRegion texture, String name) {
         super(position, texture, name);
+        attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/power.mp3"));
+
     }
 
     @Override
     public void attack(Character target) {
+        attackSound.play(1f);
+
         if (world == null) {
             return;
         }

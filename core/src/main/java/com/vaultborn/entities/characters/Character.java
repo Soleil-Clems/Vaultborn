@@ -2,6 +2,7 @@ package com.vaultborn.entities.characters;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,7 +28,7 @@ public abstract class Character extends Entity {
     protected int agility;
     protected int range;
     public boolean facingRight = true;
-    protected float speed = 200f;
+    protected float speed = 400f;
     protected boolean isPlayerControlled = false;
     protected BaseWorld world;
     public float characterWidth = 32f;
@@ -48,13 +49,15 @@ public abstract class Character extends Entity {
     protected float deadTimer = 0f;
     protected float deadDuration = 5f;
     protected boolean readyToRemove = false;
+    protected Sound gameOverSound;
+
 
     protected boolean isHurt = false;
     protected float hurtTimer = 0f;
     protected float hurtDuration = 0.5f;
     protected Rectangle hitbox;
-    private Player player=null;
-    private Mob mob=null;
+    private Player player = null;
+    private Mob mob = null;
 
 
     protected TextureRegion portrait;
@@ -142,6 +145,7 @@ public abstract class Character extends Entity {
         this.agility = agility;
         if (this.agility <= 0) this.agility = 0;
     }
+
     public int getRange() {
         return range;
     }
@@ -208,7 +212,11 @@ public abstract class Character extends Entity {
     public void takeDamage(int amount) {
         if (isDead) return;
 
-        hp -= amount;
+        if (this.defense >= amount) {
+            hp -= 1;
+        } else {
+            hp -= amount - this.defense;
+        }
 
         if (hp <= 0) {
             hp = 0;
@@ -254,6 +262,7 @@ public abstract class Character extends Entity {
             velocityY = 0;
         }
 
+
         bounds.setPosition(position);
     }
 
@@ -298,11 +307,15 @@ public abstract class Character extends Entity {
             if (attackTimer >= 0.2f && !hasHit) {
                 if (world != null) {
                     Character target = world.getNearestEnemy(this, range);
-                    if(!(target instanceof Player)){mob = (Mob) target;}
+                    if (!(target instanceof Player)) {
+                        mob = (Mob) target;
+                    }
                     if (target != null && !target.isDead && target != this) {
                         attack(target);
                         hasHit = true;
-                        if(target.getHp()<=0 && !(target instanceof Player)){player.expGain(mob.giveExp());}
+                        if (target.getHp() <= 0 && !(target instanceof Player)) {
+                            player.expGain(mob.giveExp());
+                        }
                     }
                 }
             }
@@ -399,8 +412,22 @@ public abstract class Character extends Entity {
     protected boolean isMovingHorizontally() {
         if (isPlayerControlled) {
             return Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        } else {
+            if (world == null || world.getPlayer() == null) return false;
+
+            Character player = world.getPlayer();
+            if (player.getHp() <= 0) return false;
+
+            float distanceX = Math.abs(player.getPosition().x - position.x);
+            float distanceY = Math.abs(player.getPosition().y - position.y);
+            float distance = (float) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+            float attackRange = 50f;
+            float followRange = 500f;
+
+
+            return distance > attackRange && distance < followRange;
         }
-        return false;
     }
 
 

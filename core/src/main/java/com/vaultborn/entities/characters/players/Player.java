@@ -1,18 +1,27 @@
 package com.vaultborn.entities.characters.players;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Rectangle;
 import com.vaultborn.entities.characters.Character;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.vaultborn.managers.AssetManager;
 import com.vaultborn.screens.InventoryPlayer;
 
 public abstract  class Player extends Character {
     protected InventoryPlayer inv;
+    private AssetManager assets;
+    protected Sound attackSound;
+    private float meleeRange = 80f;
+
+
     public Player(Vector2 position, TextureRegion texture, String name) {
         super(position, texture, name);
         this.isPlayerControlled = true;
-
+        attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sword.mp3"));
+        gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/gameover.mp3"));
     }
     public InventoryPlayer getInventory(){
         return inv;
@@ -23,5 +32,33 @@ public abstract  class Player extends Character {
     public void expGain(int nbExp){
         inv.addExp(nbExp);
     }
+
+    @Override
+    public void attack(Character target) {
+        attackSound.play(1f);
+        if (target == null) {
+            return;
+        }
+
+        float distance = position.dst(target.getPosition());
+
+        if (distance <= meleeRange) {
+            int dmg = Math.max(1, this.damage - target.getDefense());
+            target.takeDamage(dmg);
+        }
+    }
+
+    @Override
+    protected void die() {
+        if (isDead) return;
+
+        isDead = true;
+        stateTime = 0f;
+        velocityY = 0f;
+        setAnimation("dead");
+        gameOverSound.play(1f);
+
+    }
+
 
 }

@@ -542,7 +542,7 @@ public class InventoryPlayer {
             //Hp = Hp +
         }
         this.player.setMaxHp(Hp);
-        //this.player.setHp(player.getHp()+10);
+        this.player.setHp(player.getHp()+10);
         this.player.setDefense(Def);
         this.player.setDamage(dmg);
         this.player.setAgility(agi);

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 //import com.vaultborn.screens.GameScreen;
 //import com.vaultborn.screens.MenuScreen;
 import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.screens.GameScreen;
 import com.vaultborn.screens.MainScreen;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -19,6 +21,7 @@ public class MainGame extends Game {
     public BaseWorld hellWorld;
     public BaseWorld forestWorld;
     public Player player;
+    public BaseWorld currentWorld;
 
     @Override
     public void create() {
@@ -56,6 +59,7 @@ public class MainGame extends Game {
         if (forestWorld != null) forestWorld.dispose();
         super.dispose();
     }
+
 
     public void setWorld(BaseWorld newWorld) {
         setScreen(new GameScreen(this, newWorld));

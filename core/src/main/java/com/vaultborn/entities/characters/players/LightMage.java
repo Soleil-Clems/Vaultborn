@@ -29,6 +29,8 @@ public class LightMage extends Mage{
 
     @Override
     protected void handleInput(float delta) {
+        attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/power.mp3"));
+
         this.charge = "lightmage/Charge.png";
         this.chargeFrameCount = 6;
         float moveX = 0;
@@ -50,6 +52,8 @@ public class LightMage extends Mage{
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) attack = "attack3";
         if (Gdx.input.isKeyPressed(Input.Keys.S)){
             attack = "attack4";
+            attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/power2.mp3"));
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) isProtected = true;

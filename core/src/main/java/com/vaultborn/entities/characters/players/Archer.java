@@ -17,7 +17,7 @@ public class Archer extends Mage{
         super(position, texture, "Perceval");
         this.maxHp = 100;
         this.hp = this.maxHp;
-        this.damage = 20;
+        this.damage = 80;
         this.defense = 8;
         this.level = 1;
         this.agility = 2;
@@ -26,6 +26,8 @@ public class Archer extends Mage{
 
     @Override
     public void attack(Character target) {
+        attackSound.play(1f);
+
         if (world == null) {
             return;
         }
@@ -52,6 +54,8 @@ public class Archer extends Mage{
 
     @Override
     protected void handleInput(float delta) {
+        attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sword.mp3"));
+
         this.charge = "archer/Arrow.png";
         this.chargeFrameCount =1 ;
         float moveX = 0;
@@ -73,6 +77,8 @@ public class Archer extends Mage{
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) attack = "attack3";
         if (Gdx.input.isKeyPressed(Input.Keys.S)){
             attack = "attack4";
+            attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/arrow.mp3"));
+
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) isProtected = true;
