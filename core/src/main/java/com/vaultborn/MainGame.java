@@ -11,6 +11,7 @@ import com.vaultborn.entities.stuff.Item;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.factories.Factory;
+import com.vaultborn.managers.InputManager;
 import com.vaultborn.save.SaveData;
 import com.vaultborn.save.SaveManager;
 import com.vaultborn.screens.GameScreen;
@@ -39,6 +40,7 @@ public class MainGame extends Game {
     private Skin btnSkin;
     public BaseWorld currentWorld;
 
+    public InputManager inputManager;
 
 
     public Music getBackgroundMusic(){
@@ -48,6 +50,7 @@ public class MainGame extends Game {
 
     @Override
     public void create() {
+        inputManager = new InputManager();
         Pixmap pix = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pix.setColor(1, 1, 1, 1);
         pix.fill();

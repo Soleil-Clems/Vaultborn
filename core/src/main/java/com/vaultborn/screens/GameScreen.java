@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.vaultborn.MainGame;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.factories.Factory;
+import com.vaultborn.managers.InputManager;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.HellWorld;
 
@@ -27,6 +28,7 @@ public class GameScreen implements Screen {
 
     private MenuScreen PauseMenuScreen;
     private InventoryPlayer inv;
+    private InputManager inputManager;
 
 
     private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
@@ -43,6 +45,7 @@ public class GameScreen implements Screen {
         PauseMenuScreen = new MenuScreen(game, btnSkin, buttonPause);
         SettingMenuScreen = new SettingScreen(game,skin);
         inv = new InventoryPlayer(false);
+        inputManager = game.inputManager;
 
         this.world = world;
         this.world.setScreen(this);
@@ -84,10 +87,11 @@ public class GameScreen implements Screen {
                 
                 if(btnSkin != SettingMenuScreen.getSkin()){
                     this.btnSkin = SettingMenuScreen.getSkin();
-                    PauseMenuScreen.reloadMenu(game,this.btnSkin, buttonPause);
+                    PauseMenuScreen.reloadMenu(game,this.btnSkin, buttonPause,inputManager);
                     PauseMenuScreen.setActivated(true);
                     PauseMenuScreen.setSettings(false);
                 }
+                
                 SettingMenuScreen.setActivated(PauseMenuScreen.isSettings());
                 PauseMenuScreen.rdMenu(delta);
                 Gdx.input.setInputProcessor(PauseMenuScreen.getStage());

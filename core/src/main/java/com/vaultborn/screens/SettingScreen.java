@@ -3,6 +3,8 @@ package com.vaultborn.screens;
 import java.util.LinkedHashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,10 +12,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -22,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 
 import com.vaultborn.MainGame;
+import com.vaultborn.managers.InputManager;
 
 
 
@@ -29,20 +34,35 @@ import com.vaultborn.MainGame;
 public class SettingScreen {
       
     protected MainGame game;
+    private InputManager inputManager;
+
     protected Stage stage;
+    protected Stage stageInput;
+
     protected Skin Globalskin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
+
+    private String lastInput;
+    private String changingKey;
+
     private boolean activated;
+    private boolean changeInput;
+    private boolean selected = true;
+
     private Music backgroundMusic;
+
     private Table SkinTable;
     private Table SliderTable;
+    private Table inputTable;
     private Table bottomRightTable;
+    
+    
     LinkedHashMap<String,Skin> SkinList = new LinkedHashMap<String,Skin>(){{
         put("neon",new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json")));
-        put("comic",new Skin(Gdx.files.internal("menu/comic/skin/comic-ui.json")));
+        //put("comic",new Skin(Gdx.files.internal("menu/comic/skin/comic-ui.json")));
         put("craft",new Skin(Gdx.files.internal("menu/craftacular/skin/craftacular-ui.json")));
         put("orange",new Skin(Gdx.files.internal("menu/orange/skin/uiskin.json")));
         put("quantum",new Skin(Gdx.files.internal("menu/quantum-horizon/skin/quantum-horizon-ui.json")));
-        put("rainbow",new Skin(Gdx.files.internal("menu/rainbow/skin/rainbow-ui.json")));
+        //put("rainbow",new Skin(Gdx.files.internal("menu/rainbow/skin/rainbow-ui.json")));
         put("star",new Skin(Gdx.files.internal("menu/star-soldier/skin/star-soldier-ui.json")));
         put("tracer",new Skin(Gdx.files.internal("menu/tracer/skin/tracer-ui.json")));
     }};
@@ -60,7 +80,7 @@ public class SettingScreen {
 
 
     public SettingScreen(MainGame game,Skin skin){
-
+        inputManager = game.inputManager;
         System.out.println(Gdx.files.internal("menu/neon/skin/neon-ui.json").exists());
         System.out.println(Gdx.files.internal("menu/comic/skin/comic-ui.json").exists());
         System.out.println(Gdx.files.internal("menu/craftacular/skin/craftacular-ui.json").exists());
@@ -74,6 +94,7 @@ public class SettingScreen {
         this.Globalskin = skin;
         this.backgroundMusic = game.getBackgroundMusic();
         this.activated = false;
+        System.out.println(inputManager.allInput());
         stage = new Stage(new ScreenViewport());
         //initie les inputs
         Gdx.input.setInputProcessor(stage);
@@ -156,6 +177,19 @@ public class SettingScreen {
             }
         });
 
+        Table txtInput = new Table();
+        txtInput.padTop(10);
+        SkinTable.add(txtInput).padBottom(10).row();
+        TextButton changingInput = new TextButton("Changer les touches",Globalskin);
+        changingInput.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onClick("changingInput");
+            }
+        });
+        txtInput.add(changingInput);
+
+
         //stage.addActor(SliderTable);
         //SliderTable.setFillParent(true);
         //SliderTable.top().padTop(300).center();
@@ -179,6 +213,7 @@ public class SettingScreen {
                 });
 
         stage.addActor(bottomRightTable);
+        inputView();
     }
 
     private TextButton createUniformButton(String text, Skin skin) {
@@ -208,6 +243,55 @@ public class SettingScreen {
         return button;
     }
 
+    private void inputView(){
+        stageInput = new Stage(new ScreenViewport());
+        inputTable = new Table();
+        inputTable.setFillParent(true);
+        stageInput.addActor(inputTable);
+        for (String theKey : inputManager.allInput().keySet()){
+            Label keyName = new Label(theKey+" : ", Globalskin);
+            TextButton keyValue = new TextButton(inputManager.allInput().get(theKey), Globalskin);
+            keyValue.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    System.out.println("touche selectionner : " + theKey);
+                    selected = false;
+                    if(!selected){
+                        keyValue.clear();
+                        keyValue.add("Attribuer la touche de votre choix");
+                        changingKey = theKey;
+                    }
+                    else{
+                        keyValue.clear();
+                        keyValue.add(lastInput);
+                        
+                    }
+                }
+            });
+            inputTable.add(keyName).width(250).height(50);
+            inputTable.add(keyValue).width(250).height(50).padBottom(10).row();
+
+            
+        }
+        Table bottomRightTableInput = new Table();
+        bottomRightTableInput.setFillParent(true);
+        bottomRightTableInput.bottom().right();
+        TextButton Button = new TextButton("Retour", Globalskin);
+        Button.getLabel().setFontScale(2f);
+        bottomRightTableInput.add(Button).left().pad(10).width(500).height(Gdx.graphics.getHeight()*0.2f);
+    
+        Button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+            System.out.println("Bouton : " + "Retour");
+            onClick("RetourSetting");
+            }
+            });
+
+        stageInput.addActor(bottomRightTableInput);
+
+
+    }
     
 public boolean isActivated(){
         return activated;
@@ -223,25 +307,64 @@ public boolean isActivated(){
         return this.Globalskin;
     }
 
+    public InputManager getInputManager(){
+        return inputManager;
+    }
+
     public void onClick(String name){
         switch (name) {
             case"Retour":
                 this.activated = false;
+                break;
+            case "changingInput":
+                this.changeInput = true;
+                break;
+            case "RetourSetting":
+                this.changeInput = false;
                 break;
             default:
                 break;
         }
     }
     public void rdMenu(float delta) {
+        if(!changeInput){
+            Gdx.input.setInputProcessor(stage);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
             stage.act(delta);
             stage.draw();
+        }
+        else{
+            if(selected){
+                Gdx.input.setInputProcessor(stageInput);
+            }
+            else{
+                Gdx.input.setInputProcessor(new InputAdapter() {
+                    @Override
+                    public boolean keyDown(int keycode) {
+                        System.out.println("Touche pressée : " + Input.Keys.toString(keycode));
+                        //if ();
+                        lastInput = Input.Keys.toString(keycode);
+                        inputManager.setInput(changingKey, lastInput);
+                        inputTable.clear();
+                        inputView();
+                        game.player.setInput(inputManager.allInput());
+                        selected = true;
+                        return true;
+                    }
+                });
+            }
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            stageInput.act(delta);
+            stageInput.draw();
+            
+        }
         
     }
-    public void dpMenu(){stage.dispose(); Globalskin.dispose();}   
+    public void dpMenu(){stage.dispose();stageInput.dispose(); Globalskin.dispose();}   
 
-    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);}
+    public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);stageInput.getViewport().update(width, height, true);}
     public void shMenu() {}
     public void pMenu() {}
     public void rMenu() {}

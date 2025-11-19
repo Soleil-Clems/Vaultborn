@@ -35,32 +35,32 @@ public class SunMage extends Mage {
         this.chargeFrameCount = 14;
         float moveX = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("left")))) {
             moveX -= 1f;
             facingRight = false;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("right")))) {
             moveX += 1f;
             facingRight = true;
         }
 
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack")))) {
             attack = "attack";
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack2")))) {
             attack = "attack2";
             this.charge = "sunmage/Fire_2.png";
             this.chargeFrameCount = 11;
             attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/power2.mp3"));
 
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.Q)) attack = "attack3";
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack3")))) attack = "attack3";
 
 
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) isProtected = true;
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && onGround) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(inputList.get("jump"))) && onGround) {
             velocityY = jumpSpeed + agility;
             onGround = false;
         }

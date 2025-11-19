@@ -11,6 +11,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.PauseableThread;
 import com.vaultborn.MainGame;
+import com.vaultborn.managers.InputManager;
 import com.badlogic.gdx.audio.Music;
 
 
@@ -18,6 +19,7 @@ import com.badlogic.gdx.audio.Music;
 public class MainScreen implements Screen{
     private MenuScreen MainMenuScreen;
     private SettingScreen SettingMenuScreen;
+    private InputManager inputManager;
 
     private MainGame game;
 
@@ -29,6 +31,7 @@ public class MainScreen implements Screen{
         this.game = game;
         MainMenuScreen = new MenuScreen(game, btnSkin, buttonMain);
         SettingMenuScreen = new SettingScreen(game,btnSkin);
+        inputManager = game.inputManager;
     }
 
 
@@ -43,7 +46,7 @@ public class MainScreen implements Screen{
 
         }
         else{
-            MainMenuScreen.reloadMenu(this.game, SettingMenuScreen.getSkin(), buttonMain);
+            MainMenuScreen.reloadMenu(this.game, SettingMenuScreen.getSkin(), buttonMain,inputManager);
             MainMenuScreen.setSettings(false);
             Gdx.input.setInputProcessor(SettingMenuScreen.getStage());
             SettingMenuScreen.rdMenu(delta);
