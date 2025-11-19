@@ -36,10 +36,11 @@ public class MainGame extends Game {
     public BaseWorld hellWorld;
     public BaseWorld forestWorld;
     public Player player;
+    private Skin btnSkin;
     public BaseWorld currentWorld;
 
 
-    
+
     public Music getBackgroundMusic(){
         return this.backgroundMusic;
     }
@@ -59,13 +60,14 @@ public class MainGame extends Game {
 
 
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/land_of_snow_background_music.mp3"));
-        
+
+        btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
         // 2. Définir si la musique doit boucler (loop)
         backgroundMusic.setLooping(true);
-        
+
         // 3. (Optionnel) Définir le volume (entre 0.0 et 1.0)
-        backgroundMusic.setVolume(0.5f); 
-        
+        backgroundMusic.setVolume(0.5f);
+
         // 4. Lancer la lecture
         backgroundMusic.play();
 
@@ -181,7 +183,7 @@ public class MainGame extends Game {
         player.setInventory(inv);
         inv.setPlayer(player);
 
-        setScreen(new GameScreen(this, currentWorld));
+        setScreen(new GameScreen(this, currentWorld, btnSkin));
 
     }
 }

@@ -37,19 +37,19 @@ public class MenuScreen {
     public Music getBackgroundMusic(){
         return this.backgroundMusic;
     }
-    
-    public boolean isActivated(){
-        return activated;
-    }
-    public Stage getStage(){
-        return stage;
-    }
-    public void setActivated(boolean a){
-        this.activated = a;
-    }
-    public boolean isSettings(){
-        return settings;
-    }
+
+//    public boolean isActivated(){
+//        return activated;
+//    }
+//    public Stage getStage(){
+//        return stage;
+//    }
+//    public void setActivated(boolean a){
+//        this.activated = a;
+//    }
+//    public boolean isSettings(){
+//        return settings;
+//    }
     public void setSettings(boolean a){
         this.settings = a;
     }
@@ -69,7 +69,7 @@ public class MenuScreen {
         //initie les inputs
         Gdx.input.setInputProcessor(stage);
         //System.out.println(Gdx.files.internal(skin).exists());
-    
+
         table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
@@ -102,12 +102,6 @@ public class MenuScreen {
 //        SaveManager.deleteSave();
     }
 
-   
-
-    public void setSettings(boolean a) {
-        this.settings = a;
-
-    }
 
     public void onClick(String name) {
         switch (name) {
