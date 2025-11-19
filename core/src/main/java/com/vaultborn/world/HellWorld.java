@@ -16,6 +16,9 @@ public class HellWorld extends BaseWorld {
         super(game, "HellMap/map", "backgrounds/background_hell.png");
         this.game = game;
         setBoss(Tengu.class);
+        levelName = "hell";
+        this.spawnX = 550;
+        this.spawnY = 3800;
 
     }
 

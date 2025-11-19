@@ -13,6 +13,9 @@ public class ForestWorld extends BaseWorld {
         super(game,"ForestMap/map", "backgrounds/background_forest.png");
         this.game = game;
         setBoss(Minotaur.class);
+        levelName = "forest";
+        this.spawnX = 250;
+        this.spawnY = 800;
     }
 
     @Override

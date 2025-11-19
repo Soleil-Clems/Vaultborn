@@ -18,10 +18,11 @@ import com.badlogic.gdx.audio.Music;
 public class MainScreen implements Screen{
     private MenuScreen MainMenuScreen;
     private SettingScreen SettingMenuScreen;
-    private MainGame game;
-    
 
-    private static final List<String> buttonMain = Arrays.asList("Jouer", "Parametres", "Exit");
+    private MainGame game;
+
+    private static final List<String> buttonMain = Arrays.asList("Poursuivre","Jouer", "Parametres", "Exit");
+
     Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     public MainScreen(MainGame game){
