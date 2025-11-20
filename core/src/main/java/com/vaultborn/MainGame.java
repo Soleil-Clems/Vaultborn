@@ -169,6 +169,7 @@ public class MainGame extends Game {
 
         Factory factory = new Factory();
         player = factory.createPlayer(data.playerClass, currentWorld.spawnX, currentWorld.spawnY, currentWorld);
+        this.player.setInput(this.inputManager.allInput());
 //        player = factory.createPlayer("warrior", currentWorld.spawnX, currentWorld.spawnY, currentWorld);
 
         player.setHp(data.hp);
