@@ -93,12 +93,6 @@ public class InventoryPlayer {
     public ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
     public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
 
-    Item<Sword> theSword;
-    Item<Hat> theHat;
-    Item<Hat> theHat2;
-    Item<Robe> theRobe;
-    Item<Robe> theRobe2;
-
 
     private Pixmap Pix;
     public InventoryPlayer(boolean testUnit){
@@ -151,11 +145,6 @@ public class InventoryPlayer {
         styleEmptySlot.up = drawableEmptySlot;
 
 
-        theSword = new Item<>(new Sword(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png"))),Item.Type.EQUIPMENT);
-        theHat = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon Beau chapeau"),Item.Type.EQUIPMENT);
-        theHat2 = new Item<>(new Hat(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "hat", "mon chapeau moche"),Item.Type.EQUIPMENT);
-        theRobe = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
-        theRobe2 = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
         }
 
     }
@@ -488,19 +477,6 @@ public class InventoryPlayer {
             this.showInventory = !showInventory;
         }
 
-        //test d'ajout
-        /*if (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(inputList.get("attack3")))){
-            addInventory(theSword);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            addInventory(theHat);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.E)){
-            addInventory(theHat2);
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)){
-            addInventory(theRobe);
-        }*/
         if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
             applyStat();
         }
