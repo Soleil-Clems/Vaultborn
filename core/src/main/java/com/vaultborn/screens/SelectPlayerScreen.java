@@ -61,14 +61,14 @@ public class SelectPlayerScreen implements Screen {
         grid.row();
 
         grid.add(createCharacterCard("Perceval", "archer", "Archer Precis")).width(200).height(240);
-        grid.add(createCharacterCard("Mordred", "darkMage", "Mage Obscur")).width(200).height(240);
+        grid.add(createCharacterCard("Mordred", "darkmage", "Mage Obscur")).width(200).height(240);
         grid.row();
 
-        grid.add(createCharacterCard("Lisa", "lightMage", "Mage Lumineuse")).width(200).height(240);
+        grid.add(createCharacterCard("Lisa", "lightmage", "Mage Lumineuse")).width(200).height(240);
         grid.add(createCharacterCard("Merline", "satyr", "Satyre Mystique")).width(200).height(240);
         grid.row();
 
-        grid.add(createCharacterCard("Monet", "sunMage", "Mage Solaire")).width(200).height(240).colspan(2);
+        grid.add(createCharacterCard("Monet", "sunmage", "Mage Solaire")).width(200).height(240).colspan(2);
 
         ScrollPane scrollPane = new ScrollPane(grid, skin);
         scrollPane.setFadeScrollBars(false);
