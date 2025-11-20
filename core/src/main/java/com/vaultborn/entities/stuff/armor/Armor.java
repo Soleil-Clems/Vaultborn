@@ -31,7 +31,6 @@ public abstract class Armor extends GameObject {
         this.name = name;
         this.durability = 100;
         pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
-        System.out.println(this.health);
 
     }
 
