@@ -251,6 +251,12 @@ public class InventoryPlayer {
         }
         else{System.out.println("Pas de point disponible");}
     }
+    public void setShowInventory(boolean showInventory){
+        this.showInventory = showInventory;
+    }
+    public void setEquipeItem(String key,Item<? extends Stuff> item){
+        equipeItem.replace(key,item);
+    }
 
     //getter inventory global
     //liste
@@ -283,12 +289,6 @@ public class InventoryPlayer {
     public Stage getObjectStage(){
         return this.objectStage;
     }
-    public void setShowInventory(boolean showInventory){
-        this.showInventory = showInventory;
-    }
-    public void setEquipeItem(String key,Item<? extends Stuff> item){
-        equipeItem.replace(key,item);
-    }
     public boolean getObjectInfoMenu(){
         return this.objectInfoMenu;
     }
@@ -308,6 +308,7 @@ public class InventoryPlayer {
         while (nameValueStat.get("Exp")>nameValueStat.get("Niveau")*100) {
             nameValueStat.replace("Niveau",nameValueStat.get("Niveau")+1);
             nameValueStat.replace("Exp",nameValueStat.get("Exp")-nameValueStat.get("Niveau")*100+100);
+            this.player.setHp(this.player.getMaxHp());
         }
         verifyPointDisponibility();
     }
@@ -479,7 +480,7 @@ public class InventoryPlayer {
             this.showInventory = !showInventory;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
+        /*if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
             applyStat();
         }
         //reset l'inventaire
@@ -494,7 +495,7 @@ public class InventoryPlayer {
 
         }
 
-        }
+        }*/
 
 
 
