@@ -11,6 +11,12 @@ import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.ForestWorld;
+import com.vaultborn.entities.stuff.armor.Helmet;
+import com.vaultborn.entities.stuff.armor.Breastplate;
+import com.vaultborn.entities.stuff.armor.LegPlate;
+import com.vaultborn.entities.stuff.armor.GauteletPlate;
+import com.vaultborn.entities.stuff.armor.IronFoot;
+
 
 /**
  * Factory simplifiée pour créer Players, Mobs et GameObjects.
@@ -35,6 +41,11 @@ public class Factory {
     private TextureRegion yokaiRegion;
 
     private TextureRegion swordRegion;
+    private TextureRegion HelmetRegion;
+    private TextureRegion BreastplateRegion;
+    private TextureRegion LegPlateRegion;
+    private TextureRegion GauteletPlateRegion;
+    private TextureRegion IronFootRegion;
     private TextureRegion specialDoorRegion;
 
     /**
@@ -54,6 +65,11 @@ public class Factory {
         gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
         minotaurRegion = new TextureRegion(new Texture("minotaur/Idle.png"));
         swordRegion = new TextureRegion(new Texture("objects/weapons/sword.png"));
+        HelmetRegion = new TextureRegion(new Texture("objects/armor/Helmet.png"));
+        BreastplateRegion = new TextureRegion(new Texture("objects/armor/Breastplate.png"));
+        LegPlateRegion = new TextureRegion(new Texture("objects/armor/LegPlate.png"));
+        GauteletPlateRegion = new TextureRegion(new Texture("objects/armor/GauteletPlate.png"));
+        IronFootRegion = new TextureRegion(new Texture("objects/armor/IronFoot.png"));
         specialDoorRegion = new TextureRegion(new Texture("specialdoor/closeddoor.png"));
     }
 
@@ -125,6 +141,21 @@ public class Factory {
         switch (type.toLowerCase()) {
             case "sword":
                 obj = IS_TEST ? new Sword(new Vector2(x, y), swordRegion) : new Sword(new Vector2(x, y), swordRegion);
+                break;
+            case "helmet":
+                obj = IS_TEST ? new Helmet(new Vector2(x, y), HelmetRegion, "", "Epic Helmet") : new Helmet(new Vector2(x, y), HelmetRegion, "", "The Helmet");
+                break;
+            case "breastplate":
+                obj = IS_TEST ? new Breastplate(new Vector2(x, y), BreastplateRegion, "", "Epic Chest") : new Breastplate(new Vector2(x, y), BreastplateRegion, "", "Epic Chest");
+                break;
+            case "legplate":
+                obj = IS_TEST ? new LegPlate(new Vector2(x, y), LegPlateRegion, "", "Epic Leg") : new LegPlate(new Vector2(x, y), LegPlateRegion, "", "Epic Leg");
+                break;
+            case "gauteletplate":
+                obj = IS_TEST ? new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "", "Epic Hand") : new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "", "Epic Hand");
+                break;
+            case "ironfoot":
+                obj = IS_TEST ? new IronFoot(new Vector2(x, y), IronFootRegion, "", "Epic Boots") : new IronFoot(new Vector2(x, y), IronFootRegion, "", "Epic Boots");
                 break;
             case "special_door":
                 obj = IS_TEST ? new SpecialDoor(new Vector2(x, y), specialDoorRegion) : new SpecialDoor(new Vector2(x, y), specialDoorRegion);
