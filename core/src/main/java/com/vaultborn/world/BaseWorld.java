@@ -156,8 +156,8 @@ public abstract class BaseWorld {
             float distance = Vector2.dst(px, py, ox, oy);
 
             if (distance < 70f && !(obj instanceof SpecialDoor)) {
-                obj.pickUp(player);
-                objectIterator.remove();
+                if(obj.pickUp(player)){
+                objectIterator.remove();}
             }
 
             if (obj instanceof SpecialDoor) {

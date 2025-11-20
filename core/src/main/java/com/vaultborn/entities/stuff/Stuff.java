@@ -9,6 +9,6 @@ public interface Stuff {
     String getName();
     int getDurability();
     String getSpecialPerk();
-    void pickUp(Player character);
+    boolean pickUp(Player character);
 
 }

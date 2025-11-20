@@ -111,9 +111,9 @@ public abstract class Armor extends GameObject {
     }
 
     @Override
-    public void pickUp(Player character) {
-        pickUpSound.play(1f);
+    public boolean pickUp(Player character) {
         InventoryPlayer inv = character.getInventory();
-        inv.addInventory(this);
+        if(inv.getInventory().size()<15){inv.addInventory(this);pickUpSound.play(1f);return true;}
+        return false;
     }
 }
