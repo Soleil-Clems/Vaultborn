@@ -8,22 +8,22 @@ import com.vaultborn.entities.characters.Character;
 public class Yokai extends Mob{
     public Yokai(Vector2 position, TextureRegion texture, int lvl) {
         super(position, texture, "Yokai", lvl, 33);
-        this.hp = 100;
-        this.damage = 4;
-        this.defense = 5;
-        this.level = 1;
-        this.agility = 10;
+        this.hp = 100*lvl;
+        this.damage = 4*lvl;
+        this.defense = 5*lvl;
+        this.level = lvl;
+        this.agility = 10*lvl;
         this.range = 1;
 
     }
 
     public Yokai(Vector2 position,int lvl) {
         super(position, "Yokai", lvl, 33);
-        this.hp = 100;
-        this.damage = 4;
-        this.defense = 5;
-        this.level = 1;
-        this.agility = 10;
+        this.hp = 100*lvl;
+        this.damage = 4*lvl;
+        this.defense = 5*lvl;
+        this.level = lvl;
+        this.agility = 10*lvl;
         this.range = 1;
 
     }

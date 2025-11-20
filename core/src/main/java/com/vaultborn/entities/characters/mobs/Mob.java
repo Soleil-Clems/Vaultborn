@@ -84,10 +84,10 @@ public abstract class Mob extends Character {
     }
 
     public void setBoss() {
-        this.hp = 200;
-        this.maxHp = 200;
-        this.damage = 30;
-        this.defense = 40;
+        this.hp = this.hp*2;
+        this.maxHp = this.maxHp*2;
+        this.damage = this.damage*2;
+        this.defense = this.defense*2;
         this.range = 5;
         this.isBoss = true;
     }
