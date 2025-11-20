@@ -11,28 +11,37 @@ import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.ForestWorld;
-import com.vaultborn.world.HellWorld;
 
+/**
+ * Factory simplifiée pour créer Players, Mobs et GameObjects.
+ */
 public class Factory {
 
+    public static boolean IS_TEST = false;
     private final AssetManager assetsManager;
+
+    // Only needed for production
     private TextureRegion warriorRegion;
     private TextureRegion darkwarriorRegion;
+    private TextureRegion archerRegion;
     private TextureRegion satyrRegion;
-    private TextureRegion gorgonRegion;
-    private TextureRegion minotaurRegion;
-    private TextureRegion swordRegion;
     private TextureRegion darkMageRegion;
     private TextureRegion lightMageRegion;
-    private TextureRegion archerRegion;
+    private TextureRegion sunmageRegion;
+
+    private TextureRegion gorgonRegion;
+    private TextureRegion minotaurRegion;
     private TextureRegion tenguRegion;
     private TextureRegion yokaiRegion;
-    private TextureRegion sunmageRegion;
+
+    private TextureRegion swordRegion;
     private TextureRegion specialDoorRegion;
 
+    /**
+     * Factory normale avec assets
+     */
     public Factory() {
         assetsManager = new AssetManager();
-
         warriorRegion = new TextureRegion(new Texture("warrior/Idle.png"));
         darkwarriorRegion = new TextureRegion(new Texture("darkwarrior/Idle.png"));
         satyrRegion = new TextureRegion(new Texture("satyr/Idle.png"));
@@ -48,117 +57,93 @@ public class Factory {
         specialDoorRegion = new TextureRegion(new Texture("specialdoor/closeddoor.png"));
     }
 
-    public Player createPlayer(String type, float x, float y, BaseWorld world) {
+    /**
+     * Factory pour les tests unitaires
+     */
+    public Factory(boolean test) {
+        IS_TEST = test;
+        this.assetsManager = null;
+    }
+
+    public Player createPlayer(String type, float x, float y, BaseWorld world) throws FactoryException {
+        Player player;
         switch (type.toLowerCase()) {
             case "warrior":
-                Warrior player = new Warrior(new Vector2(x, y), warriorRegion);
-                player.loadAnimations();
-                player.setWorld(world);
-                return player;
+                player = IS_TEST ? new Warrior(new Vector2(x, y)) : new Warrior(new Vector2(x, y), warriorRegion);
+                break;
             case "darkwarrior":
-                DarkWarrior darkWarrior = new DarkWarrior(new Vector2(x, y), darkwarriorRegion);
-                darkWarrior.loadAnimations();
-                darkWarrior.setWorld(world);
-                return darkWarrior;
+                player = IS_TEST ? new DarkWarrior(new Vector2(x, y)) : new DarkWarrior(new Vector2(x, y), darkwarriorRegion);
+                break;
             case "archer":
-                Archer archer = new Archer(new Vector2(x, y), archerRegion);
-                archer.loadAnimations();
-                archer.setWorld(world);
-                return archer;
+                player = IS_TEST ? new Archer(new Vector2(x, y)) : new Archer(new Vector2(x, y), archerRegion);
+                break;
             case "satyr":
-                Satyr satyr = new Satyr(new Vector2(x, y), satyrRegion);
-                satyr.loadAnimations();
-                satyr.setWorld(world);
-                return satyr;
+                player = IS_TEST ? new Satyr(new Vector2(x, y)) : new Satyr(new Vector2(x, y), satyrRegion);
+                break;
             case "darkmage":
-                DarkMage darkMage = new DarkMage(new Vector2(x, y), darkMageRegion);
-                darkMage.loadAnimations();
-                darkMage.setWorld(world);
-                return darkMage;
+                player = IS_TEST ? new DarkMage(new Vector2(x, y)) : new DarkMage(new Vector2(x, y), darkMageRegion);
+                break;
             case "lightmage":
-                LightMage lightMage = new LightMage(new Vector2(x, y), lightMageRegion);
-                lightMage.loadAnimations();
-                lightMage.setWorld(world);
-                return lightMage;
+                player = IS_TEST ? new LightMage(new Vector2(x, y)) : new LightMage(new Vector2(x, y), lightMageRegion);
+                break;
             case "sunmage":
-                SunMage sunMage = new SunMage(new Vector2(x, y), sunmageRegion);
-                sunMage.loadAnimations();
-                sunMage.setWorld(world);
-                return sunMage;
+                player = IS_TEST ? new SunMage(new Vector2(x, y)) : new SunMage(new Vector2(x, y), sunmageRegion);
+                break;
             default:
-                throw new IllegalArgumentException("Unknown player type: " + type);
+                throw new FactoryException("Unknown player type: " + type);
         }
+        if (!IS_TEST) player.loadAnimations();
+        player.setWorld(world);
+        return player;
     }
 
-    public Mob createMob(String type, float x, float y, BaseWorld world) {
+    public Mob createMob(String type, float x, float y, BaseWorld world) throws FactoryException {
+        Mob mob;
         switch (type.toLowerCase()) {
             case "gorgon":
-                Gorgon gorgon = new Gorgon(new Vector2(x, y), gorgonRegion, 1);
-                gorgon.loadAnimations();
-                gorgon.setWorld(world);
-                return gorgon;
+                mob = IS_TEST ? new Gorgon(new Vector2(x, y), 1) : new Gorgon(new Vector2(x, y), gorgonRegion, 1);
+                break;
             case "minotaur":
-                Minotaur minotaur = new Minotaur(new Vector2(x, y), minotaurRegion, 1);
-                minotaur.loadAnimations();
-                minotaur.setWorld(world);
-                return minotaur;
+                mob = IS_TEST ? new Minotaur(new Vector2(x, y), 1) : new Minotaur(new Vector2(x, y), minotaurRegion, 1);
+                break;
             case "tengu":
-                Tengu tengu = new Tengu(new Vector2(x, y), tenguRegion, 1);
-                tengu.loadAnimations();
-                tengu.setWorld(world);
-                return tengu;
+                mob = IS_TEST ? new Tengu(new Vector2(x, y), 1) : new Tengu(new Vector2(x, y), tenguRegion, 1);
+                break;
             case "yokai":
-                Yokai yokai = new Yokai(new Vector2(x, y), yokaiRegion, 1);
-                yokai.loadAnimations();
-                yokai.setWorld(world);
-                return yokai;
+                mob = IS_TEST ? new Yokai(new Vector2(x, y), 1) : new Yokai(new Vector2(x, y), yokaiRegion, 1);
+                break;
             default:
-                throw new IllegalArgumentException("Unknown mob type: " + type);
+                throw new FactoryException("Unknown mob type: " + type);
         }
+        if (!IS_TEST) mob.loadAnimations();
+        mob.setWorld(world);
+        return mob;
     }
 
-    public GameObject createObject(String type, float x, float y, BaseWorld world) {
+    public GameObject createObject(String type, float x, float y, BaseWorld world) throws FactoryException {
+        GameObject obj;
         switch (type.toLowerCase()) {
-
             case "sword":
-                Sword sword = new Sword(new Vector2(x, y), swordRegion);
-                sword.loadAnimations();
-                sword.setWorld(world);
-                return sword;
-
+                obj = IS_TEST ? new Sword(new Vector2(x, y), swordRegion) : new Sword(new Vector2(x, y), swordRegion);
+                break;
             case "special_door":
-                SpecialDoor door = new SpecialDoor(new Vector2(x, y), specialDoorRegion);
-                door.loadAnimations();
-                door.setWorld(world);
-                return door;
-
+                obj = IS_TEST ? new SpecialDoor(new Vector2(x, y), specialDoorRegion) : new SpecialDoor(new Vector2(x, y), specialDoorRegion);
+                break;
             default:
-                throw new IllegalArgumentException("Unknown object type: " + type);
+                throw new FactoryException("Unknown object type: " + type);
         }
+        if (!IS_TEST) obj.loadAnimations();
+        obj.setWorld(world);
+        return obj;
     }
+
 
     public GameObject createSpecialDoor(String type, float x, float y, BaseWorld worldFrom, BaseWorld worldTo) {
-        if (!type.equalsIgnoreCase("special_door"))
-            throw new IllegalArgumentException("Unknown object type: " + type);
-
+        if (!type.equalsIgnoreCase("special_door")) throw new IllegalArgumentException("Unknown object type: " + type);
         SpecialDoor door = new SpecialDoor(new Vector2(x, y), specialDoorRegion);
         door.loadAnimations();
         door.setWorld(worldFrom);
         door.setTargetWorld(worldTo);
         return door;
     }
-
-//    public BaseWorld createWorld(String name) {
-//        switch (name.toLowerCase()) {
-//
-//            case "hell":
-//                return new HellWorld();
-//
-//            case "forest":
-//                return new ForestWorld();
-//
-//            default:
-//                throw new IllegalArgumentException("Unknown world: " + name);
-//        }
-//    }
 }

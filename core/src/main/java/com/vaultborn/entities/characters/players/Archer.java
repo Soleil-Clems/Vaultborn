@@ -24,6 +24,17 @@ public class Archer extends Mage{
         this.range = 10;
     }
 
+    public Archer(Vector2 position) {
+        super(position,  "Perceval");
+        this.maxHp = 100;
+        this.hp = this.maxHp;
+        this.damage = 80;
+        this.defense = 8;
+        this.level = 1;
+        this.agility = 2;
+        this.range = 10;
+    }
+
     @Override
     public void attack(Character target) {
         attackSound.play(0.5f);

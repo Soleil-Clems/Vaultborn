@@ -26,6 +26,19 @@ public abstract class Entity {
         }
     }
 
+// pour les test unitaires
+    public Entity(Vector2 position) {
+        this.position = position;
+        this.velocity = new Vector2(0, 0);
+        this.texture = null;
+        if (texture != null) {
+            this.bounds = new Rectangle(position.x, position.y,
+                texture.getRegionWidth(), texture.getRegionHeight());
+        } else {
+            this.bounds = new Rectangle(position.x, position.y, 32, 32);
+        }
+    }
+
     // Pour changer chaque frame mdr #soso_la_melo
     public abstract void update(float delta);
 

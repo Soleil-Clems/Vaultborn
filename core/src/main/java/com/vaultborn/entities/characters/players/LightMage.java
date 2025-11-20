@@ -22,6 +22,17 @@ public class LightMage extends Mage{
         this.range = 10;
     }
 
+    public LightMage(Vector2 position) {
+        super(position, "Lisa");
+        this.maxHp = 100;
+        this.hp = this.maxHp;
+        this.damage = 20;
+        this.defense = 8;
+        this.level = 1;
+        this.agility = 2;
+        this.range = 10;
+    }
+
     @Override
     public void attack(Character target) {
        super.attack(target);

@@ -17,6 +17,17 @@ public class Minotaur extends Mob{
 
     }
 
+    public Minotaur(Vector2 position, int lvl) {
+        super(position, "Gorm", lvl, 33);
+        this.hp = 100;
+        this.damage = 20;
+        this.defense = 15;
+        this.level = 1;
+        this.agility = 10;
+        this.range = 1;
+
+    }
+
     @Override
     public void attack(Character target) {
         if (isDead) return;

@@ -6,10 +6,11 @@ import com.vaultborn.entities.characters.mobs.Minotaur;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
+import com.vaultborn.factories.FactoryException;
 
 public class ForestWorld extends BaseWorld {
 
-    public ForestWorld(MainGame game) {
+    public ForestWorld(MainGame game) throws FactoryException {
         super(game,"ForestMap/map", "backgrounds/background_forest.png");
         this.game = game;
         setBoss(Minotaur.class);
@@ -19,7 +20,7 @@ public class ForestWorld extends BaseWorld {
     }
 
     @Override
-    protected void initMobs() {
+    protected void initMobs() throws FactoryException {
         Mob boss = factory.createMob("minotaur", 11500, 800, this);
         boss.setBoss();
         mobs.add(boss);
@@ -54,7 +55,7 @@ public class ForestWorld extends BaseWorld {
     }
 
     @Override
-    protected void initObjects() {
+    protected void initObjects() throws FactoryException {
         gameObjects.add(factory.createObject("sword", 1000, 200, null));
         gameObjects.add(factory.createObject("sword", 3550, 400, null));
         gameObjects.add(factory.createObject("sword", 4550, 400, null));

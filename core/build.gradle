@@ -6,6 +6,8 @@ dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+  testImplementation 'org.mockito:mockito-core:5.7.0'
+  testImplementation 'org.mockito:mockito-inline:5.2.0'
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
@@ -16,3 +18,6 @@ test {
   useJUnitPlatform()
 }
 
+repositories {
+  mavenCentral()
+}

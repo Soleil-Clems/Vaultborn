@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.Color;
 
 import com.vaultborn.MainGame;
+import com.vaultborn.factories.FactoryException;
 import com.vaultborn.save.SaveManager;
 
 import java.util.List;
@@ -94,7 +95,11 @@ public class MenuScreen {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                 System.out.println("Bouton : " + e);
-                onClick(e);
+                    try {
+                        onClick(e);
+                    } catch (FactoryException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
 
             });
@@ -103,7 +108,7 @@ public class MenuScreen {
     }
 
 
-    public void onClick(String name) {
+    public void onClick(String name) throws FactoryException {
         switch (name) {
             case "Jouer":
                 // Nouvelle partie
