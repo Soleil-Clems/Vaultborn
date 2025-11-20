@@ -3,7 +3,9 @@ package com.vaultborn.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -32,51 +34,44 @@ public class MenuScreen {
     private TextButton continueButton; // Référence au bouton Poursuivre
     private InputManager inputManager;
 
-    public MenuScreen(MainGame game,Skin skin,List<String> element){
+    public MenuScreen(MainGame game, Skin skin, List<String> element) {
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
+
+
     }
-    public MenuScreen(MainGame game,Skin skin,List<String> element,InputManager inputManager){
+
+    public MenuScreen(MainGame game, Skin skin, List<String> element, InputManager inputManager) {
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
         this.inputManager = inputManager;
+
     }
 
-    public Music getBackgroundMusic(){
+    public Music getBackgroundMusic() {
         return this.backgroundMusic;
     }
-    public InputManager getInputManager(){
+
+    public InputManager getInputManager() {
         return this.inputManager;
     }
 
-
-//    public boolean isActivated(){
-//        return activated;
-//    }
-//    public Stage getStage(){
-//        return stage;
-//    }
-//    public void setActivated(boolean a){
-//        this.activated = a;
-//    }
-//    public boolean isSettings(){
-//        return settings;
-//    }
-    public void setSettings(boolean a){
+    public void setSettings(boolean a) {
         this.settings = a;
     }
 
-    public void reloadMenu(MainGame game,Skin skin,List<String> element){
+    public void reloadMenu(MainGame game, Skin skin, List<String> element) {
         createMenu(game, skin, element);
         this.settings = true;
     }
-    public void reloadMenu(MainGame game,Skin skin,List<String> element,InputManager inputManager){
+
+    public void reloadMenu(MainGame game, Skin skin, List<String> element, InputManager inputManager) {
         createMenu(game, skin, element);
         this.settings = true;
         this.inputManager = inputManager;
     }
 
-    public void createMenu(MainGame game,Skin skin,List<String> element){
+    public void createMenu(MainGame game, Skin skin, List<String> element) {
         this.game = game;
         this.skin = skin;
         this.element = element;
@@ -86,6 +81,12 @@ public class MenuScreen {
         //initie les inputs
         Gdx.input.setInputProcessor(stage);
         //System.out.println(Gdx.files.internal(skin).exists());
+
+        Texture bgTexture = new Texture(Gdx.files.internal("backgrounds/screenbg.png"));
+        Image background = new Image(bgTexture);
+
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(background);
 
         table = new Table();
         table.setFillParent(true);
@@ -110,7 +111,7 @@ public class MenuScreen {
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Bouton : " + e);
+                    System.out.println("Bouton : " + e);
                     try {
                         onClick(e);
                     } catch (FactoryException ex) {
@@ -163,7 +164,7 @@ public class MenuScreen {
         stage.draw();
     }
 
- public boolean isActivated() {
+    public boolean isActivated() {
         return activated;
     }
 
@@ -188,8 +189,15 @@ public class MenuScreen {
         stage.getViewport().update(width, height, true);
     }
 
-    public void shMenu() { }
-    public void pMenu() { }
-    public void rMenu() { }
-    public void hMenu() { }
+    public void shMenu() {
+    }
+
+    public void pMenu() {
+    }
+
+    public void rMenu() {
+    }
+
+    public void hMenu() {
+    }
 }

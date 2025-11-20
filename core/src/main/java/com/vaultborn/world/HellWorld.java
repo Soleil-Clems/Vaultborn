@@ -14,7 +14,7 @@ public class HellWorld extends BaseWorld {
 
     public HellWorld(MainGame game) throws FactoryException {
 //        super("HellMap/map", "backgrounds/background_hell.png");
-        super(game, "HellMap/map", "backgrounds/background_hell.png");
+        super(game, "HellMap/map", "backgrounds/hell.png");
         this.game = game;
         setBoss(Tengu.class);
         levelName = "hell";
