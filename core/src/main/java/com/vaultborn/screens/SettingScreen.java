@@ -342,13 +342,21 @@ public boolean isActivated(){
                 Gdx.input.setInputProcessor(new InputAdapter() {
                     @Override
                     public boolean keyDown(int keycode) {
-                        System.out.println("Touche pressée : " + Input.Keys.toString(keycode));
-                        //if ();
                         lastInput = Input.Keys.toString(keycode);
                         inputManager.setInput(changingKey, lastInput);
                         inputTable.clear();
                         inputView();
-                        game.player.setInput(inputManager.allInput());
+                        //
+                        System.out.println(game);
+                        System.out.println(game.inputManager.allInput());
+                        if(game.player == null){
+                            game.inputManager.setInput(changingKey,lastInput);
+                        }
+                        else{
+                            game.player.setInput(inputManager.allInput());
+                        }
+                        //
+                        System.out.println("allInput");
                         selected = true;
                         return true;
                     }
