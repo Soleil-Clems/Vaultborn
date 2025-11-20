@@ -29,7 +29,16 @@ public abstract class Mob extends Character {
 
     }
 
-    
+    public Mob(Vector2 position, String name, int lvl, int exp) {
+        super(position, name);
+        this.isPlayerControlled = false;
+        this.exp = exp * lvl;
+        this.lvl = lvl;
+        aiOffset = (float) (Math.random() * 0.5f);
+
+    }
+
+
     @Override
     protected void handleAI(float delta) {
         if (world == null || world.getPlayer() == null) {
@@ -136,4 +145,6 @@ public abstract class Mob extends Character {
 
     }
 
+    public void loadAnimations() {
+    }
 }

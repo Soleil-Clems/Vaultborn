@@ -8,10 +8,11 @@ import com.vaultborn.entities.characters.mobs.Tengu;
 import com.vaultborn.entities.characters.players.*;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
+import com.vaultborn.factories.FactoryException;
 
 public class HellWorld extends BaseWorld {
 
-    public HellWorld(MainGame game) {
+    public HellWorld(MainGame game) throws FactoryException {
 //        super("HellMap/map", "backgrounds/background_hell.png");
         super(game, "HellMap/map", "backgrounds/background_hell.png");
         this.game = game;
@@ -36,7 +37,7 @@ public class HellWorld extends BaseWorld {
     }
 
     @Override
-    protected void initMobs() {
+    protected void initMobs() throws FactoryException {
         mobs.add(factory.createMob("gorgon", 620, 3800, this));
         mobs.add(factory.createMob("gorgon", 760, 3800, this));
         mobs.add(factory.createMob("minotaur", 710, 3600, this));
@@ -122,14 +123,14 @@ public class HellWorld extends BaseWorld {
     }
 
     @Override
-    protected void initObjects() {
+    protected void initObjects() throws FactoryException {
         gameObjects.add(factory.createObject("sword", 3100, 4200, this));
         gameObjects.add(factory.createObject("sword", 4100, 2500, this));
         gameObjects.add(factory.createObject("sword", 3050, 1750, this));
         gameObjects.add(factory.createObject("sword", 450, 1400, this));
         gameObjects.add(factory.createObject("sword", 150, 1200, this));
         gameObjects.add(factory.createObject("sword", 3150, 1050, this));
-        SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 80, 50, this, null);
+        SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 80, 50, this, game.forestWorld);
         door.setParentWorld(this);
         door.setSpawnPosition(500, 580);//  Position d'arrivée dans ForestWorld
        gameObjects.add(door);

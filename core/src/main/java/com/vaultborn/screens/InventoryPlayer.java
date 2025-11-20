@@ -50,7 +50,7 @@ public class InventoryPlayer {
     private Player player;
     private boolean putIn;
     Item<? extends Stuff> nonItemEquip = new Item<>(null, Item.Type.EQUIPMENT);
-    
+
     //list
     private LinkedHashMap<Item<? extends Stuff>,Integer> InventoryItem;
     private List<Item<? extends Stuff>> InventoryItemList = new ArrayList<>();
@@ -75,7 +75,7 @@ public class InventoryPlayer {
         put("Endurence",1);
         put("Mana",1);
     }};
-    
+
     private Stage stage;
     //les tables
     private Table rootTable;
@@ -87,12 +87,12 @@ public class InventoryPlayer {
     private Skin skin;
     private float WidthCalculation;
     private float HeightCalculation;
-    
-    //affichage de l'inventaire
+
+
     private int numberOfSlot = 15;
     public ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
     public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
-    
+
     Item<Sword> theSword;
     Item<Hat> theHat;
     Item<Hat> theHat2;
@@ -138,7 +138,7 @@ public class InventoryPlayer {
         rootTable.add(equipeTable).expand().padLeft(10);
         rootTable.add(statTable).expand().width(WidthCalculation).pad(0, 10, 0, 10).maxHeight(HeightCalculation);
         rootTable.add(invTable).expand().width(WidthCalculation).padRight(10);
-        
+
         //bouton de couleur
         //choix de couleur
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -157,7 +157,7 @@ public class InventoryPlayer {
         theRobe = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
         theRobe2 = new Item<>(new Robe(new Vector2(100, 100), new TextureRegion(new Texture("objects/sword.png")), "robe", "ma belle veste"),Item.Type.CONSUMABLE);
         }
-        
+
     }
 
     //setter dans inventory
@@ -200,7 +200,7 @@ public class InventoryPlayer {
                 System.err.println(object.getObject().getName()+ " récolté.");
                 this.putIn = false;
             }
-            
+
         }
     }
 
@@ -253,7 +253,7 @@ public class InventoryPlayer {
             case "mana":
                 nameValueStat.replace("Mana", nameValueStat.get("Mana")+1);
                 break;
-        
+
             default:
                 System.out.println(name+" n'existe pas");
                 break;
@@ -262,7 +262,7 @@ public class InventoryPlayer {
         }
         else{System.out.println("Pas de point disponible");}
     }
-    
+
     //getter inventory global
     //liste
     public LinkedHashMap<Item<? extends Stuff>,Integer> getInventory(){
@@ -324,7 +324,7 @@ public class InventoryPlayer {
     }
 
     private boolean reload = false;
-    
+
 
     List<Integer> statExploitable = new ArrayList<>();
     public void InventoryInput(){
@@ -339,7 +339,7 @@ public class InventoryPlayer {
                 //savoir ce qu'il y a dans l'inventaire
                 for (Item<? extends Stuff> itm : InventoryItem.keySet()){
                     if (InventoryItem.get(itm)>1){
-                        System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));                    
+                        System.out.println(itm.getObject().getName()+ " j'en ai "+ InventoryItem.get(itm));
                     }
                     else{
                         System.out.println(itm.getObject().getName());
@@ -369,7 +369,7 @@ public class InventoryPlayer {
                             System.out.println(inventoryCount);
                             System.out.println("objet selectionner");
                             }
-                        });                        
+                        });
                         invTable.add(itemImageButton).size(ItemSizeInv).fill().pad(2);
                         spaceInRowAvailable -= ItemSizeInv +2;
                     }
@@ -399,19 +399,19 @@ public class InventoryPlayer {
                         equipeTable.add(itemImageButton).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
                         equipeTable.row();
                     }
-                }            
-                
+                }
+
                 //afficher la partie Stat du joueur
                 Pix.setColor(new Color(66 / 255f, 55 / 255f, 54 / 255f, 100 / 255f));
                 statTable.setBackground(new TextureRegionDrawable(new Texture(Pix)).tint(new Color (1f,1f,1f,0.5f)));
-                
+
                 statTable.defaults().pad(5).expandX();
 
                 int nbAdded =0;
                 //statTable.setDebug(true);
 
                 verifyPointDisponibility();
-                
+
                 for (String name : nameValueStat.keySet()) {
                     Label actualName = new Label(name, skin);
                     Label actualValue = new Label(Integer.toString(nameValueStat.get(name)), skin);
@@ -429,11 +429,11 @@ public class InventoryPlayer {
                                 }
                             }
                         });
-                
+
                     if (name.equals("Statistique")) {
                         statTable.add(actualName).colspan(3).center();
                         statTable.row();
-                    } 
+                    }
                     else if (name.equals("Niveau")){
                         statTable.add(actualName).left();
                         statTable.add(actualValue).center();
@@ -444,7 +444,7 @@ public class InventoryPlayer {
                         statTable.add(actualName).left();
                         statTable.add(actualValue).center();
                         statTable.row();
-                    } 
+                    }
                     else if(name.equals("Exp")){
                         continue;
                     }
@@ -453,16 +453,16 @@ public class InventoryPlayer {
                         statTable.add(actualValue).center();
                         statTable.add(actualAddingStat).right();
                         switch(name){
-                            case "HP": 
+                            case "HP":
                                 nbAdded = 10;
                                 break;
-                            case "Defense": 
+                            case "Defense":
                                 nbAdded = 3;
                                 break;
-                            case "Attaque": 
+                            case "Attaque":
                                 nbAdded = 5;
                                 break;
-                            case "Agilite": 
+                            case "Agilite":
                                 nbAdded = 1;
                                 break;
                             default:
@@ -475,7 +475,7 @@ public class InventoryPlayer {
                         statExploitable.add(nameValueStat.get(name));
                     }
                 }
-                
+
 
             }
             else{
@@ -513,17 +513,17 @@ public class InventoryPlayer {
             System.out.println(showInventory);
             if(showInventory){
             reload = true;
-            
-        }
-            
+
         }
 
-        
-        
-        
-        
+        }
+
+
+
+
+
     }
-    
+
     public void applyStat(){
         int Hp = 90;
         int Def = 3;
@@ -534,12 +534,12 @@ public class InventoryPlayer {
         Def = Def +(statExploitable.get(1)*3);
         dmg = dmg +(statExploitable.get(2)*5);
         agi = agi +(statExploitable.get(3));
-        
+
         for(String name : equipeItem.keySet()){
-            
-            
+
+
             if(equipeItem.get(name).getObject() == null){
-                
+
             }
             else{
                 if(equipeItem.get(name).getObject() instanceof Weapon){
@@ -555,9 +555,9 @@ public class InventoryPlayer {
                     //a.getMana();
                 }
             }
-            
-            
-            //Hp = Hp + 
+
+
+            //Hp = Hp +
         }
         this.player.setMaxHp(Hp);
 
@@ -587,11 +587,11 @@ public class InventoryPlayer {
                 continue;
             }
             AllPointAdded += value;
-            
+
         }
         nameValueStat.put("Point disponible",nameValueStat.get("Niveau")*10+6-AllPointAdded);
     }
-    
+
     private boolean objectInfoMenu = false;
     private Stage objectStage;
     //variable des stuff
@@ -616,7 +616,7 @@ public class InventoryPlayer {
         put("newStamina",null);
         put("newMana",null);
         put("newSpecialPerk",null);
-        
+
     }};
     //quand pas de stuff équipé
     HashMap<String,String> statStuffVide = new HashMap<>(statStuff);
@@ -625,8 +625,8 @@ public class InventoryPlayer {
     private void objectInfo(Item<? extends Stuff> selected){
         this.objectInfoMenu = true;
         Item<? extends Stuff> objectSelected = selected;
-        
-        
+
+
         //table
         objectStage = new Stage(new ScreenViewport());
         Table objectRootTable = new Table();
@@ -644,11 +644,11 @@ public class InventoryPlayer {
         objectRootTable.row();
         objectRootTable.add(objectButtonTable).colspan(2).fillX();
         objectButtonTable.defaults().expandX();
-        
+
         TextButton stuffManageEquip = new TextButton("Equiper", skin);
         TextButton stuffManageCancel = new TextButton("Annuler", skin);
         TextButton stuffManagetrash = new TextButton("Jeter", skin);
-        
+
         stuffManageEquip.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {
@@ -661,15 +661,15 @@ public class InventoryPlayer {
                 InventoryItem.remove(objectSelected);
                 System.out.println("objet équiper");
                 InventoryReload();
-                
-            }     
+
+            }
         });
         stuffManageCancel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x,float y) {
                 objectInfoMenu=false;
                 System.out.println("objet annuler");
-            }     
+            }
         });
         stuffManagetrash.addListener(new ClickListener() {
             @Override
@@ -677,16 +677,16 @@ public class InventoryPlayer {
                 System.out.println("objet jeter");
                 InventoryItem.remove(objectSelected);
                 InventoryReload();
-                
-            }     
+
+            }
         });
-        
-        
+
+
         objectButtonTable.add(stuffManageEquip);
         objectButtonTable.add(stuffManageCancel);
         objectButtonTable.add(stuffManagetrash);
         objectRootTable.setDebug(true);
-        
+
         //comparaison
         //String category = "";
         //verification de weapon + récupération des valeurs
@@ -699,7 +699,7 @@ public class InventoryPlayer {
                 statStuff.put("oldDurability", Integer.toString(oldWeapon.getDurability()));
                 statStuff.put("oldDamage", Integer.toString(oldWeapon.getDamage()));
                 statStuff.put("oldSpecialPerk", oldWeapon.getSpecialPerk());
-                
+
             }
             Weapon newWeapon = (Weapon) selected.getObject();
             statStuff.put("newName", newWeapon.getName());
@@ -739,7 +739,7 @@ public class InventoryPlayer {
             statStuff.put("newSpecialPerk",newArmor.getSpecialPerk());
             category = "Armor";
         }
-        
+
         //ancien item
         {objectLeftTable.add(new Label("Ancien",skin)).right();
         objectLeftTable.row();
@@ -758,7 +758,7 @@ public class InventoryPlayer {
             objectLeftTable.row();
         }
         if(category == "Armor"){
-            
+
             objectLeftTable.add(new Label("HP : ",skin)).left().padLeft(0);
             objectLeftTable.add(new Label(statStuff.get("oldHealth"),skin)).center();
             objectLeftTable.row();
@@ -797,7 +797,7 @@ public class InventoryPlayer {
         objectRightTable.row();
     }
     if(category == "Armor"){
-        
+
             objectRightTable.add(new Label("HP : ",skin)).left().padLeft(0);
             objectRightTable.add(new Label(statStuff.get("newHealth"),skin)).center();
             objectRightTable.row();
@@ -819,7 +819,7 @@ public class InventoryPlayer {
         objectRightTable.row();
     }
     //objectRootTable.setDebug(true);
-    
+
     statStuff.putAll(statStuffVide);
     }
 
@@ -836,7 +836,7 @@ public class InventoryPlayer {
 //gestion d'affichage
 public void rdMenu(float delta) {
     //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    
+
     stage.act(delta);
     stage.draw();
     if (objectInfoMenu){
@@ -844,9 +844,9 @@ public void rdMenu(float delta) {
         objectStage.draw();
     }
 }
-public void dpMenu(){stage.dispose(); /*skin.dispose();*/}   
+public void dpMenu(){stage.dispose(); /*skin.dispose();*/}
 
-public void rsMenu(int width, int height) { 
+public void rsMenu(int width, int height) {
     stage.getViewport().update(width, height, true);
 }
 public void shMenu() {}
@@ -881,7 +881,7 @@ public boolean keyDown(int keycode) {
             setEquipeItem(a.getObject().getClass().getSuperclass().getSimpleName(), a);
             InventoryItem.remove(a);
             break;
-            
+
         }
-    
+
     }*/

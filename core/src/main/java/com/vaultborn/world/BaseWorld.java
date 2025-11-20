@@ -22,6 +22,7 @@ import com.vaultborn.entities.projectiles.Projectile;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.factories.Factory;
+import com.vaultborn.factories.FactoryException;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.screens.GameScreen;
 
@@ -61,7 +62,7 @@ public abstract class BaseWorld {
     protected float timer = 0f;
     public MainGame game;
 
-    public BaseWorld(MainGame game, String mapName, String backgroundPath) {
+    public BaseWorld(MainGame game, String mapName, String backgroundPath) throws FactoryException {
         this.mapName = mapName;
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
@@ -113,9 +114,9 @@ public abstract class BaseWorld {
         }
     }
 
-    protected abstract void initMobs();
+    protected abstract void initMobs() throws FactoryException;
 
-    protected abstract void initObjects();
+    protected abstract void initObjects() throws FactoryException;
 
     public void setBoss(Class<?> boss) {
         this.boss = boss;

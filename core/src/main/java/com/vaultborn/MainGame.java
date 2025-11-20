@@ -12,6 +12,8 @@ import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.factories.Factory;
 import com.vaultborn.managers.InputManager;
+import com.vaultborn.factories.FactoryException;
+
 import com.vaultborn.save.SaveData;
 import com.vaultborn.save.SaveManager;
 import com.vaultborn.screens.GameScreen;
@@ -142,7 +144,7 @@ public class MainGame extends Game {
         System.out.println("Partie sauvegardee ! "+ data.playerClass + " - " + data.playerX + " - " + data.playerY + " - "+ data.worldName);
     }
 
-    public void loadGame() {
+    public void loadGame() throws FactoryException {
         SaveData data = SaveManager.load();
         if (data == null) {
             System.out.println("Aucune sauvegarde trouvee !");

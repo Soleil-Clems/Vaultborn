@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
+import com.vaultborn.factories.Factory;
 
 
 public class Warrior extends Player {
@@ -18,6 +19,18 @@ public class Warrior extends Player {
         this.agility = 2;
         this.range = 1;
 
+    }
+
+//   Pour les test unitaires
+    public Warrior(Vector2 position) {
+        super(position, "Lancelot");
+        this.maxHp = 100;
+        this.hp = this.maxHp;
+        this.damage = 20;
+        this.defense = 8;
+        this.level = 1;
+        this.agility = 2;
+        this.range = 1;
 
     }
 

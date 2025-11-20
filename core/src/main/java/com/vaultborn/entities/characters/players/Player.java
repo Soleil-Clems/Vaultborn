@@ -10,11 +10,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.screens.InventoryPlayer;
 
-public abstract  class Player extends Character {
+public abstract class Player extends Character {
     protected InventoryPlayer inv;
     private AssetManager assets;
     protected Sound attackSound;
     private float meleeRange = 80f;
+    public boolean isTest = false;
 
 
     public Player(Vector2 position, TextureRegion texture, String name) {
@@ -23,19 +24,32 @@ public abstract  class Player extends Character {
         attackSound = Gdx.audio.newSound(Gdx.files.internal("sounds/sword.mp3"));
         gameOverSound = Gdx.audio.newSound(Gdx.files.internal("sounds/gameover.mp3"));
     }
-    public InventoryPlayer getInventory(){
+
+    //    Pour les tests unitaires
+    public Player(Vector2 position, String name) {
+        super(position, name);
+        this.isPlayerControlled = true;
+
+    }
+
+    public InventoryPlayer getInventory() {
         return inv;
     }
-    public void setInventory(InventoryPlayer inv){
+
+    public void setInventory(InventoryPlayer inv) {
         this.inv = inv;
     }
-    public void expGain(int nbExp){
+
+    public void expGain(int nbExp) {
         inv.addExp(nbExp);
     }
 
     @Override
     public void attack(Character target) {
-        attackSound.play(0.5f);
+        if (!isTest) {
+            attackSound.play(0.5f);
+        }
+
         if (target == null) {
             return;
         }
@@ -61,4 +75,7 @@ public abstract  class Player extends Character {
     }
 
 
+    public void loadAnimations() {
+
+    }
 }
