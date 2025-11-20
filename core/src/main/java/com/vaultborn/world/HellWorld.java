@@ -20,6 +20,7 @@ public class HellWorld extends BaseWorld {
         levelName = "hell";
         this.spawnX = 550;
         this.spawnY = 3800;
+        this.isEnd = true;
 
     }
 

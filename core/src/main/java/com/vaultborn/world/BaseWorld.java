@@ -54,6 +54,7 @@ public abstract class BaseWorld {
     protected Texture background;
     protected float tileSize;
     protected float mapHeightInPixels;
+    public boolean isEnd = false;
 
     public String levelName;
     public String mapName;
@@ -168,8 +169,12 @@ public abstract class BaseWorld {
                     door.setAnimation("open");
                     if (door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
                         door.pickUp(player);
+
                         if (game != null) {
                             game.saveGame();
+                            if (this.isEnd) {
+                                player.isWin = true;
+                            }
                         }
                         changeToWorld(door.getTargetWorld(), door.getSpawnPosition());
 

@@ -47,6 +47,7 @@ public abstract class Character extends Entity {
     protected boolean hasHit = false;
 
     public boolean isDead = false;
+    public boolean isWin =  false;
     protected float deadTimer = 0f;
     protected float deadDuration = 5f;
     protected boolean readyToRemove = false;

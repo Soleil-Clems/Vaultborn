@@ -250,8 +250,15 @@ public class InventoryPlayer {
         nameValueStat.replace("Point disponible", nameValueStat.get("Point disponible")-1);
         }
         else{System.out.println("Pas de point disponible");}
+
     }
 
+    public void setShowInventory(boolean showInventory){
+        this.showInventory = showInventory;
+    }
+    public void setEquipeItem(String key,Item<? extends Stuff> item){
+        equipeItem.replace(key,item);
+    }
     //getter inventory global
     //liste
     public LinkedHashMap<Item<? extends Stuff>,Integer> getInventory(){
@@ -283,12 +290,7 @@ public class InventoryPlayer {
     public Stage getObjectStage(){
         return this.objectStage;
     }
-    public void setShowInventory(boolean showInventory){
-        this.showInventory = showInventory;
-    }
-    public void setEquipeItem(String key,Item<? extends Stuff> item){
-        equipeItem.replace(key,item);
-    }
+
     public boolean getObjectInfoMenu(){
         return this.objectInfoMenu;
     }
@@ -477,22 +479,22 @@ public class InventoryPlayer {
             this.showInventory = !showInventory;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
-            applyStat();
-        }
-        //reset l'inventaire
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
-            InventoryItem.clear();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
-            addExp(22);
-            System.out.println(showInventory);
-            if(showInventory){
-            reload = true;
-
-        }
-
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
+//            applyStat();
+//        }
+//        //reset l'inventaire
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+//            InventoryItem.clear();
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
+//            addExp(22);
+//            System.out.println(showInventory);
+//            if(showInventory){
+//            reload = true;
+//
+//        }
+//
+//        }
 
 
 

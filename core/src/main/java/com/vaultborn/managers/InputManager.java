@@ -21,13 +21,13 @@ public class InputManager {
 
 
     public InputManager(){
-        this.left = "A";
-        this.right = "D";
+        this.left = "Left";
+        this.right = "Right";
         this.jump = "Space";
-        this.attack = "Q";
+        this.attack = "A";
         this.inventory = "I";
-        this.attack2 = "W";
-        this.attack3 = "E";
+        this.attack2 = "Q";
+        this.attack3 = "D";
         this.attack4 = "S";
         inputList = new LinkedHashMap<String,String>(){{
             put("left", left);
@@ -67,11 +67,11 @@ public class InputManager {
             case "attack4":
                 inputList.put("attack4",input);
                 break;
-        
+
             default:
                 break;
         }
-        
+
     }
     public String getInput(String key){
         switch (key.toLowerCase()) {
@@ -91,7 +91,7 @@ public class InputManager {
                 return this.attack3;
             case "attack4":
                 return this.attack4;
-        
+
             default:
                 return null;
         }
