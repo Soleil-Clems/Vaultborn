@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.graphics.Color;
 
 import com.vaultborn.MainGame;
+import com.vaultborn.managers.InputManager;
 import com.vaultborn.factories.FactoryException;
 import com.vaultborn.save.SaveManager;
 
@@ -29,15 +30,25 @@ public class MenuScreen {
     private Music backgroundMusic;
     private boolean settings = false;
     private TextButton continueButton; // Référence au bouton Poursuivre
+    private InputManager inputManager;
 
     public MenuScreen(MainGame game,Skin skin,List<String> element){
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
     }
+    public MenuScreen(MainGame game,Skin skin,List<String> element,InputManager inputManager){
+        createMenu(game, skin, element);
+        game.getBackgroundMusic().play();
+        this.inputManager = inputManager;
+    }
 
     public Music getBackgroundMusic(){
         return this.backgroundMusic;
     }
+    public InputManager getInputManager(){
+        return this.inputManager;
+    }
+
 
 //    public boolean isActivated(){
 //        return activated;
@@ -58,6 +69,11 @@ public class MenuScreen {
     public void reloadMenu(MainGame game,Skin skin,List<String> element){
         createMenu(game, skin, element);
         this.settings = true;
+    }
+    public void reloadMenu(MainGame game,Skin skin,List<String> element,InputManager inputManager){
+        createMenu(game, skin, element);
+        this.settings = true;
+        this.inputManager = inputManager;
     }
 
     public void createMenu(MainGame game,Skin skin,List<String> element){

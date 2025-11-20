@@ -15,6 +15,7 @@ import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.world.BaseWorld;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class Character extends Entity {
@@ -64,6 +65,17 @@ public abstract class Character extends Entity {
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
     public float stateTime = 0f;
     protected String currentAnimation = "idle";
+
+    protected LinkedHashMap<String,String> inputList = new LinkedHashMap<String,String>(){{
+            put("left", "A");
+            put("right", "D");
+            put("jump", "Space");
+            put("attack", "Q");
+            put("inventory", "I");
+            put("attack2", "W");
+            put("attack3", "E");
+            put("attack4", "S");
+        }};
 
     public Character(Vector2 position, TextureRegion texture, String name) {
         super(position, texture);
@@ -169,6 +181,10 @@ public abstract class Character extends Entity {
         this.range = range;
     }
 
+    public void setInput(LinkedHashMap<String,String>inputList){
+        this.inputList = inputList;
+    }
+
     protected void addAnimation(String key, Texture spriteSheet, int frameCount, float frameDuration) {
         int frameWidth = spriteSheet.getWidth() / frameCount;
         int frameHeight = spriteSheet.getHeight();
@@ -197,22 +213,22 @@ public abstract class Character extends Entity {
     protected void handleInput(float delta) {
         float moveX = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("left")))) {
             moveX -= 1f;
             facingRight = false;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("right")))) {
             moveX += 1f;
             facingRight = true;
         }
 
 
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) attack = "attack";
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) attack = "attack2";
-        if (Gdx.input.isKeyPressed(Input.Keys.Q)) attack = "attack3";
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) isProtected = true;
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack")))) attack = "attack";
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack2")))) attack = "attack2";
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack3")))) attack = "attack3";
+        if (Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("attack4")))) isProtected = true;
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && onGround) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(inputList.get("jump"))) && onGround) {
             velocityY = jumpSpeed + agility;
             onGround = false;
         }
@@ -426,7 +442,7 @@ public abstract class Character extends Entity {
 
     protected boolean isMovingHorizontally() {
         if (isPlayerControlled) {
-            return Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+            return Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("left"))) || Gdx.input.isKeyPressed(Input.Keys.valueOf(inputList.get("right")));
         } else {
             if (world == null || world.getPlayer() == null) return false;
 

@@ -489,7 +489,7 @@ public class InventoryPlayer {
         }
 
         //test d'ajout
-        /*if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+        /*if (Gdx.input.isKeyJustPressed(Input.Keys.valueOf(inputList.get("attack3")))){
             addInventory(theSword);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.W)){
