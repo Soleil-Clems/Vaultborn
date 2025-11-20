@@ -9,20 +9,20 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class Foot extends Armor{
 
     //sans specialPerk
-    public Foot(Vector2 position, TextureRegion texture, String type, String name){
+    public Foot(Vector2 position, TextureRegion texture, String type, String name, int lvl){
         super(position, texture,"foot",name);
         this.specialPerk = null;
-        this.health = 5;
-        this.defense = 2;
-        this.agility = 10;
+        this.health = 5*lvl;
+        this.defense = 2*lvl;
+        this.agility = 10*lvl;
         
     }
     //avec specialPerk
-    public Foot(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
+    public Foot(Vector2 position, TextureRegion texture, String type,String specialPerk,String name, int lvl){
         super(position, texture,"foot",name);
         this.specialPerk = specialPerk;
-        this.health = 5;
-        this.defense = 2;
-        this.agility = 10;
+        this.health = 5*lvl;
+        this.defense = 2*lvl;
+        this.agility = 10*lvl;
     }
 }

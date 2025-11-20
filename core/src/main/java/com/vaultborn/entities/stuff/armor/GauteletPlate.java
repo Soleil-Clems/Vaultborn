@@ -8,14 +8,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GauteletPlate extends Arm{
     //sans specialPerk
-    public GauteletPlate(Vector2 position, TextureRegion texture, String type, String name){
-        super(position, texture,"gauteletPlate",name);
+    public GauteletPlate(Vector2 position, TextureRegion texture, String name, int lvl){
+        super(position, texture,"gauteletPlate",name,lvl);
         this.stamina = 30;
         
     }
     //avec specialPerk
-    public GauteletPlate(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
-        super(position, texture,"gauteletPlate",specialPerk,name);
+    public GauteletPlate(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
+        super(position, texture,"gauteletPlate",specialPerk,name,lvl);
         this.stamina = 30;
     }
     

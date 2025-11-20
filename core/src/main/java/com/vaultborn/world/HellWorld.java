@@ -124,12 +124,12 @@ public class HellWorld extends BaseWorld {
 
     @Override
     protected void initObjects() throws FactoryException {
-        gameObjects.add(factory.createObject("sword", 3100, 4200, this));
-        gameObjects.add(factory.createObject("sword", 4100, 2500, this));
-        gameObjects.add(factory.createObject("sword", 3050, 1750, this));
-        gameObjects.add(factory.createObject("sword", 450, 1400, this));
-        gameObjects.add(factory.createObject("sword", 150, 1200, this));
-        gameObjects.add(factory.createObject("sword", 3150, 1050, this));
+        gameObjects.add(factory.createObject("sword", 3100, 4200, this,1));
+        gameObjects.add(factory.createObject("sword", 4100, 2500, this,1));
+        gameObjects.add(factory.createObject("sword", 3050, 1750, this,1));
+        gameObjects.add(factory.createObject("sword", 450, 1400, this,1));
+        gameObjects.add(factory.createObject("sword", 150, 1200, this,1));
+        gameObjects.add(factory.createObject("sword", 3150, 1050, this,1));
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 80, 50, this, game.forestWorld);
         door.setParentWorld(this);
         door.setSpawnPosition(500, 580);//  Position d'arrivée dans ForestWorld

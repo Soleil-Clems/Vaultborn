@@ -136,26 +136,26 @@ public class Factory {
         return mob;
     }
 
-    public GameObject createObject(String type, float x, float y, BaseWorld world) throws FactoryException {
+    public GameObject createObject(String type, float x, float y, BaseWorld world,int lvl) throws FactoryException {
         GameObject obj;
         switch (type.toLowerCase()) {
             case "sword":
-                obj = IS_TEST ? new Sword(new Vector2(x, y), swordRegion) : new Sword(new Vector2(x, y), swordRegion);
+                obj = IS_TEST ? new Sword(new Vector2(x, y), swordRegion,lvl) : new Sword(new Vector2(x, y), swordRegion,lvl);
                 break;
             case "helmet":
-                obj = IS_TEST ? new Helmet(new Vector2(x, y), HelmetRegion, "", "Epic Helmet") : new Helmet(new Vector2(x, y), HelmetRegion, "", "The Helmet");
+                obj = IS_TEST ? new Helmet(new Vector2(x, y), HelmetRegion, "Epic Helmet",lvl)  : new Helmet(new Vector2(x, y), HelmetRegion, "The Helmet",lvl) ;
                 break;
             case "breastplate":
-                obj = IS_TEST ? new Breastplate(new Vector2(x, y), BreastplateRegion, "", "Epic Chest") : new Breastplate(new Vector2(x, y), BreastplateRegion, "", "Epic Chest");
+                obj = IS_TEST ? new Breastplate(new Vector2(x, y), BreastplateRegion, "Epic Chest",lvl)  : new Breastplate(new Vector2(x, y), BreastplateRegion, "Epic Chest",lvl) ;
                 break;
             case "legplate":
-                obj = IS_TEST ? new LegPlate(new Vector2(x, y), LegPlateRegion, "", "Epic Leg") : new LegPlate(new Vector2(x, y), LegPlateRegion, "", "Epic Leg");
+                obj = IS_TEST ? new LegPlate(new Vector2(x, y), LegPlateRegion, "Epic Leg",lvl)  : new LegPlate(new Vector2(x, y), LegPlateRegion, "Epic Leg",lvl) ;
                 break;
             case "gauteletplate":
-                obj = IS_TEST ? new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "", "Epic Hand") : new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "", "Epic Hand");
+                obj = IS_TEST ? new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "Epic Hand",lvl)  : new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "Epic Hand",lvl) ;
                 break;
             case "ironfoot":
-                obj = IS_TEST ? new IronFoot(new Vector2(x, y), IronFootRegion, "", "Epic Boots") : new IronFoot(new Vector2(x, y), IronFootRegion, "", "Epic Boots");
+                obj = IS_TEST ? new IronFoot(new Vector2(x, y), IronFootRegion, "Epic Boots",lvl)  : new IronFoot(new Vector2(x, y), IronFootRegion, "Epic Boots",lvl) ;
                 break;
             case "special_door":
                 obj = IS_TEST ? new SpecialDoor(new Vector2(x, y), specialDoorRegion) : new SpecialDoor(new Vector2(x, y), specialDoorRegion);
