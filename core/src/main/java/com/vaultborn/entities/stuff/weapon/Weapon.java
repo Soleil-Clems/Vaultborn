@@ -12,7 +12,6 @@ import com.vaultborn.entities.Entity;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
-import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.save.SaveData;
 import com.vaultborn.save.SaveManager;
@@ -24,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class Weapon extends GameObject implements Stuff {
+public abstract class Weapon extends GameObject{
     protected String type;
     protected String name;
     protected int durability;

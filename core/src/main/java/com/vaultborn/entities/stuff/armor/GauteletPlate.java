@@ -10,13 +10,13 @@ public class GauteletPlate extends Arm{
     //sans specialPerk
     public GauteletPlate(Vector2 position, TextureRegion texture, String name, int lvl){
         super(position, texture,"gauteletPlate",name,lvl);
-        this.stamina = 30;
+        this.stamina = 30*lvl;
         
     }
     //avec specialPerk
     public GauteletPlate(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
         super(position, texture,"gauteletPlate",specialPerk,name,lvl);
-        this.stamina = 30;
+        this.stamina = 30*lvl;
     }
     
 }

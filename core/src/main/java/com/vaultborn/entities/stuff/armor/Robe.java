@@ -10,13 +10,13 @@ public class Robe extends Torso{
     //sans specialPerk
     public Robe(Vector2 position, TextureRegion texture, String name, int lvl){
         super(position, texture,"robe",name,lvl);
-        this.mana = 10;
+        this.mana = 10*lvl;
         
     }
     //avec specialPerk
     public Robe(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
         super(position, texture,"robe",specialPerk,name,lvl);
-        this.mana = 10;
+        this.mana = 10*lvl;
     }
     
 }
