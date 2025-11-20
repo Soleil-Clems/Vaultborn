@@ -183,7 +183,7 @@ public class SelectPlayerScreen implements Screen {
     }
 
     private TextureRegion getFirstIdleFrame(String classKey) {
-        String path = classKey + "/idle.png";
+        String path = classKey + "/Idle.png";
         Texture texture = new Texture(Gdx.files.internal(path));
 
         int frameWidth = texture.getWidth() / 8;

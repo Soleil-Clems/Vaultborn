@@ -21,7 +21,7 @@ public class Warrior extends Player {
 
     }
 
-//   Pour les test unitaires
+    //   Pour les test unitaires
     public Warrior(Vector2 position) {
         super(position, "Lancelot");
         this.maxHp = 100;
@@ -38,6 +38,7 @@ public class Warrior extends Player {
     public void attack(Character character) {
         super.attack(character);
     }
+
     public void loadAnimations() {
         addAnimation("idle", new Texture("warrior/Idle.png"), 5, 0.1f);
         addAnimation("walk", new Texture("warrior/Walk.png"), 9, 0.1f);
