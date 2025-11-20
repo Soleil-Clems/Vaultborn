@@ -79,6 +79,21 @@ public abstract class Character extends Entity {
 
     }
 
+//    Pour les tests unitaires
+    public Character(Vector2 position, String name) {
+        super(position);
+        this.name = name;
+        this.level = 1;
+        this.portrait = texture;
+        this.bounds.set(position.x, position.y, characterWidth, characterHeight);
+        this.hitbox = new Rectangle(position.x, position.y, 90, 60);
+
+        if (this instanceof Player) {
+            player = (Player) this;
+        }
+
+    }
+
 
     public abstract void attack(Character target);
 
@@ -213,13 +228,13 @@ public abstract class Character extends Entity {
         if (isDead) return;
 
         if (this.defense >= amount) {
-            hp -= 1;
+            this.hp -= 1;
         } else {
-            hp -= amount - this.defense;
+            this.hp -= amount - this.defense;
         }
 
-        if (hp <= 0) {
-            hp = 0;
+        if (this.hp <= 0) {
+            this.hp = 0;
             die();
         } else {
             isHurt = true;

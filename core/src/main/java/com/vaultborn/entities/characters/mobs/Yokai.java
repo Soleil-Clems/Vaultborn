@@ -17,6 +17,17 @@ public class Yokai extends Mob{
 
     }
 
+    public Yokai(Vector2 position,int lvl) {
+        super(position, "Yokai", lvl, 33);
+        this.hp = 100;
+        this.damage = 4;
+        this.defense = 5;
+        this.level = 1;
+        this.agility = 10;
+        this.range = 1;
+
+    }
+
     @Override
     public void attack(Character target) {
         if (isDead) return;

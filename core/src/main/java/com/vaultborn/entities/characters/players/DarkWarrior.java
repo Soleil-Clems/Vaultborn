@@ -18,8 +18,17 @@ public class DarkWarrior extends Player {
         this.level = 1;
         this.agility = 2;
         this.range = 1;
+    }
 
-
+    public DarkWarrior(Vector2 position) {
+        super(position, "Juzo");
+        this.maxHp = 100;
+        this.hp = this.maxHp;
+        this.damage = 20;
+        this.defense = 8;
+        this.level = 1;
+        this.agility = 2;
+        this.range = 1;
     }
 
     @Override

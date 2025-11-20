@@ -17,6 +17,12 @@ public abstract  class Mage extends Player {
 
     }
 
+    public Mage(Vector2 position,  String name) {
+        super(position, name);
+
+    }
+
+
     @Override
     public void attack(Character target) {
         attackSound.play(0.5f);

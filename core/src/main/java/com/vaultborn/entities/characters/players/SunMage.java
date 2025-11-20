@@ -22,6 +22,17 @@ public class SunMage extends Mage {
         this.range = 20;
     }
 
+    public SunMage(Vector2 position) {
+        super(position, "Monet");
+        this.maxHp = 100;
+        this.hp = this.maxHp;
+        this.damage = 30;
+        this.defense = 20;
+        this.level = 1;
+        this.agility = 40;
+        this.range = 20;
+    }
+
     @Override
     public void attack(Character target) {
         super.attack(target);

@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.vaultborn.MainGame;
 import com.vaultborn.factories.Factory;
+import com.vaultborn.factories.FactoryException;
 import com.vaultborn.world.ForestWorld;
 import com.vaultborn.world.HellWorld;
 
@@ -159,7 +160,13 @@ public class SelectPlayerScreen implements Screen {
 
                 stage.addAction(com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence(
                     com.badlogic.gdx.scenes.scene2d.actions.Actions.delay(0.01f),
-                    com.badlogic.gdx.scenes.scene2d.actions.Actions.run(() -> startGame(classKey))
+                    com.badlogic.gdx.scenes.scene2d.actions.Actions.run(() -> {
+                        try {
+                            startGame(classKey);
+                        } catch (FactoryException e) {
+                            throw new RuntimeException(e);
+                        }
+                    })
                 ));
             }
         });
@@ -186,7 +193,7 @@ public class SelectPlayerScreen implements Screen {
         return tmp[0][0];
     }
 
-    private void startGame(String classKey) {
+    private void startGame(String classKey) throws FactoryException {
         game.forestWorld = new ForestWorld(game);
         game.hellWorld = new HellWorld(game);
 

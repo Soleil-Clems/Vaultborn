@@ -10,4 +10,8 @@ public abstract  class GameObject  extends Entity implements Stuff{
         super(position, texture);
 
     }
+
+    public void loadAnimations() {
+
+    }
 }
