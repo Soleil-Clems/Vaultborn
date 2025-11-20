@@ -8,6 +8,7 @@ import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.Stuff;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.vaultborn.screens.InventoryPlayer;
 
@@ -22,14 +23,14 @@ public abstract class Armor extends GameObject {
     protected int agility;
     protected int stamina;
     protected int mana;
-//    protected Sound pickUpSound;
+    protected Sound pickUpSound;
 
     public Armor(Vector2 position, TextureRegion texture, String type, String name){
         super(position, texture);
         this.type = type;
         this.name = name;
         this.durability = 100;
-       // pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
+        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
 
     }
 
@@ -39,7 +40,7 @@ public abstract class Armor extends GameObject {
         this.name = name;
         this.durability = 100;
         this.specialPerk = specialPerk;
-        // pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
+        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
 
     }
 
@@ -111,7 +112,7 @@ public abstract class Armor extends GameObject {
 
     @Override
     public void pickUp(Player character) {
-        // pickUpSound.play(1f);
+        pickUpSound.play(1f);
         InventoryPlayer inv = character.getInventory();
         inv.addInventory(this);
     }

@@ -90,7 +90,7 @@ public class InventoryPlayer {
 
 
     private int numberOfSlot = 15;
-    public ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
+    
     public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
 
 
@@ -347,6 +347,7 @@ public class InventoryPlayer {
                         TextureRegion currentTexture = InventoryItemList.get(inventoryCount).getObject().getTexture();
                         //bouton avec item
                         //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
+                        final ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
                         styleFullSlot.up = new TextureRegionDrawable(currentTexture);
                         styleFullSlot.down = new TextureRegionDrawable(currentTexture).tint(new Color (1f,1f,1f,0.5f));
                         ImageButton itemImageButton = new ImageButton(styleFullSlot);
@@ -382,10 +383,11 @@ public class InventoryPlayer {
                         TextureRegion currentTexture = equipeItem.get(key).getObject().getTexture();
                         //bouton avec item
                         //ImageButton.ImageButtonStyle styleFullSlot = new ImageButton.ImageButtonStyle();
+                        final ImageButton.ImageButtonStyle styleFullSlot =  new ImageButton.ImageButtonStyle();
                         styleFullSlot.up = new TextureRegionDrawable(currentTexture);
                         styleFullSlot.down = new TextureRegionDrawable(currentTexture).tint(new Color (1f,1f,1f,0.5f));
                         ImageButton itemImageButton = new ImageButton(styleFullSlot);
-                        equipeTable.add(itemImageButton).height(HeightCalculation/6-20).width(WidthCalculation-20).pad(2);
+                        equipeTable.add(itemImageButton).width(ItemSizeInv).height(HeightCalculation/6-20).pad(2);
                         equipeTable.row();
                     }
                 }
