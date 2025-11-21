@@ -39,6 +39,7 @@ public interface Stuff {
      * @return la description du perk spécial
      */
     String getSpecialPerk();
+    boolean pickUp(Player character);
 
     /**
      * Permet à un joueur de ramasser l'objet.

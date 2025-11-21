@@ -8,13 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Boots extends Foot{
     //sans specialPerk
-    public Boots(Vector2 position, TextureRegion texture, String type, String name){
-        super(position, texture,"boots",name);
+    public Boots(Vector2 position, TextureRegion texture, String name, int lvl){
+        super(position, texture,"boots",name,lvl);
         
     }
     //avec specialPerk
-    public Boots(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
-        super(position, texture,"boots",specialPerk,name);
+    public Boots(Vector2 position, TextureRegion texture, String specialPerk,String name, int lvl){
+        super(position, texture,"boots",specialPerk,name,lvl);
     }
     
 }

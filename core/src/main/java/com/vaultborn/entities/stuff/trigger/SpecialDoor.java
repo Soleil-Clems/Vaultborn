@@ -92,8 +92,10 @@ public class SpecialDoor extends GameObject {
     public String getSpecialPerk() { return ""; }
 
     @Override
-    public void pickUp(Player character) {
+    public boolean pickUp(Player character) {
         teleportationSound.play(1f);
+        return true;
+
     }
 
 

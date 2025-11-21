@@ -8,15 +8,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Breastplate extends Torso{
     //sans specialPerk
-    public Breastplate(Vector2 position, TextureRegion texture, String type, String name){
-        super(position, texture,"breastplate",name);
-        this.stamina = 10;
+    public Breastplate(Vector2 position, TextureRegion texture, String name, int lvl){
+        super(position, texture,"breastplate",name,lvl);
+        this.stamina = 10*lvl;
         
     }
     //avec specialPerk
-    public Breastplate(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
-        super(position, texture,"breastplate",specialPerk,name);
-        this.stamina = 10;
+    public Breastplate(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
+        super(position, texture,"breastplate",specialPerk,name,lvl);
+        this.stamina = 10*lvl;
     }
     
 }

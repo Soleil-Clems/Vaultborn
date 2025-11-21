@@ -8,13 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Hat extends Head{
     //sans specialPerk
-    public Hat(Vector2 position, TextureRegion texture, String type, String name){
-        super(position, texture,"hat",name);
+    public Hat(Vector2 position, TextureRegion texture, String name, int lvl){
+        super(position, texture,"hat",name,lvl);
         
     }
     //avec specialPerk
-    public Hat(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
-        super(position, texture,"hat",specialPerk,name);
+    public Hat(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
+        super(position, texture,"hat",specialPerk,name,lvl);
     }
     
 }

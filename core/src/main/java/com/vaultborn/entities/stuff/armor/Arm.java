@@ -9,18 +9,18 @@ import com.badlogic.gdx.math.Vector2;
 public abstract class Arm extends Armor{
 
     //sans specialPerk
-    public Arm(Vector2 position, TextureRegion texture, String type, String name){
+    public Arm(Vector2 position, TextureRegion texture, String type, String name,int lvl){
         super(position, texture,"arm",name);
         this.specialPerk = null;
-        this.health = 10;
-        this.defense = 2;
+        this.health = 10*lvl;
+        this.defense = 2*lvl;
         
     }
     //avec specialPerk
-    public Arm(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
+    public Arm(Vector2 position, TextureRegion texture, String type,String specialPerk,String name,int lvl){
         super(position, texture,"arm",name);
         this.specialPerk = specialPerk;
-        this.health = 10;
-        this.defense = 2;
+        this.health = 10*lvl;
+        this.defense = 2*lvl;
     }
 }

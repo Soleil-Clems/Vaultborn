@@ -8,13 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class LegPlate extends Leg{
     //sans specialPerk
-    public LegPlate(Vector2 position, TextureRegion texture, String type, String name){
-        super(position, texture,"leg plate",name);
+    public LegPlate(Vector2 position, TextureRegion texture, String name, int lvl){
+        super(position, texture,"leg plate",name,lvl);
         
     }
     //avec specialPerk
-    public LegPlate(Vector2 position, TextureRegion texture, String type,String specialPerk,String name){
-        super(position, texture,"leg plate",specialPerk,name);
+    public LegPlate(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
+        super(position, texture,"leg plate",specialPerk,name,lvl);
     }
     
 }

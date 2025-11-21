@@ -10,6 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.characters.Character;
 import com.vaultborn.entities.characters.players.Player;
 import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.managers.AssetManager;
+import com.vaultborn.save.SaveData;
+import com.vaultborn.save.SaveManager;
 import com.vaultborn.entities.stuff.Stuff;
 import com.vaultborn.screens.InventoryPlayer;
 import com.vaultborn.world.BaseWorld;
@@ -24,20 +27,22 @@ import java.util.Map;
  * aux ennemis. Elles peuvent avoir un type, des dégâts, une portée et un effet spécial (specialPerk).
  * Cette classe gère également l'affichage via {@link Animation} et le son de ramassage.
  */
-public abstract class Weapon extends GameObject implements Stuff {
+public abstract class Weapon extends GameObject{
+    protected String type;
+    protected String name;
+    protected int durability;
+    protected String specialPerk;
+    protected int damage;
+    protected int range;
+    protected Character character;
+    public BaseWorld world;
+    private AssetManager assets;
+    protected Sound pickUpSound;
+    protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
 
-    protected String type; // Type de l'arme (ex: "sword", "bow")
-    protected String name; // Nom de l'arme
-    protected int durability; // Durabilité de l'arme
-    protected String specialPerk; // Effet spécial de l'arme (ex: fire, unbreakable)
-    protected int damage; // Dégâts infligés par l'arme
-    protected int range; // Portée de l'arme
-    protected Character character; // Personnage qui utilise l'arme
-    public BaseWorld world; // Monde dans lequel l'arme existe
-    protected Sound pickUpSound; // Son joué lors du ramassage
-    protected Map<String, Animation<TextureRegion>> animations = new HashMap<>(); // Animations associées
 
-    /**
+    //weapon sans specialPerk
+ /**
      * Constructeur d'une arme sans specialPerk.
      *
      * @param position Position initiale de l'arme
@@ -139,10 +144,11 @@ public abstract class Weapon extends GameObject implements Stuff {
      * @param character joueur qui ramasse l'arme
      */
     @Override
-    public void pickUp(Player character) {
-        pickUpSound.play(1f);
+    public boolean pickUp(Player character) {
         InventoryPlayer inv = character.getInventory();
-        inv.addInventory(this);
+        if(inv.getInventory().size()<15){inv.addInventory(this); pickUpSound.play(1f); return true;}
+        return false;
+        
     }
 
     /** Associe un monde à l'arme pour interactions futures. */

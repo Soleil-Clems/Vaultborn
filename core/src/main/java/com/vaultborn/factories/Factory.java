@@ -10,6 +10,13 @@ import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
+import com.vaultborn.world.ForestWorld;
+import com.vaultborn.entities.stuff.armor.Helmet;
+import com.vaultborn.entities.stuff.armor.Breastplate;
+import com.vaultborn.entities.stuff.armor.LegPlate;
+import com.vaultborn.entities.stuff.armor.GauteletPlate;
+import com.vaultborn.entities.stuff.armor.IronFoot;
+
 
 /**
  * Factory simplifiée pour créer des instances de Players, Mobs et GameObjects.
@@ -47,6 +54,11 @@ public class Factory {
 
     // Textures pour les objets
     private TextureRegion swordRegion;
+    private TextureRegion HelmetRegion;
+    private TextureRegion BreastplateRegion;
+    private TextureRegion LegPlateRegion;
+    private TextureRegion GauteletPlateRegion;
+    private TextureRegion IronFootRegion;
     private TextureRegion specialDoorRegion;
 
     /**
@@ -68,6 +80,11 @@ public class Factory {
         gorgonRegion = new TextureRegion(new Texture("gorgon/Idle.png"));
         minotaurRegion = new TextureRegion(new Texture("minotaur/Idle.png"));
         swordRegion = new TextureRegion(new Texture("objects/weapons/sword.png"));
+        HelmetRegion = new TextureRegion(new Texture("objects/armor/Helmet.png"));
+        BreastplateRegion = new TextureRegion(new Texture("objects/armor/Breastplate.png"));
+        LegPlateRegion = new TextureRegion(new Texture("objects/armor/LegPlate.png"));
+        GauteletPlateRegion = new TextureRegion(new Texture("objects/armor/GauteletPlate.png"));
+        IronFootRegion = new TextureRegion(new Texture("objects/armor/IronFoot.png"));
         specialDoorRegion = new TextureRegion(new Texture("specialdoor/closeddoor.png"));
     }
 
@@ -167,11 +184,26 @@ public class Factory {
      * @return GameObject créé
      * @throws FactoryException si le type est inconnu
      */
-    public GameObject createObject(String type, float x, float y, BaseWorld world) throws FactoryException {
+    public GameObject createObject(String type, float x, float y, BaseWorld world,int lvl) throws FactoryException {
         GameObject obj;
         switch (type.toLowerCase()) {
             case "sword":
-                obj = new Sword(new Vector2(x, y), swordRegion);
+                obj = new Sword(new Vector2(x, y), swordRegion,lvl);
+                break;
+            case "helmet":
+                obj =  new Helmet(new Vector2(x, y), HelmetRegion, "The Helmet",lvl) ;
+                break;
+            case "breastplate":
+                obj =  new Breastplate(new Vector2(x, y), BreastplateRegion, "Epic Chest",lvl) ;
+                break;
+            case "legplate":
+                obj =  new LegPlate(new Vector2(x, y), LegPlateRegion, "Epic Leg",lvl) ;
+                break;
+            case "gauteletplate":
+                obj = new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "Epic Hand",lvl) ;
+                break;
+            case "ironfoot":
+                obj =  new IronFoot(new Vector2(x, y), IronFootRegion, "Epic Boots",lvl) ;
                 break;
             case "special_door":
                 obj = new SpecialDoor(new Vector2(x, y), specialDoorRegion);

@@ -12,6 +12,9 @@ import com.vaultborn.entities.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.vaultborn.entities.characters.mobs.Mob;
 import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.factories.Factory;
+import com.vaultborn.factories.FactoryException;
 import com.vaultborn.world.BaseWorld;
 
 import java.util.HashMap;
@@ -36,6 +39,7 @@ import java.util.Map;
  */
 public abstract class Character extends Entity {
 
+    Factory factory = new Factory();
     /** Nom du personnage. */
     protected String name;
 
@@ -533,6 +537,11 @@ public abstract class Character extends Entity {
                         hasHit = true;
                         if (target.getHp() <= 0 && !(target instanceof Player)) {
                             player.expGain(mob.giveExp());
+                                    try{
+                                        looting(player,mob.getLevel());}
+                                    catch(FactoryException e){
+                                        System.out.println(e);
+                                    }
                         }
                     }
                 }
@@ -549,7 +558,7 @@ public abstract class Character extends Entity {
             moveAndCollide(0, velocityY * delta);
             return;
         }
-
+        
         if (isPlayerControlled) {
             handleInput(delta);
         } else {
@@ -559,6 +568,27 @@ public abstract class Character extends Entity {
         applyGravity(delta);
         updateAnimationState();
         updateHitbox();
+    }
+  
+     /**
+     * System de looting, permet d'avoir les probabilité de drop un item
+     */
+    protected void looting(Player p,int lvl) throws FactoryException{
+        
+        double random = Math.random()*100;
+        String type = null;
+        if (random < 40){return;}
+        if (random < 50){type = "sword";}
+        else if (random < 60){type = "helmet";}
+        else if (random < 70){type = "breastplate";}
+        else if (random < 80){type = "legplate";}
+        else if (random < 90){type = "gauteletplate";}
+        else if (random <=100){type = "ironfoot";}
+            
+            //gameObjects.add(factory.createObject("helmet",position.x, position.y,this.world,this.lvl));
+            GameObject a = factory.createObject(type, 1000, 200, null,lvl);
+            a.pickUp(p);
+            System.out.println(a);
     }
 
     /**
