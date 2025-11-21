@@ -46,6 +46,7 @@ public abstract class Mage extends Player {
      */
     public Mage(Vector2 position, String name) {
         super(position, name);
+        this.isTest = true;
     }
 
     /**

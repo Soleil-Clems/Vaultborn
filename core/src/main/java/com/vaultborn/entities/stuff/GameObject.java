@@ -22,6 +22,10 @@ public abstract class GameObject extends Entity implements Stuff {
         super(position, texture);
     }
 
+    public GameObject(Vector2 position) {
+        super(position);
+    }
+
     /**
      * Charge les animations associées à cet objet.
      * <p>

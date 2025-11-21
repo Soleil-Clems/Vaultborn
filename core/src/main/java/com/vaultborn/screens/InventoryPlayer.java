@@ -90,7 +90,7 @@ public class InventoryPlayer {
 
 
     private int numberOfSlot = 15;
-    
+
     public ImageButton.ImageButtonStyle styleEmptySlot =  new ImageButton.ImageButtonStyle();
 
 
@@ -242,12 +242,6 @@ public class InventoryPlayer {
         }
 
 
-    }
-    public void setShowInventory(boolean showInventory){
-        this.showInventory = showInventory;
-    }
-    public void setEquipeItem(String key,Item<? extends Stuff> item){
-        equipeItem.replace(key,item);
     }
 
     public void setShowInventory(boolean showInventory){

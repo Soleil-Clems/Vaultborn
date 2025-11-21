@@ -24,7 +24,7 @@ public class CharacterTest {
         factory = new Factory(true);
         warrior = factory.createPlayer("warrior", 100, 200, mockWorld);
         warrior.isTest =  true;
-        gorgon = factory.createMob("gorgon", 100, 200, mockWorld);
+        gorgon = factory.createMob("gorgon", 100, 200, mockWorld, 1);
 
         mockWorld = mock(ForestWorld.class);
     }

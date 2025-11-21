@@ -63,6 +63,7 @@ public abstract class Player extends Character {
     public Player(Vector2 position, String name) {
         super(position, name);
         this.isPlayerControlled = true;
+        this.isTest = true;
     }
 
     /**

@@ -14,8 +14,17 @@ public abstract class Head extends Armor{
         this.specialPerk = null;
         this.health = 10*lvl;
         this.defense = 6*lvl;
-        
+
     }
+
+    public Head(Vector2 position,  String type, String name, int lvl){
+        super(position,"head",name);
+        this.specialPerk = null;
+        this.health = 10*lvl;
+        this.defense = 6*lvl;
+
+    }
+
     //avec specialPerk
     public Head(Vector2 position, TextureRegion texture, String type,String specialPerk,String name, int lvl){
         super(position, texture,"head",name);

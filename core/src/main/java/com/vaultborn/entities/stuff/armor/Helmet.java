@@ -10,11 +10,16 @@ public class Helmet extends Head{
     //sans specialPerk
     public Helmet(Vector2 position, TextureRegion texture, String name, int lvl){
         super(position, texture,"helmet",name,lvl);
-        
+
+    }
+
+    public Helmet(Vector2 position, String name, int lvl){
+        super(position,"helmet",name,lvl);
+
     }
     //avec specialPerk
     public Helmet(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
         super(position, texture,"helmet",specialPerk,name,lvl);
     }
-    
+
 }

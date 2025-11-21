@@ -14,8 +14,17 @@ public abstract class Arm extends Armor{
         this.specialPerk = null;
         this.health = 10*lvl;
         this.defense = 2*lvl;
-        
+
     }
+
+    public Arm(Vector2 position,String type, String name,int lvl){
+        super(position, "arm",name);
+        this.specialPerk = null;
+        this.health = 10*lvl;
+        this.defense = 2*lvl;
+
+    }
+
     //avec specialPerk
     public Arm(Vector2 position, TextureRegion texture, String type,String specialPerk,String name,int lvl){
         super(position, texture,"arm",name);

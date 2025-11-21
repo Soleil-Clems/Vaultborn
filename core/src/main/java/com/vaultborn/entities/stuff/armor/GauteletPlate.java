@@ -11,12 +11,19 @@ public class GauteletPlate extends Arm{
     public GauteletPlate(Vector2 position, TextureRegion texture, String name, int lvl){
         super(position, texture,"gauteletPlate",name,lvl);
         this.stamina = 30*lvl;
-        
+
     }
+
+    public GauteletPlate(Vector2 position,  String name, int lvl){
+        super(position,"gauteletPlate",name,lvl);
+        this.stamina = 30*lvl;
+
+    }
+
     //avec specialPerk
     public GauteletPlate(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
         super(position, texture,"gauteletPlate",specialPerk,name,lvl);
         this.stamina = 30*lvl;
     }
-    
+
 }

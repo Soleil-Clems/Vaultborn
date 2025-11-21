@@ -15,8 +15,18 @@ public abstract class Foot extends Armor{
         this.health = 5*lvl;
         this.defense = 2*lvl;
         this.agility = 10*lvl;
-        
+
     }
+
+    public Foot(Vector2 position,  String type, String name, int lvl){
+        super(position, "foot",name);
+        this.specialPerk = null;
+        this.health = 5*lvl;
+        this.defense = 2*lvl;
+        this.agility = 10*lvl;
+
+    }
+
     //avec specialPerk
     public Foot(Vector2 position, TextureRegion texture, String type,String specialPerk,String name, int lvl){
         super(position, texture,"foot",name);

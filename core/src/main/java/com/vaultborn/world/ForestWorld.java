@@ -21,32 +21,32 @@ public class ForestWorld extends BaseWorld {
 
     @Override
     protected void initMobs() throws FactoryException {
-        Mob boss = factory.createMob("minotaur", 11500, 800, this);
+        Mob boss = factory.createMob("minotaur", 11500, 800, this, 1);
         boss.setBoss();
         mobs.add(boss);
 //        mobs.add(factory.createMob("gorgon", 500, 580, this));
 //        mobs.add(factory.createMob("gorgon", 550, 580, this));
 //        mobs.add(factory.createMob("gorgon", 600, 580, this));
-        mobs.add(factory.createMob("gorgon", 700, 580, this));
-        mobs.add(factory.createMob("gorgon", 1000, 580, this));
-        mobs.add(factory.createMob("gorgon", 1300, 580, this));
-        mobs.add(factory.createMob("gorgon", 1500, 580, this));
-        mobs.add(factory.createMob("gorgon", 1600, 580, this));
-        mobs.add(factory.createMob("gorgon", 1700, 580, this));
-        mobs.add(factory.createMob("gorgon", 2200, 580, this));
-        mobs.add(factory.createMob("gorgon", 2500, 580, this));
-        mobs.add(factory.createMob("gorgon", 2800, 580, this));
-        mobs.add(factory.createMob("gorgon", 2900, 580, this));
-        mobs.add(factory.createMob("gorgon", 3100, 580, this));
-        mobs.add(factory.createMob("gorgon", 3300, 580, this));
-        mobs.add(factory.createMob("gorgon", 3500, 580, this));
-        mobs.add(factory.createMob("gorgon", 3700, 580, this));
-        mobs.add(factory.createMob("gorgon", 3900, 580, this));
-        mobs.add(factory.createMob("gorgon", 4200, 580, this));
-        mobs.add(factory.createMob("gorgon", 6300, 580, this));
-        mobs.add(factory.createMob("gorgon", 6600, 580, this));
-        mobs.add(factory.createMob("gorgon", 7600, 580, this));
-        mobs.add(factory.createMob("gorgon", 7900, 580, this));
+        mobs.add(factory.createMob("gorgon", 700, 580, this,1));
+        mobs.add(factory.createMob("gorgon", 1000, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 1300, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 1500, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 1600, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 1700, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 2200, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 2500, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 2800, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 2900, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 3100, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 3300, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 3500, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 3700, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 3900, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 4200, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 6300, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 6600, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 7600, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 7900, 580, this, 1));
 
 
 

@@ -15,8 +15,18 @@ public abstract class Leg extends Armor{
         this.health = 15*lvl;
         this.defense = 6*lvl;
         this.agility = -2*lvl;
-        
+
     }
+
+    public Leg(Vector2 position, String type, String name, int lvl){
+        super(position,"leg",name);
+        this.specialPerk = null;
+        this.health = 15*lvl;
+        this.defense = 6*lvl;
+        this.agility = -2*lvl;
+
+    }
+
     //avec specialPerk
     public Leg(Vector2 position, TextureRegion texture, String type,String specialPerk,String name, int lvl){
         super(position, texture,"leg",name);

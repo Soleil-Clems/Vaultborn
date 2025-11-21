@@ -75,6 +75,15 @@ public abstract class Weapon extends GameObject{
         pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
     }
 
+    public Weapon(Vector2 position,  String type) {
+        super(position);
+        this.type = type;
+        this.name = type;
+        this.durability = 100;
+        this.specialPerk = specialPerk;
+        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
+    }
+
 
 
     @Override
@@ -148,7 +157,7 @@ public abstract class Weapon extends GameObject{
         InventoryPlayer inv = character.getInventory();
         if(inv.getInventory().size()<15){inv.addInventory(this); pickUpSound.play(1f); return true;}
         return false;
-        
+
     }
 
     /** Associe un monde à l'arme pour interactions futures. */

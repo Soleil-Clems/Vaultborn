@@ -50,6 +50,7 @@ public class Warrior extends Player {
         this.level = 1;
         this.agility = 2;
         this.range = 1;
+        this.isTest = true;
     }
 
     /**

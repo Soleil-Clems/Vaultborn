@@ -14,8 +14,17 @@ public class Sword extends Weapon{
     protected InventoryPlayer inventoryPlayer;
     private final Item<Sword> weapon = new Item<>(this, Item.Type.EQUIPMENT);
     protected Character character;
+
     public Sword(Vector2 position, TextureRegion texture,int lvl) {
         super(position, texture, "Sword");
+        this.range = 5;
+        this.damage = 10*lvl;
+//        this.inventoryPlayer = new InventoryPlayer();
+
+    }
+
+    public Sword(Vector2 position,int lvl) {
+        super(position,  "Sword");
         this.range = 5;
         this.damage = 10*lvl;
 //        this.inventoryPlayer = new InventoryPlayer();

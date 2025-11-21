@@ -34,6 +34,15 @@ public abstract class Armor extends GameObject {
 
     }
 
+    public Armor(Vector2 position,  String type, String name){
+        super(position);
+        this.type = type;
+        this.name = name;
+        this.durability = 100;
+        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
+
+    }
+
     public Armor(Vector2 position, TextureRegion texture, String type, String name, String specialPerk){
         super(position, texture);
         this.type = type;

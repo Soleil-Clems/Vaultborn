@@ -10,8 +10,8 @@ public class DungeonWorld extends BaseWorld{
 
     @Override
     protected void initMobs() throws FactoryException {
-        mobs.add(factory.createMob("gorgon", 400, 580, this));
-        mobs.add(factory.createMob("gorgon", 900, 580, this));
+        mobs.add(factory.createMob("gorgon", 400, 580, this, 1));
+        mobs.add(factory.createMob("gorgon", 900, 580, this,1));
     }
 
     @Override

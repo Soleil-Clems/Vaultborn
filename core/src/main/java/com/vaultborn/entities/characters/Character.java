@@ -38,107 +38,163 @@ import java.util.Map;
  * - Les animations
  */
 public abstract class Character extends Entity {
-
-    Factory factory = new Factory();
-    /** Nom du personnage. */
+    public boolean isTest = false;
+    Factory factory;
+    /**
+     * Nom du personnage.
+     */
     protected String name;
 
-    /** Points de vie actuels. */
+    /**
+     * Points de vie actuels.
+     */
     protected int hp;
 
-    /** Points de vie maximum. */
+    /**
+     * Points de vie maximum.
+     */
     protected int maxHp = 100;
 
-    /** Défense réduisant les dégâts reçus. */
+    /**
+     * Défense réduisant les dégâts reçus.
+     */
     protected int defense;
 
-    /** Dégâts infligés lors d'une attaque. */
+    /**
+     * Dégâts infligés lors d'une attaque.
+     */
     protected int damage;
 
-    /** Niveau du personnage. */
+    /**
+     * Niveau du personnage.
+     */
     protected int level;
 
-    /** Agilité influençant la vitesse ou le saut. */
+    /**
+     * Agilité influençant la vitesse ou le saut.
+     */
     protected int agility;
 
-    /** Portée d’attaque. */
+    /**
+     * Portée d’attaque.
+     */
     protected int range;
 
-    /** Direction du personnage (true = droite). */
+    /**
+     * Direction du personnage (true = droite).
+     */
     public boolean facingRight = true;
 
-    /** Vitesse horizontale du personnage. */
+    /**
+     * Vitesse horizontale du personnage.
+     */
     protected float speed = 400f;
 
-    /** Indique si ce Character est contrôlé par le joueur. */
+    /**
+     * Indique si ce Character est contrôlé par le joueur.
+     */
     protected boolean isPlayerControlled = false;
 
-    /** Monde dans lequel vit ce personnage (override d’Entity.world). */
+    /**
+     * Monde dans lequel vit ce personnage (override d’Entity.world).
+     */
     protected BaseWorld world;
 
-    /** Dimensions du sprite du personnage. */
+    /**
+     * Dimensions du sprite du personnage.
+     */
     public float characterWidth = 32f, characterHeight = 48f;
 
-    /** Physique du personnage. */
+    /**
+     * Physique du personnage.
+     */
     protected float velocityY = 0f;
     protected float gravity = -1000f;
     protected float jumpSpeed = 650f;
     protected boolean onGround = false;
 
-    /** Nom de l’attaque actuelle. */
+    /**
+     * Nom de l’attaque actuelle.
+     */
     protected String attack = "";
 
-    /** Indique si le personnage se protège. */
+    /**
+     * Indique si le personnage se protège.
+     */
     protected boolean isProtected = false;
 
-    /** Indique si le personnage est en animation d’attaque. */
+    /**
+     * Indique si le personnage est en animation d’attaque.
+     */
     protected boolean isAttacking = false;
 
-    /** Gestion du cooldown des attaques. */
+    /**
+     * Gestion du cooldown des attaques.
+     */
     protected float attackTimer = 0f;
     protected float attackCooldown = 0.5f;
     protected boolean hasHit = false;
 
-    /** Variables liées à la mort. */
+    /**
+     * Variables liées à la mort.
+     */
     public boolean isDead = false;
     public boolean isWin = false;
     protected float deadTimer = 0f;
     protected float deadDuration = 5f;
     protected boolean readyToRemove = false;
 
-    /** Son joué lors du game over du joueur. */
+    /**
+     * Son joué lors du game over du joueur.
+     */
     protected Sound gameOverSound;
 
-    /** Gestion des dégâts subis. */
+    /**
+     * Gestion des dégâts subis.
+     */
     protected boolean isHurt = false;
     protected float hurtTimer = 0f;
     protected float hurtDuration = 0.5f;
 
-    /** Knockback appliqué lorsqu’un ennemi frappe le joueur. */
+    /**
+     * Knockback appliqué lorsqu’un ennemi frappe le joueur.
+     */
     protected Vector2 knockbackVelocity = new Vector2(0, 0);
     protected float knockbackStrength = 300f;
     protected float knockbackDecay = 10f;
 
-    /** Hitbox du personnage (différente du sprite). */
+    /**
+     * Hitbox du personnage (différente du sprite).
+     */
     protected Rectangle hitbox;
 
     private Player player = null;
     private Mob mob = null;
 
-    /** Portrait du personnage (UI). */
+    /**
+     * Portrait du personnage (UI).
+     */
     protected TextureRegion portrait;
 
-    /** Liste d’animations triées par nom. */
+    /**
+     * Liste d’animations triées par nom.
+     */
     protected Map<String, Animation<TextureRegion>> animations = new HashMap<>();
 
-    /** Temps d’avancement dans l’animation. */
+    /**
+     * Temps d’avancement dans l’animation.
+     */
     public float stateTime = 0f;
 
-    /** Animation actuelle ("idle", "walk", etc). */
+    /**
+     * Animation actuelle ("idle", "walk", etc).
+     */
     protected String currentAnimation = "idle";
 
-    /** Mappage des touches (modifiable par l'utilisateur). */
-    protected LinkedHashMap<String,String> inputList = new LinkedHashMap<String,String>(){{
+    /**
+     * Mappage des touches (modifiable par l'utilisateur).
+     */
+    protected LinkedHashMap<String, String> inputList = new LinkedHashMap<String, String>() {{
         put("left", "Left");
         put("right", "Right");
         put("jump", "Space");
@@ -168,6 +224,10 @@ public abstract class Character extends Entity {
         if (this instanceof Player) {
             player = (Player) this;
         }
+
+        if (!Factory.IS_TEST) {
+            this.factory = new Factory();
+        }
     }
 
     /**
@@ -187,6 +247,9 @@ public abstract class Character extends Entity {
         if (this instanceof Player) {
             player = (Player) this;
         }
+
+        this.factory = new Factory(true);
+        this.isTest = true;
     }
 
     /**
@@ -196,17 +259,23 @@ public abstract class Character extends Entity {
      */
     public abstract void attack(Character target);
 
-    /** @return nom du personnage */
+    /**
+     * @return nom du personnage
+     */
     public String getName() {
         return name;
     }
 
-    /** @return points de vie actuels */
+    /**
+     * @return points de vie actuels
+     */
     public int getHp() {
         return hp;
     }
 
-    /** @return points de vie maximum */
+    /**
+     * @return points de vie maximum
+     */
     public int getMaxHp() {
         return maxHp;
     }
@@ -233,7 +302,9 @@ public abstract class Character extends Entity {
         if (this.hp >= this.maxHp) this.hp = maxHp;
     }
 
-    /** Gestion de la défense, dégâts, niveau, agilité, portée. */
+    /**
+     * Gestion de la défense, dégâts, niveau, agilité, portée.
+     */
     public int getDefense() {
         return defense;
     }
@@ -281,7 +352,7 @@ public abstract class Character extends Entity {
      *
      * @param inputList dictionnaire <action, touche>
      */
-    public void setInput(LinkedHashMap<String,String>inputList){
+    public void setInput(LinkedHashMap<String, String> inputList) {
         this.inputList = inputList;
     }
 
@@ -321,7 +392,9 @@ public abstract class Character extends Entity {
         }
     }
 
-    /** @return animation associée à la clé */
+    /**
+     * @return animation associée à la clé
+     */
     public Animation<TextureRegion> getAnimation(String key) {
         return animations.get(key);
     }
@@ -537,11 +610,11 @@ public abstract class Character extends Entity {
                         hasHit = true;
                         if (target.getHp() <= 0 && !(target instanceof Player)) {
                             player.expGain(mob.giveExp());
-                                    try{
-                                        looting(player,mob.getLevel());}
-                                    catch(FactoryException e){
-                                        System.out.println(e);
-                                    }
+                            try {
+                                looting(player, mob.getLevel());
+                            } catch (FactoryException e) {
+                                System.out.println(e);
+                            }
                         }
                     }
                 }
@@ -558,7 +631,7 @@ public abstract class Character extends Entity {
             moveAndCollide(0, velocityY * delta);
             return;
         }
-        
+
         if (isPlayerControlled) {
             handleInput(delta);
         } else {
@@ -569,26 +642,36 @@ public abstract class Character extends Entity {
         updateAnimationState();
         updateHitbox();
     }
-  
-     /**
+
+    /**
      * System de looting, permet d'avoir les probabilité de drop un item
      */
-    protected void looting(Player p,int lvl) throws FactoryException{
-        
-        double random = Math.random()*100;
+    protected void looting(Player p, int lvl) throws FactoryException {
+
+        double random = Math.random() * 100;
         String type = null;
-        if (random < 40){return;}
-        if (random < 50){type = "sword";}
-        else if (random < 60){type = "helmet";}
-        else if (random < 70){type = "breastplate";}
-        else if (random < 80){type = "legplate";}
-        else if (random < 90){type = "gauteletplate";}
-        else if (random <=100){type = "ironfoot";}
-            
-            //gameObjects.add(factory.createObject("helmet",position.x, position.y,this.world,this.lvl));
-            GameObject a = factory.createObject(type, 1000, 200, null,lvl);
-            a.pickUp(p);
-            System.out.println(a);
+        if (random < 40) {
+            return;
+        }
+        if (random < 50) {
+            type = "sword";
+        } else if (random < 60) {
+            type = "helmet";
+        } else if (random < 70) {
+            type = "breastplate";
+        } else if (random < 80) {
+            type = "legplate";
+        } else if (random < 90) {
+            type = "gauteletplate";
+        } else if (random <= 100) {
+            type = "ironfoot";
+        }
+
+        //gameObjects.add(factory.createObject("helmet",position.x, position.y,this.world,this.lvl));
+
+        GameObject   a = factory.createObject(type, 1000, 200, null, lvl);
+
+        a.pickUp(p);
     }
 
     /**

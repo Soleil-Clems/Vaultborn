@@ -37,7 +37,7 @@ public class Factory {
 
     private final AssetManager assetsManager;
 
-    // Textures pour les Players
+
     private TextureRegion warriorRegion;
     private TextureRegion darkwarriorRegion;
     private TextureRegion archerRegion;
@@ -46,13 +46,13 @@ public class Factory {
     private TextureRegion lightMageRegion;
     private TextureRegion sunmageRegion;
 
-    // Textures pour les Mobs
+
     private TextureRegion gorgonRegion;
     private TextureRegion minotaurRegion;
     private TextureRegion tenguRegion;
     private TextureRegion yokaiRegion;
 
-    // Textures pour les objets
+
     private TextureRegion swordRegion;
     private TextureRegion HelmetRegion;
     private TextureRegion BreastplateRegion;
@@ -60,6 +60,17 @@ public class Factory {
     private TextureRegion GauteletPlateRegion;
     private TextureRegion IronFootRegion;
     private TextureRegion specialDoorRegion;
+
+    /**
+     * Constructeur de la factory pour les tests unitaires.
+     * Ne charge pas les textures ou assets.
+     *
+     * @param test true pour activer le mode test
+     */
+    public Factory(boolean test) {
+        IS_TEST = test;
+        this.assetsManager = null;
+    }
 
     /**
      * Constructeur de la factory en mode normal.
@@ -88,16 +99,6 @@ public class Factory {
         specialDoorRegion = new TextureRegion(new Texture("specialdoor/closeddoor.png"));
     }
 
-    /**
-     * Constructeur de la factory pour les tests unitaires.
-     * Ne charge pas les textures ou assets.
-     *
-     * @param test true pour activer le mode test
-     */
-    public Factory(boolean test) {
-        IS_TEST = test;
-        this.assetsManager = null;
-    }
 
     /**
      * Crée un Player à partir du type.
@@ -151,20 +152,20 @@ public class Factory {
      * @return Mob créé
      * @throws FactoryException si le type est inconnu
      */
-    public Mob createMob(String type, float x, float y, BaseWorld world) throws FactoryException {
+    public Mob createMob(String type, float x, float y, BaseWorld world, int lvl) throws FactoryException {
         Mob mob;
         switch (type.toLowerCase()) {
             case "gorgon":
-                mob = IS_TEST ? new Gorgon(new Vector2(x, y), 1) : new Gorgon(new Vector2(x, y), gorgonRegion, 1);
+                mob = IS_TEST ? new Gorgon(new Vector2(x, y),  lvl) : new Gorgon(new Vector2(x, y), gorgonRegion, lvl);
                 break;
             case "minotaur":
-                mob = IS_TEST ? new Minotaur(new Vector2(x, y), 1) : new Minotaur(new Vector2(x, y), minotaurRegion, 1);
+                mob =   IS_TEST ? new Minotaur(new Vector2(x, y), lvl) : new Minotaur(new Vector2(x, y), minotaurRegion, lvl);
                 break;
             case "tengu":
-                mob = IS_TEST ? new Tengu(new Vector2(x, y), 1) : new Tengu(new Vector2(x, y), tenguRegion, 1);
+                mob = IS_TEST ? new Tengu(new Vector2(x, y), lvl) : new Tengu(new Vector2(x, y), tenguRegion, lvl);
                 break;
             case "yokai":
-                mob = IS_TEST ? new Yokai(new Vector2(x, y), 1) : new Yokai(new Vector2(x, y), yokaiRegion, 1);
+                mob =  IS_TEST ?  new Yokai(new Vector2(x, y), lvl) : new Yokai(new Vector2(x, y), yokaiRegion, lvl);
                 break;
             default:
                 throw new FactoryException("Unknown mob type: " + type);
@@ -188,22 +189,22 @@ public class Factory {
         GameObject obj;
         switch (type.toLowerCase()) {
             case "sword":
-                obj = new Sword(new Vector2(x, y), swordRegion,lvl);
+                obj = IS_TEST ? new Sword(new Vector2(x, y), lvl) : new Sword(new Vector2(x, y), swordRegion,lvl);
                 break;
             case "helmet":
-                obj =  new Helmet(new Vector2(x, y), HelmetRegion, "The Helmet",lvl) ;
+                obj =  IS_TEST ?  new Helmet(new Vector2(x, y), "The Helmet",lvl) : new Helmet(new Vector2(x, y), HelmetRegion, "The Helmet",lvl) ;
                 break;
             case "breastplate":
-                obj =  new Breastplate(new Vector2(x, y), BreastplateRegion, "Epic Chest",lvl) ;
+                obj =  IS_TEST ? new Breastplate(new Vector2(x, y),"Epic Chest",lvl)  : new Breastplate(new Vector2(x, y), BreastplateRegion, "Epic Chest",lvl) ;
                 break;
             case "legplate":
-                obj =  new LegPlate(new Vector2(x, y), LegPlateRegion, "Epic Leg",lvl) ;
+                obj =  IS_TEST ?new LegPlate(new Vector2(x, y),"Epic Leg",lvl)  : new LegPlate(new Vector2(x, y), LegPlateRegion, "Epic Leg",lvl) ;
                 break;
             case "gauteletplate":
-                obj = new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "Epic Hand",lvl) ;
+                obj = IS_TEST ? new GauteletPlate(new Vector2(x, y),"Epic Hand",lvl) : new GauteletPlate(new Vector2(x, y), GauteletPlateRegion, "Epic Hand",lvl) ;
                 break;
             case "ironfoot":
-                obj =  new IronFoot(new Vector2(x, y), IronFootRegion, "Epic Boots",lvl) ;
+                obj = IS_TEST ?  new IronFoot(new Vector2(x, y), "Epic Boots",lvl) : new IronFoot(new Vector2(x, y), IronFootRegion, "Epic Boots",lvl);
                 break;
             case "special_door":
                 obj = new SpecialDoor(new Vector2(x, y), specialDoorRegion);

@@ -10,11 +10,16 @@ public class IronFoot extends Foot{
     //sans specialPerk
     public IronFoot(Vector2 position, TextureRegion texture, String name, int lvl){
         super(position, texture,"IronFoot",name,lvl);
-        
+
+    }
+
+    public IronFoot(Vector2 position,  String name, int lvl){
+        super(position, "IronFoot",name,lvl);
+
     }
     //avec specialPerk
     public IronFoot(Vector2 position, TextureRegion texture,String specialPerk,String name, int lvl){
         super(position, texture,"IronFoot",specialPerk,name,lvl);
     }
-    
+
 }
