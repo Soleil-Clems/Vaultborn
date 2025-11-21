@@ -1,5 +1,7 @@
 package com.vaultborn.screens;
 
+import java.util.concurrent.TimeUnit;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -30,24 +32,30 @@ public class IntroScreen implements Screen {
     private TextButton btn;
 
     private String textIntro1P1 =
-        "Dans les profondeurs oubliees du Vault,loin de toute communication avec";
+        "Quelque part, dans un lieu ou toute liaison avec le monde reel est impossible…";
         
     private String textIntro1P2 =
-        "le monde reel, un coffre scelle s'ouvre enfin.";
+        "quelque chose se prepare. Un nouvel individu naquit dans le Vault.";
     private String textIntro1P3 =
-        "Une petite creature en emerge, nee d'une lumière qu elle ne comprend pas.";
+        "Guide par ses instincts, il ouvrit un coffre et chercha a se renforcer";
+    private String textIntro1P4 =
+        "au plus vite, au plus profond du Vault.";
 
     private String textIntro2P1 =
-        "A peine eveillee, elle aperçoit une epee ancienne, attire par sa puissance,";
+        "C'est alors qu'il apercut une epee legendaire. Il s'approcha de l'epee,";
     private String textIntro2P2 =
-        "la petite creature tente de s'en approcher...";
-
+        "tendit la main…";
+        
     private String textIntro3P1 =
-        "Mais une ombre surgit. Tengu, l'un des terribles Seigneurs du Vault, s'empare";
+        "mais une entite bien plus rapide s'en empara avant lui. Il tenta de l'attaquer,";
     private String textIntro3P2 =
-        "de l'arme avant elle. Trop faible et apeuree, la creature fuit...";
+        "mais... mais... mais...";
     private String textIntro3P3 =
-        "avec un seul but : revenir un jour la reprendre.";
+        "rien. L'entite ne broncha pas, comme si aucune attaque ne pouvait l'atteindre.";
+    private String textIntro3P4 =
+        "Terrifie, il decida de fuir vers la surface pour devenir plus fort...";
+    private String textIntro3P5 =
+        "et revenir un jour affronter cette entite au nom de Tengu";
 
     public IntroScreen(MainGame game){
         this.game = game;
@@ -82,6 +90,7 @@ public class IntroScreen implements Screen {
         table.add(new Label(textIntro1P1, style)).fill().row();
         table.add(new Label(textIntro1P2, style)).fill().row();
         table.add(new Label(textIntro1P3, style)).fill().row();
+        table.add(new Label(textIntro1P4, style)).fill().row();
         table.setBackground(new TextureRegionDrawable(new TextureRegion((intro1))));
     }
     private void showTxt2(){
@@ -97,6 +106,8 @@ public class IntroScreen implements Screen {
         table.add(new Label(textIntro3P1, style)).fill().row();
         table.add(new Label(textIntro3P2, style)).fill().row();
         table.add(new Label(textIntro3P3, style)).fill().row();
+        table.add(new Label(textIntro3P4, style)).fill().row();
+        table.add(new Label(textIntro3P5, style)).fill().row();
         table.setBackground(new TextureRegionDrawable(new TextureRegion((intro3))));
     }
 
