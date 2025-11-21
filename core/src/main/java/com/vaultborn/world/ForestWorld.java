@@ -56,8 +56,7 @@ public class ForestWorld extends BaseWorld {
 
     @Override
     protected void initObjects() throws FactoryException {
-        gameObjects.add(factory.createObject("sword", 900, 200, null,1));
-        gameObjects.add(factory.createObject("ironfoot", 750, 200, null,1));
+        gameObjects.add(factory.createObject("ironfoot", 1500, 200, null,1));
         gameObjects.add(factory.createObject("sword", 1000, 200, null,6));
         gameObjects.add(factory.createObject("helmet", 3550, 400, null,1));
         gameObjects.add(factory.createObject("sword", 4550, 400, null,10));
