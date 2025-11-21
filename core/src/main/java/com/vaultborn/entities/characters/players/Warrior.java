@@ -34,7 +34,7 @@ public class Warrior extends Player {
         this.level = 1;
         this.agility = 2;
         this.range = 1;
-    }
+
 
     /**
      * Constructeur secondaire utilisé pour les tests unitaires.
