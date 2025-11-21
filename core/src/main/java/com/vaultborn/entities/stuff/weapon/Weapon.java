@@ -81,7 +81,6 @@ public abstract class Weapon extends GameObject{
         this.name = type;
         this.durability = 100;
         this.specialPerk = specialPerk;
-        pickUpSound = Gdx.audio.newSound(Gdx.files.internal("sounds/pickup.mp3"));
     }
 
 
