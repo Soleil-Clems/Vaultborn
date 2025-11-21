@@ -1,0 +1,16 @@
+com.vaultborn
+com.vaultborn.entities
+com.vaultborn.entities.characters
+com.vaultborn.entities.characters.mobs
+com.vaultborn.entities.characters.players
+com.vaultborn.entities.projectiles
+com.vaultborn.entities.stuff
+com.vaultborn.entities.stuff.armor
+com.vaultborn.entities.stuff.trigger
+com.vaultborn.entities.stuff.weapon
+com.vaultborn.factories
+com.vaultborn.lwjgl3
+com.vaultborn.managers
+com.vaultborn.save
+com.vaultborn.screens
+com.vaultborn.world

@@ -1,0 +1,21 @@
+name: Run Sequence test
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Grant execute permission to script
+        run: chmod +x run_sequence_test.sh
+
+      - name: Run test script
+        run: ./run_sequence_test.sh

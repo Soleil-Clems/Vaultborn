@@ -30,6 +30,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Classe abstraite représentant un monde du jeu.
+ *
+ * <p>
+ * BaseWorld gère :
+ * <ul>
+ *   <li>Le joueur et ses interactions</li>
+ *   <li>Les mobs et leur mise à jour</li>
+ *   <li>Les objets, projectiles et triggers</li>
+ *   <li>La caméra (monde et interface)</li>
+ *   <li>La détection de collisions et de zones spéciales (morts, dégâts)</li>
+ *   <li>Le passage entre mondes via {@link SpecialDoor}</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Les classes concrètes doivent implémenter :
+ * <ul>
+ *   <li>{@link #initMobs()} : initialiser tous les mobs de ce monde</li>
+ *   <li>{@link #initObjects()} : initialiser tous les objets et triggers de ce monde</li>
+ * </ul>
+ * </p>
+ */
 public abstract class BaseWorld {
     private float damageTimer = 0f;
     private float damageCooldown = 0.5f;
@@ -47,13 +70,13 @@ public abstract class BaseWorld {
     public int spawnY = 0;
     protected TiledMap map;
     protected TiledMapTileLayer collisionLayer;
-    //    protected TiledMapTileLayer deadLayer;
     protected OrthogonalTiledMapRenderer tiledMapRenderer;
     protected OrthographicCamera worldCamera, uiCamera;
 
     protected Texture background;
     protected float tileSize;
     protected float mapHeightInPixels;
+    public boolean isEnd = false;
 
     public String levelName;
     public String mapName;
@@ -62,6 +85,14 @@ public abstract class BaseWorld {
     protected float timer = 0f;
     public MainGame game;
 
+    /**
+     * Constructeur principal du monde.
+     *
+     * @param game          Référence au jeu principal
+     * @param mapName       Nom de la carte TMX
+     * @param backgroundPath Chemin vers la texture de fond
+     * @throws FactoryException si un problème survient lors de la création des mobs/objets
+     */
     public BaseWorld(MainGame game, String mapName, String backgroundPath) throws FactoryException {
         this.mapName = mapName;
         this.assetsManager = new AssetManager();
@@ -70,7 +101,6 @@ public abstract class BaseWorld {
         this.game = game;
         loadMap();
         initCameras();
-//        initPlayer();
         initMobs();
         initObjects();
     }
@@ -79,6 +109,9 @@ public abstract class BaseWorld {
         return uiCamera;
     }
 
+    /**
+     * Charge la carte TMX et la couche de collision.
+     */
     protected void loadMap() {
         map = new TmxMapLoader().load("maps/" + mapName + ".tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1f);
@@ -89,9 +122,11 @@ public abstract class BaseWorld {
         int mapHeight = map.getProperties().get("height", Integer.class);
         tileSize = map.getProperties().get("tilewidth", Integer.class);
         mapHeightInPixels = mapHeight * tileSize;
-
     }
 
+    /**
+     * Initialise les caméras monde et UI.
+     */
     protected void initCameras() {
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -104,7 +139,10 @@ public abstract class BaseWorld {
         uiCamera.update();
     }
 
-
+    /**
+     * Initialise le joueur pour ce monde.
+     * Utilise le joueur global du jeu si déjà créé.
+     */
     protected void initPlayer() {
         if (game.player != null) {
             this.player = game.player;
@@ -114,8 +152,16 @@ public abstract class BaseWorld {
         }
     }
 
+    /**
+     * Initialise tous les mobs du monde.
+     * Doit être implémenté par la classe concrète.
+     */
     protected abstract void initMobs() throws FactoryException;
 
+    /**
+     * Initialise tous les objets et triggers du monde.
+     * Doit être implémenté par la classe concrète.
+     */
     protected abstract void initObjects() throws FactoryException;
 
     public void setBoss(Class<?> boss) {
@@ -125,6 +171,12 @@ public abstract class BaseWorld {
     public Class<?> getBoss() {
         return boss;
     }
+
+    /**
+     * Met à jour le monde : joueur, mobs, objets, projectiles et caméra.
+     *
+     * @param delta Temps écoulé depuis la dernière frame
+     */
 
     public void update(float delta) {
         player.update(delta);
@@ -163,13 +215,16 @@ public abstract class BaseWorld {
             if (obj instanceof SpecialDoor) {
                 SpecialDoor door = (SpecialDoor) obj;
 
-
                 if (isDeadBoss) {
                     door.setAnimation("open");
                     if (door.getTriggerZone().overlaps(player.getHitbox()) && door.getTargetWorld() != null) {
                         door.pickUp(player);
+
                         if (game != null) {
                             game.saveGame();
+                            if (this.isEnd) {
+                                player.isWin = true;
+                            }
                         }
                         changeToWorld(door.getTargetWorld(), door.getSpawnPosition());
 
@@ -191,9 +246,11 @@ public abstract class BaseWorld {
         updateCamera();
     }
 
+    /**
+     * Met à jour la caméra du monde en suivant le joueur avec une zone morte.
+     */
     protected void updateCamera() {
-        float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime(); // ← tu avais oublié ça !
-
+        float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
 
         float CamOffsetY = 220f;
         float CamOffsetX = 50f;
@@ -248,7 +305,7 @@ public abstract class BaseWorld {
     public void render(SpriteBatch batch) {
         batch.setProjectionMatrix(uiCamera.combined);
         batch.begin();
-        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.draw(background, 0, 0, uiCamera.viewportWidth, uiCamera.viewportHeight);
         batch.end();
 
         tiledMapRenderer.setView(worldCamera);
@@ -265,7 +322,6 @@ public abstract class BaseWorld {
 
         float px = player.getPosition().x;
         float py = player.getPosition().y;
-
 
         if (collisionLayer != null) {
             int startX = Math.max(0, (int) (px / tileSize) - 10);
@@ -284,6 +340,20 @@ public abstract class BaseWorld {
         }
     }
 
+    /**
+     * Méthode appelée lors du redimensionnement de la fenêtre
+     */
+    public void resize(int width, int height) {
+        worldCamera.viewportWidth = width;
+        worldCamera.viewportHeight = height;
+        worldCamera.update();
+
+        uiCamera.viewportWidth = width;
+        uiCamera.viewportHeight = height;
+        uiCamera.position.set(width / 2f, height / 2f, 0);
+        uiCamera.update();
+    }
+
     public boolean isCellBlocked(float worldX, float worldY) {
         if (collisionLayer == null) return false;
 
@@ -298,9 +368,6 @@ public abstract class BaseWorld {
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
     }
 
-    /**
-     * Vérifie si le personnage est proche d'une tile marquée "dead"
-     */
     private void checkDeadTiles(Character character) {
         if (character.isDead || collisionLayer == null) return;
 
@@ -314,14 +381,11 @@ public abstract class BaseWorld {
             isCellDead(px - margin, py - margin) ||
                 isCellDead(px + cw / 2, py - margin) ||
                 isCellDead(px + cw + margin, py - margin) ||
-
                 isCellDead(px - margin, py + ch / 2) ||
                 isCellDead(px + cw + margin, py + ch / 2) ||
-
                 isCellDead(px - margin, py + ch + margin) ||
                 isCellDead(px + cw / 2, py + ch + margin) ||
                 isCellDead(px + cw + margin, py + ch + margin) ||
-
                 isCellDead(px + cw / 2, py + ch / 2);
 
         if (nearDeath) {
@@ -331,9 +395,6 @@ public abstract class BaseWorld {
         }
     }
 
-    /**
-     * Vérifie si une tile a la propriété "dead"
-     */
     public boolean isCellDead(float worldX, float worldY) {
         if (collisionLayer == null) return false;
 
@@ -351,12 +412,8 @@ public abstract class BaseWorld {
         return deadProp instanceof Boolean && (Boolean) deadProp;
     }
 
-    /**
-     * Vérifie si le personnage est proche d'une tile marquée "rmlife"
-     */
     private void checkDamageTiles(Character character) {
         if (character.isDead || collisionLayer == null) return;
-
 
         if (damageTimer > 0) {
             damageTimer -= Gdx.graphics.getDeltaTime();
@@ -387,9 +444,6 @@ public abstract class BaseWorld {
         }
     }
 
-    /**
-     * Vérifie si une tile a la propriété "rmlife"
-     */
     public boolean isCellDamaging(float worldX, float worldY) {
         if (collisionLayer == null) return false;
 
@@ -406,7 +460,6 @@ public abstract class BaseWorld {
         Object rmlifeProp = cell.getTile().getProperties().get("rmlife");
         return rmlifeProp instanceof Boolean && (Boolean) rmlifeProp;
     }
-
 
     public Character getNearestEnemy(Character attacker, float range) {
         Character nearest = null;
@@ -465,7 +518,6 @@ public abstract class BaseWorld {
     }
 
     public void changeToWorld(BaseWorld newWorld, Vector2 spawnPosition) {
-
         if (game != null) {
             game.saveGame();
         }
@@ -496,6 +548,5 @@ public abstract class BaseWorld {
     }
 
     public void linkWorlds() {
-
     }
 }
