@@ -39,7 +39,6 @@ public class HellWorld extends BaseWorld {
      * @throws FactoryException si la création d'un mob ou objet échoue
      */
     public HellWorld(MainGame game) throws FactoryException {
-//        super("HellMap/map", "backgrounds/background_hell.png");
         super(game, "HellMap/map", "backgrounds/hell.png");
         this.game = game;
         setBoss(Tengu.class);
@@ -58,9 +57,6 @@ public class HellWorld extends BaseWorld {
 
     @Override
     protected void initMobs() throws FactoryException {
-//        mobs.add(factory.createMob("gorgon", 620, 3800, this));
-//        mobs.add(factory.createMob("gorgon", 760, 3800, this));
-//        mobs.add(factory.createMob("minotaur", 710, 3600, this));
         mobs.add(factory.createMob("gorgon", 1000, 3800, this, 1));
 
         mobs.add(factory.createMob("minotaur", 1900, 3800, this, 1));
@@ -144,15 +140,15 @@ public class HellWorld extends BaseWorld {
 
     @Override
     protected void initObjects() throws FactoryException {
-        gameObjects.add(factory.createObject("sword", 3100, 4200, this,1));
-        gameObjects.add(factory.createObject("sword", 4100, 2500, this,1));
-        gameObjects.add(factory.createObject("sword", 3050, 1750, this,1));
-        gameObjects.add(factory.createObject("sword", 450, 1400, this,1));
-        gameObjects.add(factory.createObject("sword", 150, 1200, this,1));
-        gameObjects.add(factory.createObject("sword", 3150, 1050, this,1));
+        gameObjects.add(factory.createObject("sword", 3100, 4200, this,20));
+        gameObjects.add(factory.createObject("helmet", 4100, 2500, this,10));
+        gameObjects.add(factory.createObject("sword", 3050, 1750, this,10));
+        gameObjects.add(factory.createObject("ironfoot", 450, 1400, this,10));
+        gameObjects.add(factory.createObject("legplate", 150, 1200, this,10));
+        gameObjects.add(factory.createObject("breastplate", 3150, 1050, this,10));
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 80, 50, this, game.forestWorld);
         door.setParentWorld(this);
-        door.setSpawnPosition(500, 580);//  Position d'arrivée dans ForestWorld
+        door.setSpawnPosition(500, 580);
        gameObjects.add(door);
 
     }
@@ -161,7 +157,7 @@ public class HellWorld extends BaseWorld {
 
     @Override
     protected void updateCamera() {
-        float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime(); // ← tu avais oublié ça !
+        float delta = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
 
         // --- Paramètres de suivi caméra ---
         float CamOffsetY = 220f;
