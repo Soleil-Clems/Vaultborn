@@ -8,20 +8,52 @@ import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 import com.vaultborn.entities.characters.mobs.Mob;
 
+/**
+ * Représente un projectile lancé par un personnage (Mage, Archer, etc.).
+ * <p>
+ * Le projectile peut infliger des dégâts aux mobs et être détruit lorsqu'il touche un obstacle ou dépasse certaines limites de la carte.
+ * Il possède sa propre animation et gère sa physique (direction, vitesse, collision).
+ */
 public class Projectile extends Entity {
 
+    /** Dégâts infligés par le projectile */
     public int damage;
+
+    /** Direction du projectile : true si vers la droite, false sinon */
     public boolean facingRight;
+
+    /** Indique si le projectile doit être supprimé du monde */
     public boolean toRemove = false;
+
+    /** Vitesse du projectile en pixels par seconde */
     public float speed = 600f;
+
+    /** Position cible pour le projectile (non utilisée directement pour la trajectoire) */
     private Vector2 target;
+
+    /** Animation du projectile */
     private Animation<TextureRegion> animation;
+
+    /** Temps écoulé depuis la création du projectile pour l’animation */
     private float stateTime = 0f;
+
+    /** Position initiale du projectile pour vérifier la direction de collision */
     private Vector2 startPosition;
 
+    /** Dimensions du projectile */
     private float projectileWidth = 16f;
     private float projectileHeight = 16f;
 
+    /**
+     * Constructeur principal.
+     *
+     * @param position      position initiale du projectile
+     * @param texture       sprite du projectile (spritesheet pour animation)
+     * @param facingRight   direction initiale du projectile
+     * @param damage        dégâts infligés par le projectile
+     * @param targetPosition position cible (optionnelle)
+     * @param chargeFrameCount nombre de frames dans la spritesheet
+     */
     public Projectile(Vector2 position, TextureRegion texture, boolean facingRight, int damage, Vector2 targetPosition, int chargeFrameCount) {
         super(position, texture);
         this.facingRight = facingRight;
@@ -40,10 +72,18 @@ public class Projectile extends Entity {
         bounds.setSize(projectileWidth, projectileHeight);
     }
 
+    /**
+     * Constructeur par défaut avec nombre de frames = 8.
+     */
     public Projectile(Vector2 position, TextureRegion texture, boolean facingRight, int damage, Vector2 targetPosition) {
         this(position, texture, facingRight, damage, targetPosition, 8);
     }
 
+    /**
+     * Met à jour la position, l’animation et gère les collisions.
+     *
+     * @param delta temps écoulé depuis la dernière mise à jour
+     */
     @Override
     public void update(float delta) {
         stateTime += delta;
@@ -59,11 +99,13 @@ public class Projectile extends Entity {
         position.set(newPosition);
         bounds.setPosition(position);
 
+        // Retirer le projectile si hors limites
         if (position.x < -2000 || position.x > 20000 || position.y < -2000 || position.y > 20000) {
             toRemove = true;
             return;
         }
 
+        // Collision avec les mobs
         if (world != null) {
             for (Mob mob : world.mobs) {
                 if (!mob.isDead && bounds.overlaps(mob.getBounds())) {
@@ -73,10 +115,8 @@ public class Projectile extends Entity {
                     if (isInCorrectDirection) {
                         int oldHp = mob.getHp();
                         mob.takeDamage(damage);
-                        if (oldHp > 0 && mob.getHp() <= 0) {
-                            if (world.getPlayer() != null) {
-                                world.getPlayer().expGain(mob.giveExp());
-                            }
+                        if (oldHp > 0 && mob.getHp() <= 0 && world.getPlayer() != null) {
+                            world.getPlayer().expGain(mob.giveExp());
                             mob.isDead = true;
                         }
                         toRemove = true;
@@ -87,6 +127,12 @@ public class Projectile extends Entity {
         }
     }
 
+    /**
+     * Vérifie si le projectile touche un obstacle de la carte.
+     *
+     * @param pos position du projectile
+     * @return true si collision détectée, false sinon
+     */
     private boolean checkMapCollision(Vector2 pos) {
         if (world == null) return false;
 
@@ -98,6 +144,11 @@ public class Projectile extends Entity {
         return topLeft || topRight || bottomLeft || bottomRight;
     }
 
+    /**
+     * Dessine le projectile à l’écran avec sa frame actuelle.
+     *
+     * @param batch sprite batch utilisé pour le rendu
+     */
     @Override
     public void render(SpriteBatch batch) {
         if (animation != null) {
@@ -111,6 +162,11 @@ public class Projectile extends Entity {
         }
     }
 
+    /**
+     * Retourne la hitbox du projectile.
+     *
+     * @return rectangle représentant la hitbox
+     */
     public Rectangle getHitbox() {
         return bounds;
     }

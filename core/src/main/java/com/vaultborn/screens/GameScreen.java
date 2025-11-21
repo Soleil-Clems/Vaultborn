@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
     private InputManager inputManager;
 
 
-    private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
+    private static final List<String> buttonPause = Arrays.asList("Continuer",  "Menu principal", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     private SettingScreen SettingMenuScreen;

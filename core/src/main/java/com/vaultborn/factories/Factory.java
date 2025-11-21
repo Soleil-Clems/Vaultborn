@@ -10,17 +10,27 @@ import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.entities.stuff.weapon.Sword;
 import com.vaultborn.managers.AssetManager;
 import com.vaultborn.world.BaseWorld;
-import com.vaultborn.world.ForestWorld;
 
 /**
- * Factory simplifiée pour créer Players, Mobs et GameObjects.
+ * Factory simplifiée pour créer des instances de Players, Mobs et GameObjects.
+ * <p>
+ * Cette classe gère la création d'objets en fonction d'un type (String) et permet
+ * de charger automatiquement les textures et animations lorsque ce n'est pas un test unitaire.
+ * <p>
+ * La factory possède deux modes :
+ * <ul>
+ *     <li>Mode normal : charge les textures et animations.</li>
+ *     <li>Mode test (IS_TEST = true) : ne charge pas les assets graphiques, utile pour les tests unitaires.</li>
+ * </ul>
  */
 public class Factory {
 
+    /** Indique si la factory est utilisée pour les tests unitaires. */
     public static boolean IS_TEST = false;
+
     private final AssetManager assetsManager;
 
-    // Only needed for production
+    // Textures pour les Players
     private TextureRegion warriorRegion;
     private TextureRegion darkwarriorRegion;
     private TextureRegion archerRegion;
@@ -29,19 +39,23 @@ public class Factory {
     private TextureRegion lightMageRegion;
     private TextureRegion sunmageRegion;
 
+    // Textures pour les Mobs
     private TextureRegion gorgonRegion;
     private TextureRegion minotaurRegion;
     private TextureRegion tenguRegion;
     private TextureRegion yokaiRegion;
 
+    // Textures pour les objets
     private TextureRegion swordRegion;
     private TextureRegion specialDoorRegion;
 
     /**
-     * Factory normale avec assets
+     * Constructeur de la factory en mode normal.
+     * Charge toutes les textures nécessaires.
      */
     public Factory() {
         assetsManager = new AssetManager();
+
         warriorRegion = new TextureRegion(new Texture("warrior/Idle.png"));
         darkwarriorRegion = new TextureRegion(new Texture("darkwarrior/Idle.png"));
         satyrRegion = new TextureRegion(new Texture("satyr/Idle.png"));
@@ -58,13 +72,26 @@ public class Factory {
     }
 
     /**
-     * Factory pour les tests unitaires
+     * Constructeur de la factory pour les tests unitaires.
+     * Ne charge pas les textures ou assets.
+     *
+     * @param test true pour activer le mode test
      */
     public Factory(boolean test) {
         IS_TEST = test;
         this.assetsManager = null;
     }
 
+    /**
+     * Crée un Player à partir du type.
+     *
+     * @param type  Nom du type de Player ("warrior", "archer", etc.)
+     * @param x     Position X
+     * @param y     Position Y
+     * @param world Monde dans lequel le player sera placé
+     * @return Player créé
+     * @throws FactoryException si le type est inconnu
+     */
     public Player createPlayer(String type, float x, float y, BaseWorld world) throws FactoryException {
         Player player;
         switch (type.toLowerCase()) {
@@ -97,6 +124,16 @@ public class Factory {
         return player;
     }
 
+    /**
+     * Crée un Mob à partir du type.
+     *
+     * @param type  Nom du type de Mob ("gorgon", "minotaur", etc.)
+     * @param x     Position X
+     * @param y     Position Y
+     * @param world Monde dans lequel le mob sera placé
+     * @return Mob créé
+     * @throws FactoryException si le type est inconnu
+     */
     public Mob createMob(String type, float x, float y, BaseWorld world) throws FactoryException {
         Mob mob;
         switch (type.toLowerCase()) {
@@ -120,14 +157,24 @@ public class Factory {
         return mob;
     }
 
+    /**
+     * Crée un GameObject à partir du type.
+     *
+     * @param type  Nom du type ("sword", "special_door", etc.)
+     * @param x     Position X
+     * @param y     Position Y
+     * @param world Monde dans lequel l'objet sera placé
+     * @return GameObject créé
+     * @throws FactoryException si le type est inconnu
+     */
     public GameObject createObject(String type, float x, float y, BaseWorld world) throws FactoryException {
         GameObject obj;
         switch (type.toLowerCase()) {
             case "sword":
-                obj = IS_TEST ? new Sword(new Vector2(x, y), swordRegion) : new Sword(new Vector2(x, y), swordRegion);
+                obj = new Sword(new Vector2(x, y), swordRegion);
                 break;
             case "special_door":
-                obj = IS_TEST ? new SpecialDoor(new Vector2(x, y), specialDoorRegion) : new SpecialDoor(new Vector2(x, y), specialDoorRegion);
+                obj = new SpecialDoor(new Vector2(x, y), specialDoorRegion);
                 break;
             default:
                 throw new FactoryException("Unknown object type: " + type);
@@ -137,9 +184,20 @@ public class Factory {
         return obj;
     }
 
-
+    /**
+     * Crée une porte spéciale (SpecialDoor) entre deux mondes.
+     *
+     * @param type      Doit être "special_door"
+     * @param x         Position X
+     * @param y         Position Y
+     * @param worldFrom Monde actuel
+     * @param worldTo   Monde cible
+     * @return SpecialDoor configurée
+     */
     public GameObject createSpecialDoor(String type, float x, float y, BaseWorld worldFrom, BaseWorld worldTo) {
-        if (!type.equalsIgnoreCase("special_door")) throw new IllegalArgumentException("Unknown object type: " + type);
+        if (!type.equalsIgnoreCase("special_door"))
+            throw new IllegalArgumentException("Unknown object type: " + type);
+
         SpecialDoor door = new SpecialDoor(new Vector2(x, y), specialDoorRegion);
         door.loadAnimations();
         door.setWorld(worldFrom);
