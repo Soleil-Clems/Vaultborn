@@ -10,37 +10,57 @@ import com.vaultborn.entities.stuff.GameObject;
 import com.vaultborn.entities.stuff.trigger.SpecialDoor;
 import com.vaultborn.factories.FactoryException;
 
+/**
+ * Classe représentant le monde "HellWorld" du jeu.
+ *
+ * <p>
+ * HellWorld est un monde spécifique hérité de {@link BaseWorld}. Il configure :
+ * <ul>
+ *   <li>La carte du monde ("HellMap/map") et le fond ("backgrounds/hell.png")</li>
+ *   <li>Le joueur, les mobs et les objets spécifiques à ce niveau</li>
+ *   <li>Le boss du monde (ici {@link com.vaultborn.entities.characters.mobs.Tengu})</li>
+ *   <li>Les positions de spawn et de sortie du monde</li>
+ *   <li>Les interactions avec les portes spéciales {@link SpecialDoor}</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * Ce monde contient de nombreux mobs (Gorgons, Minotaures) répartis sur la carte,
+ * ainsi que plusieurs armes (épées) et au moins une porte spéciale menant à {@link ForestWorld}.
+ * </p>
+ */
+
 public class HellWorld extends BaseWorld {
 
+    /**
+     * Constructeur de HellWorld.
+     *
+     * @param game Référence au jeu principal
+     * @throws FactoryException si la création d'un mob ou objet échoue
+     */
     public HellWorld(MainGame game) throws FactoryException {
 //        super("HellMap/map", "backgrounds/background_hell.png");
-        super(game, "HellMap/map", "backgrounds/background_hell.png");
+        super(game, "HellMap/map", "backgrounds/hell.png");
         this.game = game;
         setBoss(Tengu.class);
         levelName = "hell";
         this.spawnX = 550;
         this.spawnY = 3800;
+        this.isEnd = true;
 
     }
 
     @Override
     protected void initPlayer() {
 
-//        player = (Warrior) factory.createPlayer("warrior", 500, 3800, this);
-//        player = (DarkWarrior) factory.createPlayer("darkwarrior", 500, 3800, this);
-//        player = (Satyr) factory.createPlayer("satyr", 500, 3800, this);
-//        player = (DarkMage) factory.createPlayer("darkmage", 500, 3800, this);
-//        player = (SunMage) factory.createPlayer("sunmage", 500, 3800, this);
-//        player = (LightMage) factory.createPlayer("lightmage", 500, 3800, this);
-//        player = (Archer) factory.createPlayer("archer", 450, 800, this);
         player = this.getPlayer();
     }
 
     @Override
     protected void initMobs() throws FactoryException {
-        mobs.add(factory.createMob("gorgon", 620, 3800, this));
-        mobs.add(factory.createMob("gorgon", 760, 3800, this));
-        mobs.add(factory.createMob("minotaur", 710, 3600, this));
+//        mobs.add(factory.createMob("gorgon", 620, 3800, this));
+//        mobs.add(factory.createMob("gorgon", 760, 3800, this));
+//        mobs.add(factory.createMob("minotaur", 710, 3600, this));
         mobs.add(factory.createMob("gorgon", 1000, 3800, this));
 
         mobs.add(factory.createMob("minotaur", 1900, 3800, this));
@@ -199,6 +219,10 @@ public class HellWorld extends BaseWorld {
         worldCamera.update();
     }
 
+    /**
+     * Lie les portes spéciales de HellWorld à leur monde cible.
+     * Ici, toutes les portes sont reliées à ForestWorld.
+     */
     public void linkWorlds() {
         for (GameObject obj : gameObjects) {
             if (obj instanceof SpecialDoor) {

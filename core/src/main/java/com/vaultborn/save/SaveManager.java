@@ -24,7 +24,7 @@ public class SaveManager {
         return json.fromJson(SaveData.class, prefs.getString("save"));
     }
 
-    // Nouvelle méthode pour vérifier si une sauvegarde existe
+
     public static boolean hasSave() {
         Preferences prefs = Gdx.app.getPreferences(SAVE_NAME);
         return prefs.contains("save");
@@ -32,7 +32,6 @@ public class SaveManager {
 
     // Méthode pour supprimer une sauvegarde
     public static void deleteSave() {
-        System.out.println("Deleting " + SAVE_NAME);
         Preferences prefs = Gdx.app.getPreferences(SAVE_NAME);
         prefs.remove("save");
         prefs.flush();

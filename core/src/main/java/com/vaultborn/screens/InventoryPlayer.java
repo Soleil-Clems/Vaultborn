@@ -163,30 +163,23 @@ public class InventoryPlayer {
         }
         if(object.getType().equals(Item.Type.EQUIPMENT) && !InventoryItem.containsKey(object)){
             if(InventoryItem.size()<=15){
-                System.err.println(object.getObject().getName()+ " récolté.");
                 InventoryItem.put(object,1);
             }
-            else{
-                System.out.println("inventaire full");
-            }
+
         }
-        else if (object.getType().equals(Item.Type.EQUIPMENT)){
-            System.out.println("objet déjà ajouté");
-        }
+
         if (object.getType().equals(Item.Type.CONSUMABLE)){
             this.putIn = false;
             for (Item<? extends Stuff> itm : InventoryItem.keySet()){
                 if (itm.getObject().getName().equals(object.getObject().getName())){
                     object = itm;
                     InventoryItem.put(itm,InventoryItem.get(itm)+1);
-                    System.err.println(object.getObject().getName()+ " récolté.");
                     this.putIn = true;
                     break;
                 }
             }
             if (!putIn){
                 InventoryItem.put(object,1);
-                System.err.println(object.getObject().getName()+ " récolté.");
                 this.putIn = false;
             }
 
@@ -209,7 +202,6 @@ public class InventoryPlayer {
         verifyPointDisponibility();
         if(nameValueStat.get("Point disponible")<0){
             this.nameValueStat = temp;
-            System.out.println("erreur de stat");
             return;
         }
         int count =0;
@@ -244,14 +236,20 @@ public class InventoryPlayer {
                 break;
 
             default:
-                System.out.println(name+" n'existe pas");
                 break;
         }
         nameValueStat.replace("Point disponible", nameValueStat.get("Point disponible")-1);
         }
-        else{System.out.println("Pas de point disponible");}
+
+
     }
 
+    public void setShowInventory(boolean showInventory){
+        this.showInventory = showInventory;
+    }
+    public void setEquipeItem(String key,Item<? extends Stuff> item){
+        equipeItem.replace(key,item);
+    }
     //getter inventory global
     //liste
     public LinkedHashMap<Item<? extends Stuff>,Integer> getInventory(){
@@ -260,7 +258,6 @@ public class InventoryPlayer {
     public LinkedHashMap<String,Item<? extends Stuff>> getEquipeItem(){
         for (String bodyPart : equipeItem.keySet()) {
             if(equipeItem.get(bodyPart).getObject() == null){
-                System.out.println("l'objet pour "+ bodyPart +" n'existe pas");
                 continue;
             }
             System.out.println(equipeItem.get(bodyPart));
@@ -283,12 +280,7 @@ public class InventoryPlayer {
     public Stage getObjectStage(){
         return this.objectStage;
     }
-    public void setShowInventory(boolean showInventory){
-        this.showInventory = showInventory;
-    }
-    public void setEquipeItem(String key,Item<? extends Stuff> item){
-        equipeItem.replace(key,item);
-    }
+
     public boolean getObjectInfoMenu(){
         return this.objectInfoMenu;
     }
@@ -477,22 +469,22 @@ public class InventoryPlayer {
             this.showInventory = !showInventory;
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
-            applyStat();
-        }
-        //reset l'inventaire
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
-            InventoryItem.clear();
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
-            addExp(22);
-            System.out.println(showInventory);
-            if(showInventory){
-            reload = true;
-
-        }
-
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
+//            applyStat();
+//        }
+//        //reset l'inventaire
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+//            InventoryItem.clear();
+//        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.V)){
+//            addExp(22);
+//            System.out.println(showInventory);
+//            if(showInventory){
+//            reload = true;
+//
+//        }
+//
+//        }
 
 
 

@@ -11,19 +11,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 
 import com.vaultborn.MainGame;
 import com.vaultborn.managers.InputManager;
@@ -32,7 +25,7 @@ import com.vaultborn.managers.InputManager;
 
 
 public class SettingScreen {
-      
+
     protected MainGame game;
     private InputManager inputManager;
 
@@ -54,8 +47,8 @@ public class SettingScreen {
     private Table SliderTable;
     private Table inputTable;
     private Table bottomRightTable;
-    
-    
+
+
     LinkedHashMap<String,Skin> SkinList = new LinkedHashMap<String,Skin>(){{
         put("neon",new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json")));
         //put("comic",new Skin(Gdx.files.internal("menu/comic/skin/comic-ui.json")));
@@ -67,43 +60,31 @@ public class SettingScreen {
         put("tracer",new Skin(Gdx.files.internal("menu/tracer/skin/tracer-ui.json")));
     }};
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
     public SettingScreen(MainGame game,Skin skin){
         inputManager = game.inputManager;
-        System.out.println(Gdx.files.internal("menu/neon/skin/neon-ui.json").exists());
-        System.out.println(Gdx.files.internal("menu/comic/skin/comic-ui.json").exists());
-        System.out.println(Gdx.files.internal("menu/craftacular/skin/craftacular-ui.json").exists());
-        System.out.println(Gdx.files.internal("menu/orange/skin/uiskin.json").exists());
-        System.out.println(Gdx.files.internal("menu/quantum-horizon/skin/quantum-horizon-ui.json").exists());
-        System.out.println(Gdx.files.internal("menu/rainbow/skin/rainbow-ui.json").exists());
-        System.out.println(Gdx.files.internal("menu/star-soldier/skin/star-soldier-ui.json").exists());
-        System.out.println(Gdx.files.internal("menu/tracer/skin/tracer-ui.json").exists());
-        
+//        System.out.println(Gdx.files.internal("menu/neon/skin/neon-ui.json").exists());
+
         this.game = game;
         this.Globalskin = skin;
         this.backgroundMusic = game.getBackgroundMusic();
         this.activated = false;
         System.out.println(inputManager.allInput());
         stage = new Stage(new ScreenViewport());
-        //initie les inputs
         Gdx.input.setInputProcessor(stage);
+
+        Texture bgTexture = new Texture(Gdx.files.internal("backgrounds/screenbg.png"));
+        Image background = new Image(bgTexture);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(background);
+        background.toBack();
+
+
         //System.out.println(Gdx.files.internal(skin).exists());
         SkinTable = new Table();
         SliderTable = new Table();
         bottomRightTable = new Table();
         activateElement();
-        
+
 
     }
 
@@ -112,7 +93,7 @@ public class SettingScreen {
         SliderTable.clear();
         bottomRightTable.clear();
         //ensemble des table
-        
+
         SkinTable.top();
         stage.addActor(SkinTable);
         SkinTable.setFillParent(true);
@@ -126,7 +107,7 @@ public class SettingScreen {
         txtSkinChanging.setColor(1, 1, 1, 1);
         txtSkin.add(txtSkinChanging);
         //SkinTable.setDebug(true);
-        
+
         Table btnSkin = new Table();
         for (String skinName : SkinList.keySet()) {
             TextButton btnText = createUniformButton(skinName, Globalskin);
@@ -144,10 +125,10 @@ public class SettingScreen {
             });
             btnSkin.add(btnText).width(250).height(50).pad(5).row();
         }
-        
+
         ScrollPane scrollPane = new ScrollPane(btnSkin,Globalskin);
         scrollPane.setFadeScrollBars(false);
-        scrollPane.setForceScroll(false, true); 
+        scrollPane.setForceScroll(false, true);
         SkinTable.add(scrollPane).width(300).height(250).row();;
 
 
@@ -195,15 +176,15 @@ public class SettingScreen {
         //SliderTable.top().padTop(300).center();
 
         //retour bouton
-        
+
         bottomRightTable.setFillParent(true);
         bottomRightTable.bottom().right();
-        
-        
+
+
         TextButton Button = new TextButton("Retour", Globalskin);
             Button.getLabel().setFontScale(2f);
             bottomRightTable.add(Button).left().pad(10).width(500).height(Gdx.graphics.getHeight()*0.2f);
-        
+
             Button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -245,9 +226,15 @@ public class SettingScreen {
 
     private void inputView(){
         stageInput = new Stage(new ScreenViewport());
+        Texture bgTexture = new Texture(Gdx.files.internal("backgrounds/screenbg.png"));
+        Image background = new Image(bgTexture);
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stageInput.addActor(background);
+        background.toBack();
         inputTable = new Table();
         inputTable.setFillParent(true);
         stageInput.addActor(inputTable);
+
         for (String theKey : inputManager.allInput().keySet()){
             Label keyName = new Label(theKey+" : ", Globalskin);
             TextButton keyValue = new TextButton(inputManager.allInput().get(theKey), Globalskin);
@@ -264,14 +251,14 @@ public class SettingScreen {
                     else{
                         keyValue.clear();
                         keyValue.add(lastInput);
-                        
+
                     }
                 }
             });
             inputTable.add(keyName).width(250).height(50);
             inputTable.add(keyValue).width(250).height(50).padBottom(10).row();
 
-            
+
         }
         Table bottomRightTableInput = new Table();
         bottomRightTableInput.setFillParent(true);
@@ -279,7 +266,7 @@ public class SettingScreen {
         TextButton Button = new TextButton("Retour", Globalskin);
         Button.getLabel().setFontScale(2f);
         bottomRightTableInput.add(Button).left().pad(10).width(500).height(Gdx.graphics.getHeight()*0.2f);
-    
+
         Button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -292,7 +279,7 @@ public class SettingScreen {
 
 
     }
-    
+
 public boolean isActivated(){
         return activated;
     }
@@ -366,11 +353,11 @@ public boolean isActivated(){
 
             stageInput.act(delta);
             stageInput.draw();
-            
+
         }
-        
+
     }
-    public void dpMenu(){stage.dispose();stageInput.dispose(); Globalskin.dispose();}   
+    public void dpMenu(){stage.dispose();stageInput.dispose(); Globalskin.dispose();}
 
     public void rsMenu(int width, int height) { stage.getViewport().update(width, height, true);stageInput.getViewport().update(width, height, true);}
     public void shMenu() {}

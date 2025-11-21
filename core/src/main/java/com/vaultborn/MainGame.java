@@ -108,7 +108,6 @@ public class MainGame extends Game {
 
     public void saveGame() {
         if (player == null || currentWorld == null) {
-           System.out.println("Player or CurrentWorld is null");
             return;
         }
 
@@ -132,26 +131,16 @@ public class MainGame extends Game {
         data.playerX = player.getPosition().x;
         data.playerY = player.getPosition().y;
 
-        // Sauvegarder l'inventaire (si vous voulez l'activer plus tard)
-        // LinkedHashMap<Item<? extends Stuff>, Integer> inv = player.getInventory().getInventory();
-        // for (Map.Entry<Item<? extends Stuff>, Integer> entry : inv.entrySet()) {
-        //     Item<? extends Stuff> item = entry.getKey();
-        //     int quantity = entry.getValue();
-        //     data.inventory.add(item.getObject().getName() + ":" + quantity);
-        // }
 
         SaveManager.save(data);
-        System.out.println("Partie sauvegardee ! "+ data.playerClass + " - " + data.playerX + " - " + data.playerY + " - "+ data.worldName);
     }
 
     public void loadGame() throws FactoryException {
         SaveData data = SaveManager.load();
         if (data == null) {
-            System.out.println("Aucune sauvegarde trouvee !");
             return;
         }
 
-        System.out.println("Chargement de la sauvegarde : " + data.worldName);
 
 
         forestWorld = new ForestWorld(this);
@@ -172,7 +161,6 @@ public class MainGame extends Game {
         Factory factory = new Factory();
         player = factory.createPlayer(data.playerClass, currentWorld.spawnX, currentWorld.spawnY, currentWorld);
         this.player.setInput(this.inputManager.allInput());
-//        player = factory.createPlayer("warrior", currentWorld.spawnX, currentWorld.spawnY, currentWorld);
 
         player.setHp(data.hp);
         player.setMaxHp(data.maxHp);

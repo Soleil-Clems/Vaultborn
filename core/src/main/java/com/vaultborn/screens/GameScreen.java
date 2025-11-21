@@ -31,7 +31,7 @@ public class GameScreen implements Screen {
     private InputManager inputManager;
 
 
-    private static final List<String> buttonPause = Arrays.asList("Continuer", "Parametres", "Exit");
+    private static final List<String> buttonPause = Arrays.asList("Continuer",  "Menu principal", "Parametres", "Exit");
     private Skin btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
     private SettingScreen SettingMenuScreen;
@@ -62,6 +62,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         if(world.getPlayer().isDead){game.setScreen(new GameOverScreen(game,btnSkin));}
+        if(world.getPlayer().isWin){game.setScreen(new WinScreen(game,btnSkin));}
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -84,14 +85,14 @@ public class GameScreen implements Screen {
 
         } else {
             if(!SettingMenuScreen.isActivated()){
-                
+
                 if(btnSkin != SettingMenuScreen.getSkin()){
                     this.btnSkin = SettingMenuScreen.getSkin();
                     PauseMenuScreen.reloadMenu(game,this.btnSkin, buttonPause,inputManager);
                     PauseMenuScreen.setActivated(true);
                     PauseMenuScreen.setSettings(false);
                 }
-                
+
                 SettingMenuScreen.setActivated(PauseMenuScreen.isSettings());
                 PauseMenuScreen.rdMenu(delta);
                 Gdx.input.setInputProcessor(PauseMenuScreen.getStage());

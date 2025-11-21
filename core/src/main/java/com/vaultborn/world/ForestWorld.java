@@ -24,9 +24,9 @@ public class ForestWorld extends BaseWorld {
         Mob boss = factory.createMob("minotaur", 11500, 800, this);
         boss.setBoss();
         mobs.add(boss);
-        mobs.add(factory.createMob("gorgon", 500, 580, this));
-        mobs.add(factory.createMob("gorgon", 550, 580, this));
-        mobs.add(factory.createMob("gorgon", 600, 580, this));
+//        mobs.add(factory.createMob("gorgon", 500, 580, this));
+//        mobs.add(factory.createMob("gorgon", 550, 580, this));
+//        mobs.add(factory.createMob("gorgon", 600, 580, this));
         mobs.add(factory.createMob("gorgon", 700, 580, this));
         mobs.add(factory.createMob("gorgon", 1000, 580, this));
         mobs.add(factory.createMob("gorgon", 1300, 580, this));
