@@ -19,6 +19,7 @@ import com.vaultborn.save.SaveManager;
 import com.vaultborn.screens.GameScreen;
 import com.vaultborn.screens.InventoryPlayer;
 import com.vaultborn.screens.MainScreen;
+import com.vaultborn.screens.IntroScreen;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.ForestWorld;
 import com.vaultborn.world.HellWorld;
-
+import com.vaultborn.screens.IntroScreen;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -67,13 +68,9 @@ public class MainGame extends Game {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/land_of_snow_background_music.mp3"));
 
         btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
-        // 2. Définir si la musique doit boucler (loop)
+
         backgroundMusic.setLooping(true);
-
-        // 3. (Optionnel) Définir le volume (entre 0.0 et 1.0)
         backgroundMusic.setVolume(0.5f);
-
-        // 4. Lancer la lecture
         backgroundMusic.play();
 
 //        hellWorld = new HellWorld(this);
@@ -81,7 +78,7 @@ public class MainGame extends Game {
 //        hellWorld.linkWorlds();
 //        forestWorld.linkWorlds();
 
-        setScreen(new MainScreen(this));
+        setScreen(new IntroScreen(this));
     }
 
     public static Texture getWhitePixel() {
