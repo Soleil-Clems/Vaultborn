@@ -26,6 +26,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.vaultborn.world.BaseWorld;
 import com.vaultborn.world.ForestWorld;
 import com.vaultborn.world.HellWorld;
+import com.vaultborn.screens.IntroScreen;
+
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -81,7 +83,8 @@ public class MainGame extends Game {
 //        hellWorld.linkWorlds();
 //        forestWorld.linkWorlds();
 
-        setScreen(new MainScreen(this));
+        setScreen(new IntroScreen(this));
+
     }
 
     public static Texture getWhitePixel() {
