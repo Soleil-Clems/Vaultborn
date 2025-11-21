@@ -56,17 +56,13 @@ public class ForestWorld extends BaseWorld {
 
     @Override
     protected void initObjects() throws FactoryException {
-        gameObjects.add(factory.createObject("helmet", 900, 200, null,1));
-        gameObjects.add(factory.createObject("breastplate", 950, 200, null,1));
-        gameObjects.add(factory.createObject("legplate", 850, 200, null,1));
-        gameObjects.add(factory.createObject("gauteletplate", 800, 200, null,1));
-        gameObjects.add(factory.createObject("ironfoot", 750, 200, null,1));
-        gameObjects.add(factory.createObject("sword", 1000, 200, null,10));
-        gameObjects.add(factory.createObject("sword", 3550, 400, null,1));
-        gameObjects.add(factory.createObject("sword", 4550, 400, null,1));
-        gameObjects.add(factory.createObject("sword", 5950, 600, null,1));
-        gameObjects.add(factory.createObject("sword", 8000, 600, null,1));
-        gameObjects.add(factory.createObject("sword", 12000, 800, null,1));
+        gameObjects.add(factory.createObject("ironfoot", 1500, 200, null,1));
+        gameObjects.add(factory.createObject("sword", 1000, 200, null,6));
+        gameObjects.add(factory.createObject("helmet", 3550, 400, null,1));
+        gameObjects.add(factory.createObject("sword", 4550, 400, null,10));
+        gameObjects.add(factory.createObject("breastplate", 5950, 600, null,4));
+        gameObjects.add(factory.createObject("legplate", 8000, 600, null,1));
+        gameObjects.add(factory.createObject("gauteletplate", 12000, 800, null,1));
 
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 12100, 700, this, game.hellWorld);
         door.setParentWorld(this);

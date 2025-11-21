@@ -28,7 +28,7 @@ public class Archer extends Mage {
         this.maxHp = 100;
         this.hp = this.maxHp;
         this.damage = 80;
-        this.defense = 8;
+        this.defense = 20;
         this.level = 1;
         this.agility = 2;
         this.range = 10;

@@ -7,10 +7,10 @@ import com.vaultborn.entities.characters.Character;
 
 public class Tengu extends Mob{
     public Tengu(Vector2 position, TextureRegion texture, int lvl) {
-        super(position, texture, "Tengu", lvl, 33);
-        this.hp = 100*lvl;
-        this.damage = 4*lvl;
-        this.defense = 5*lvl;
+        super(position, texture, "Tengu", lvl, 100);
+        this.hp = 200*lvl;
+        this.damage = 40*lvl;
+        this.defense = 55*lvl;
         this.level = lvl;
         this.agility = 10*lvl;
         this.range = 1;

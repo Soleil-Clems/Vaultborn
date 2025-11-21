@@ -29,8 +29,8 @@ public class Warrior extends Player {
         super(position, texture, "Lancelot");
         this.maxHp = 100;
         this.hp = this.maxHp;
-        this.damage = 20;
-        this.defense = 8;
+        this.damage = 10;
+        this.defense = 6;
         this.level = 1;
         this.agility = 2;
         this.range = 1;
