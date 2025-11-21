@@ -38,12 +38,15 @@ public class MenuScreen {
     public MenuScreen(MainGame game, Skin skin, List<String> element) {
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
+
+
     }
 
     public MenuScreen(MainGame game, Skin skin, List<String> element, InputManager inputManager) {
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
         this.inputManager = inputManager;
+
     }
 
     public Music getBackgroundMusic() {
@@ -82,6 +85,9 @@ public class MenuScreen {
         background = new Image(bgTexture);
 
         background.setFillParent(true);
+        stage.addActor(background);
+
+        background.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(background);
 
         table = new Table();
