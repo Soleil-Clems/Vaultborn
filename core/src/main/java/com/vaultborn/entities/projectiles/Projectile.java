@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.vaultborn.entities.Entity;
 import com.vaultborn.entities.characters.mobs.Mob;
+import com.vaultborn.entities.characters.players.Player;
+import com.vaultborn.entities.stuff.GameObject;
+import com.vaultborn.factories.Factory;
+import com.vaultborn.factories.FactoryException;
 
 /**
  * Représente un projectile lancé par un personnage (Mage, Archer, etc.).
@@ -15,6 +19,7 @@ import com.vaultborn.entities.characters.mobs.Mob;
  * Il possède sa propre animation et gère sa physique (direction, vitesse, collision).
  */
 public class Projectile extends Entity {
+    Factory factory;
 
     /** Dégâts infligés par le projectile */
     public int damage;
@@ -70,6 +75,9 @@ public class Projectile extends Entity {
         animation = new Animation<>(0.09f, frames);
 
         bounds.setSize(projectileWidth, projectileHeight);
+        if (!Factory.IS_TEST) {
+            this.factory = new Factory();
+        }
     }
 
     /**
@@ -77,6 +85,7 @@ public class Projectile extends Entity {
      */
     public Projectile(Vector2 position, TextureRegion texture, boolean facingRight, int damage, Vector2 targetPosition) {
         this(position, texture, facingRight, damage, targetPosition, 8);
+        this.factory = new Factory(true);
     }
 
     /**
@@ -118,6 +127,11 @@ public class Projectile extends Entity {
                         if (oldHp > 0 && mob.getHp() <= 0 && world.getPlayer() != null) {
                             world.getPlayer().expGain(mob.giveExp());
                             mob.isDead = true;
+                            try {
+                                looting(world.getPlayer(), mob.getLevel());
+                            } catch (FactoryException e) {
+                                System.out.println(e);
+                            }
                         }
                         toRemove = true;
                         break;
@@ -126,7 +140,37 @@ public class Projectile extends Entity {
             }
         }
     }
+        /**
+     * System de looting, permet d'avoir les probabilité de drop un item
+     */
+    protected void looting(Player p, int lvl) throws FactoryException {
 
+        double random = Math.random() * 100;
+        System.out.println(random);
+        String type = null;
+        if (random < 40) {
+            return;
+        }
+        if (random < 50) {
+            type = "sword";
+        } else if (random < 60) {
+            type = "helmet";
+        } else if (random < 70) {
+            type = "breastplate";
+        } else if (random < 80) {
+            type = "legplate";
+        } else if (random < 90) {
+            type = "gauteletplate";
+        } else if (random <= 100) {
+            type = "ironfoot";
+        }
+
+        //gameObjects.add(factory.createObject("helmet",position.x, position.y,this.world,this.lvl));
+
+        GameObject   a = factory.createObject(type, 1000, 200, null, lvl);
+
+        a.pickUp(p);
+    }
     /**
      * Vérifie si le projectile touche un obstacle de la carte.
      *
