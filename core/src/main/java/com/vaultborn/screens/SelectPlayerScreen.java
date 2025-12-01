@@ -18,6 +18,7 @@ import com.vaultborn.factories.Factory;
 import com.vaultborn.factories.FactoryException;
 import com.vaultborn.world.ForestWorld;
 import com.vaultborn.world.HellWorld;
+import com.vaultborn.world.DungeonWorld;
 
 public class SelectPlayerScreen implements Screen {
 
@@ -196,19 +197,21 @@ public class SelectPlayerScreen implements Screen {
     private void startGame(String classKey) throws FactoryException {
         game.forestWorld = new ForestWorld(game);
         game.hellWorld = new HellWorld(game);
+        game.dungeonWorld = new DungeonWorld(game);
 
-        game.player = factory.createPlayer(classKey, 250, 800, game.forestWorld);
-        game.forestWorld.setPlayer(game.player);
+        game.player = factory.createPlayer(classKey, 350, 200, game.dungeonWorld);
+        game.dungeonWorld.setPlayer(game.player);
         game.player.setInput(game.inputManager.allInput());
 
         game.forestWorld.linkWorlds();
         game.hellWorld.linkWorlds();
+        game.dungeonWorld.linkWorlds();
 
         InventoryPlayer inv = new InventoryPlayer(false);
         game.player.setInventory(inv);
         inv.setPlayer(game.player);
 
-        game.setScreen(new GameScreen(game, game.forestWorld,skin));
+        game.setScreen(new GameScreen(game, game.dungeonWorld,skin));
     }
 
     @Override
