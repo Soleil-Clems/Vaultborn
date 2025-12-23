@@ -25,9 +25,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.vaultborn.world.BaseWorld;
+import com.vaultborn.world.DungeonWorld;
 import com.vaultborn.world.ForestWorld;
 import com.vaultborn.world.HellWorld;
 import com.vaultborn.screens.IntroScreen;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -35,10 +37,11 @@ public class MainGame extends Game {
     private static Texture whitePixel;
     private static BitmapFont font;
 
-    private Music backgroundMusic;
+    public Music backgroundMusic;
 
     public BaseWorld hellWorld;
     public BaseWorld forestWorld;
+    public BaseWorld dungeonWorld;
     public Player player;
     private Skin btnSkin;
     public BaseWorld currentWorld;
@@ -46,7 +49,7 @@ public class MainGame extends Game {
     public InputManager inputManager;
 
 
-    public Music getBackgroundMusic(){
+    public Music getBackgroundMusic() {
         return this.backgroundMusic;
     }
 
@@ -65,20 +68,23 @@ public class MainGame extends Game {
         font.setUseIntegerPositions(false);
 
 
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("sounds/land_of_snow_background_music.mp3"));
+        this.setBackgroundMusic("sounds/land_of_snow_background_music.mp3");
+//        this.setBackgroundMusic("sounds/forest.wav");
 
         btnSkin = new Skin(Gdx.files.internal("menu/neon/skin/neon-ui.json"));
 
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.5f);
-        backgroundMusic.play();
-
-//        hellWorld = new HellWorld(this);
-//        forestWorld = new ForestWorld(this);
-//        hellWorld.linkWorlds();
-//        forestWorld.linkWorlds();
 
         setScreen(new IntroScreen(this));
+    }
+
+    public void setBackgroundMusic(String url) {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+        }
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(url));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.1f);
+        backgroundMusic.play();
     }
 
     public static Texture getWhitePixel() {
@@ -94,13 +100,16 @@ public class MainGame extends Game {
         if (whitePixel != null) whitePixel.dispose();
         if (font != null) font.dispose();
         if (hellWorld != null) hellWorld.dispose();
+        if (dungeonWorld != null) dungeonWorld.dispose();
         if (forestWorld != null) forestWorld.dispose();
         super.dispose();
     }
 
 
-    public void setWorld(BaseWorld newWorld,Skin skin) {
-        setScreen(new GameScreen(this, newWorld,skin));
+    public void setWorld(BaseWorld newWorld, Skin skin) {
+        this.currentWorld = newWorld;
+//        playWorldMusic(newWorld);
+        setScreen(new GameScreen(this, newWorld, skin));
     }
 
     public void saveGame() {
@@ -109,10 +118,7 @@ public class MainGame extends Game {
         }
 
         SaveData data = new SaveData();
-
-
         data.worldName = currentWorld.levelName;
-
 
         data.hp = player.getHp();
         data.maxHp = player.getMaxHp();
@@ -121,13 +127,10 @@ public class MainGame extends Game {
         data.defense = player.getDefense();
         data.agility = player.getAgility();
 
-
         data.playerClass = player.getClass().getSimpleName().toLowerCase();
-
 
         data.playerX = player.getPosition().x;
         data.playerY = player.getPosition().y;
-
 
         SaveManager.save(data);
     }
@@ -139,21 +142,22 @@ public class MainGame extends Game {
         }
 
 
-
         forestWorld = new ForestWorld(this);
+        dungeonWorld = new DungeonWorld(this);
         hellWorld = new HellWorld(this);
 
 
         if (data.worldName.contains("Hell") || data.worldName.contains("hell")) {
             currentWorld = hellWorld;
+        } else if (data.worldName.contains("Dungeon") || data.worldName.contains("dungeon")) {
+            currentWorld = dungeonWorld;
         } else {
             currentWorld = forestWorld;
         }
 
-
         forestWorld.linkWorlds();
+        dungeonWorld.linkWorlds();
         hellWorld.linkWorlds();
-
 
         Factory factory = new Factory();
         player = factory.createPlayer(data.playerClass, currentWorld.spawnX, currentWorld.spawnY, currentWorld);
@@ -166,9 +170,7 @@ public class MainGame extends Game {
         player.setDefense(data.defense);
         player.setAgility(data.agility);
 
-
         currentWorld.setPlayer(player);
-        this.player = player;
 
         InventoryPlayer inv = new InventoryPlayer(false);
         player.setInventory(inv);
@@ -177,4 +179,17 @@ public class MainGame extends Game {
         setScreen(new GameScreen(this, currentWorld, btnSkin));
 
     }
+
+    public void playWorldMusic(BaseWorld world) {
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+            backgroundMusic.dispose();
+        }
+
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(world.worldMusicPath));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f);
+//        backgroundMusic.play();
+    }
+
 }

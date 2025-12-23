@@ -63,13 +63,13 @@
  </tile>
  <tile id="18">
   <properties>
-   <property name="blocked" type="bool" value="true"/>
+   <property name="dead" type="bool" value="true"/>
   </properties>
   <image source="tile39.png" width="48" height="48"/>
  </tile>
  <tile id="19">
   <properties>
-   <property name="blocked" type="bool" value="true"/>
+   <property name="dead" type="bool" value="true"/>
   </properties>
   <image source="tile40.png" width="48" height="48"/>
  </tile>

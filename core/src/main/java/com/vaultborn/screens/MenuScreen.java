@@ -38,6 +38,7 @@ public class MenuScreen {
     public MenuScreen(MainGame game, Skin skin, List<String> element) {
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
+//        game.setBackgroundMusic("sounds/land_of_snow_background_music.mp3");
 
 
     }
@@ -45,6 +46,8 @@ public class MenuScreen {
     public MenuScreen(MainGame game, Skin skin, List<String> element, InputManager inputManager) {
         createMenu(game, skin, element);
         game.getBackgroundMusic().play();
+//        game.setBackgroundMusic("sounds/land_of_snow_background_music.mp3");
+
         this.inputManager = inputManager;
 
     }

@@ -1,6 +1,7 @@
 package com.vaultborn.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -58,6 +59,8 @@ public abstract class BaseWorld {
     private float damageCooldown = 0.5f;
     private Class<?> boss = Gorgon.class;
     private boolean isDeadBoss = false;
+    public String worldMusicPath="sounds/forest.wav";
+    public Music worldMusic;
 
     protected final AssetManager assetsManager;
     protected final Factory factory;
@@ -93,12 +96,13 @@ public abstract class BaseWorld {
      * @param backgroundPath Chemin vers la texture de fond
      * @throws FactoryException si un problème survient lors de la création des mobs/objets
      */
-    public BaseWorld(MainGame game, String mapName, String backgroundPath) throws FactoryException {
+    public BaseWorld(MainGame game, String mapName, String backgroundPath, String musicPath) throws FactoryException {
         this.mapName = mapName;
         this.assetsManager = new AssetManager();
         this.factory = new Factory();
         this.background = new Texture(backgroundPath);
         this.game = game;
+        this.worldMusicPath = musicPath;
         loadMap();
         initCameras();
         initMobs();
@@ -122,6 +126,7 @@ public abstract class BaseWorld {
         int mapHeight = map.getProperties().get("height", Integer.class);
         tileSize = map.getProperties().get("tilewidth", Integer.class);
         mapHeightInPixels = mapHeight * tileSize;
+
     }
 
     /**
@@ -515,6 +520,7 @@ public abstract class BaseWorld {
 
     public void setScreen(GameScreen screen) {
         this.screen = screen;
+        game.setBackgroundMusic(worldMusicPath);
     }
 
     public void changeToWorld(BaseWorld newWorld, Vector2 spawnPosition) {

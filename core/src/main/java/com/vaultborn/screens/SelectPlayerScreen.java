@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.vaultborn.MainGame;
 import com.vaultborn.factories.Factory;
 import com.vaultborn.factories.FactoryException;
+import com.vaultborn.world.DungeonWorld;
 import com.vaultborn.world.ForestWorld;
 import com.vaultborn.world.HellWorld;
 
@@ -196,12 +197,17 @@ public class SelectPlayerScreen implements Screen {
     private void startGame(String classKey) throws FactoryException {
         game.forestWorld = new ForestWorld(game);
         game.hellWorld = new HellWorld(game);
+        game.dungeonWorld = new DungeonWorld(game);
 
-        game.player = factory.createPlayer(classKey, 250, 800, game.forestWorld);
+//        game.player = factory.createPlayer(classKey, 250, 800, game.forestWorld);
+        game.player = factory.createPlayer(classKey, 350, 400, game.forestWorld);
+//        game.player = factory.createPlayer(classKey, 1750, 3500, game.hellWorld);
+//        game.dungeonWorld.setPlayer(game.player);
         game.forestWorld.setPlayer(game.player);
         game.player.setInput(game.inputManager.allInput());
 
         game.forestWorld.linkWorlds();
+        game.dungeonWorld.linkWorlds();
         game.hellWorld.linkWorlds();
 
         InventoryPlayer inv = new InventoryPlayer(false);
@@ -209,6 +215,9 @@ public class SelectPlayerScreen implements Screen {
         inv.setPlayer(game.player);
 
         game.setScreen(new GameScreen(game, game.forestWorld,skin));
+//        game.setScreen(new GameScreen(game, game.dungeonWorld, skin));
+//        game.setScreen(new GameScreen(game, game.hellWorld, skin));
+
     }
 
     @Override
