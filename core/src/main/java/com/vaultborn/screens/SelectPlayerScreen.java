@@ -202,8 +202,8 @@ public class SelectPlayerScreen implements Screen {
         game.player = factory.createPlayer(classKey, 350, 400, game.forestWorld);
 //        game.player = factory.createPlayer(classKey, 550, 3800, game.hellWorld);
 //        game.dungeonWorld.setPlayer(game.player);
-//        game.forestWorld.setPlayer(game.player);
-        game.hellWorld.setPlayer(game.player);
+        game.forestWorld.setPlayer(game.player);
+//        game.hellWorld.setPlayer(game.player);
 
         game.player.setInput(game.inputManager.allInput());
 
