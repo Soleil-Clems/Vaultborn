@@ -199,11 +199,12 @@ public class SelectPlayerScreen implements Screen {
         game.hellWorld = new HellWorld(game);
         game.dungeonWorld = new DungeonWorld(game);
 
-//        game.player = factory.createPlayer(classKey, 250, 800, game.forestWorld);
         game.player = factory.createPlayer(classKey, 350, 400, game.forestWorld);
-//        game.player = factory.createPlayer(classKey, 1750, 3500, game.hellWorld);
+//        game.player = factory.createPlayer(classKey, 550, 3800, game.hellWorld);
 //        game.dungeonWorld.setPlayer(game.player);
-        game.forestWorld.setPlayer(game.player);
+//        game.forestWorld.setPlayer(game.player);
+        game.hellWorld.setPlayer(game.player);
+
         game.player.setInput(game.inputManager.allInput());
 
         game.forestWorld.linkWorlds();

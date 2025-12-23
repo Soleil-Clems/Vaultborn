@@ -59,9 +59,9 @@ public class HellWorld extends BaseWorld {
     protected void initMobs() throws FactoryException {
         mobs.add(factory.createMob("gorgon", 1000, 3800, this, 1));
 
-        mobs.add(factory.createMob("minotaur", 1900, 3800, this, 1));
-        mobs.add(factory.createMob("minotaur", 1070, 3600, this, 1));
-        mobs.add(factory.createMob("minotaur", 2000, 3600, this, 1));
+        mobs.add(factory.createMob("yokai", 1900, 3800, this, 1));
+        mobs.add(factory.createMob("yokai", 1070, 3600, this, 1));
+        mobs.add(factory.createMob("yokai", 2000, 3600, this, 1));
 
         mobs.add(factory.createMob("gorgon", 2900, 3600, this,1));
         mobs.add(factory.createMob("minotaur", 2950, 3600, this, 1));
@@ -77,59 +77,59 @@ public class HellWorld extends BaseWorld {
 
         mobs.add(factory.createMob("gorgon", 100, 2500, this, 1));
         mobs.add(factory.createMob("minotaur", 200, 2500, this, 1));
-        mobs.add(factory.createMob("minotaur", 300, 2500, this, 1));
+        mobs.add(factory.createMob("yokai", 300, 2500, this, 1));
         mobs.add(factory.createMob("minotaur", 800, 2800, this, 1));
         mobs.add(factory.createMob("minotaur", 900, 2800, this, 1));
-        mobs.add(factory.createMob("gorgon", 1000, 2800, this, 1));
+        mobs.add(factory.createMob("yokai", 1000, 2800, this, 1));
         mobs.add(factory.createMob("gorgon", 1100, 2800, this, 1));
-        mobs.add(factory.createMob("gorgon", 1300, 2800, this, 1));
+        mobs.add(factory.createMob("yokai", 1300, 2800, this, 1));
 
 
         mobs.add(factory.createMob("gorgon", 1100, 2300, this, 1));
-        mobs.add(factory.createMob("gorgon", 1200, 2300, this, 1));
+        mobs.add(factory.createMob("yokai", 1200, 2300, this, 1));
         mobs.add(factory.createMob("minotaur", 1300, 2300, this, 1));
         mobs.add(factory.createMob("minotaur", 1400, 2300, this, 1));
-        mobs.add(factory.createMob("minotaur", 1500, 2300, this, 1));
+        mobs.add(factory.createMob("yokai", 1500, 2300, this, 1));
         mobs.add(factory.createMob("minotaur", 1600, 2300, this, 1));
         mobs.add(factory.createMob("minotaur", 1700, 2300, this, 1));
         mobs.add(factory.createMob("minotaur", 1800, 2300, this, 1));
-        mobs.add(factory.createMob("minotaur", 1900, 2300, this, 1));
+        mobs.add(factory.createMob("yokai", 1900, 2300, this, 1));
         mobs.add(factory.createMob("minotaur", 2900, 2300, this, 1));
-        mobs.add(factory.createMob("minotaur", 2950, 2300, this, 1));
+        mobs.add(factory.createMob("yokai", 2950, 2300, this, 1));
         mobs.add(factory.createMob("gorgon", 3100, 2300, this, 1));
         mobs.add(factory.createMob("gorgon", 3300, 2300, this, 1));
-        mobs.add(factory.createMob("gorgon", 3400, 2300, this, 1));
+        mobs.add(factory.createMob("yokai", 3400, 2300, this, 1));
 
 
         mobs.add(factory.createMob("gorgon", 1100, 1900, this, 1));
-        mobs.add(factory.createMob("gorgon", 1200, 1900, this, 1));
+        mobs.add(factory.createMob("yokai", 1200, 1900, this, 1));
         mobs.add(factory.createMob("gorgon", 1300, 1900, this, 1));
-        mobs.add(factory.createMob("gorgon", 1400, 1900, this, 1));
+        mobs.add(factory.createMob("yokai", 1400, 1900, this, 1));
 
-        mobs.add(factory.createMob("gorgon", 420, 800, this, 1));
+        mobs.add(factory.createMob("yokai", 420, 800, this, 1));
         mobs.add(factory.createMob("gorgon", 520, 800, this, 1));
-        mobs.add(factory.createMob("gorgon", 620, 800, this, 1));
+        mobs.add(factory.createMob("yokai", 620, 800, this, 1));
         mobs.add(factory.createMob("gorgon", 760, 800, this, 1));
         mobs.add(factory.createMob("gorgon", 810, 800, this, 1));
-        mobs.add(factory.createMob("gorgon", 1000, 800, this, 1));
+        mobs.add(factory.createMob("yokai", 1000, 800, this, 1));
 
         mobs.add(factory.createMob("gorgon", 420, 100, this, 1)); // le boss
-        mobs.add(factory.createMob("gorgon", 520, 100, this, 1));
+        mobs.add(factory.createMob("yokai", 520, 100, this, 1));
         mobs.add(factory.createMob("gorgon", 620, 100, this, 1));
-        mobs.add(factory.createMob("gorgon", 760, 100, this, 1));
+        mobs.add(factory.createMob("yokai", 760, 100, this, 1));
         mobs.add(factory.createMob("gorgon", 810, 100, this, 1));
         mobs.add(factory.createMob("gorgon", 1000, 100, this, 1));
 
         mobs.add(factory.createMob("minotaur", 1500, 100, this, 1));
-        mobs.add(factory.createMob("minotaur", 1800, 100, this, 1));
+        mobs.add(factory.createMob("yokai", 1800, 100, this, 1));
         mobs.add(factory.createMob("minotaur", 2100, 100, this, 1));
-        mobs.add(factory.createMob("minotaur", 2300, 100, this, 1));
+        mobs.add(factory.createMob("yokai", 2300, 100, this, 1));
         mobs.add(factory.createMob("minotaur", 2500, 100, this, 1));
         mobs.add(factory.createMob("minotaur", 3000, 100, this, 1));
 
-        mobs.add(factory.createMob("gorgon", 3100, 100, this, 1));
+        mobs.add(factory.createMob("yokai", 3100, 100, this, 1));
         mobs.add(factory.createMob("gorgon", 3200, 100, this, 1));
-        mobs.add(factory.createMob("minotaur", 3400, 100, this, 1));
+        mobs.add(factory.createMob("yokai", 3400, 100, this, 1));
         mobs.add(factory.createMob("minotaur", 3500, 100, this, 1));
         mobs.add(factory.createMob("gorgon", 3800, 100, this, 1));
         Mob boss = factory.createMob("tengu", 3900, 100, this, 1);
