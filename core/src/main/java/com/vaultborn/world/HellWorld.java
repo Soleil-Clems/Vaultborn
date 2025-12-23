@@ -39,7 +39,7 @@ public class HellWorld extends BaseWorld {
      * @throws FactoryException si la création d'un mob ou objet échoue
      */
     public HellWorld(MainGame game) throws FactoryException {
-        super(game, "HellMap/map", "backgrounds/hell.png");
+        super(game, "HellMap/map", "backgrounds/hell.png", "sounds/hell.wav");
         this.game = game;
         setBoss(Tengu.class);
         levelName = "hell";
@@ -47,11 +47,11 @@ public class HellWorld extends BaseWorld {
         this.spawnY = 3800;
         this.isEnd = true;
 
+
     }
 
     @Override
     protected void initPlayer() {
-
         player = this.getPlayer();
     }
 

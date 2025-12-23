@@ -11,12 +11,21 @@ import com.vaultborn.factories.FactoryException;
 public class ForestWorld extends BaseWorld {
 
     public ForestWorld(MainGame game) throws FactoryException {
-        super(game,"ForestMap/map", "backgrounds/background_forest.png");
+        super(game,"ForestMap/map", "backgrounds/background_forest.png","sounds/forest.wav");
         this.game = game;
         setBoss(Minotaur.class);
+
         levelName = "forest";
         this.spawnX = 250;
         this.spawnY = 800;
+    }
+
+    @Override
+    protected void initPlayer()
+    {
+        game.setBackgroundMusic(worldMusicPath);
+
+        player = this.getPlayer();
     }
 
     @Override
@@ -66,7 +75,7 @@ public class ForestWorld extends BaseWorld {
 
         SpecialDoor door = (SpecialDoor) factory.createSpecialDoor("special_door", 12100, 700, this, game.hellWorld);
         door.setParentWorld(this);
-        door.setSpawnPosition(550, 3800); // Position d'arrivée dans HellWorld
+        door.setSpawnPosition( 350, 400); // Position d'arrivée dans DungeonWorld
         gameObjects.add(door);
     }
 
@@ -75,7 +84,7 @@ public class ForestWorld extends BaseWorld {
         for (GameObject obj : gameObjects) {
             if (obj instanceof SpecialDoor) {
                 SpecialDoor door = (SpecialDoor) obj;
-                door.setTargetWorld(game.hellWorld);
+                door.setTargetWorld(game.dungeonWorld);
             }
         }
     }

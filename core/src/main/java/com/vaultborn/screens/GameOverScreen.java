@@ -58,15 +58,11 @@ public class GameOverScreen implements Screen{
         btnFont = gen.generateFont(btn);
 
         gen.dispose();
+        game.setBackgroundMusic("sounds/land_of_snow_background_music.mp3");
+//
 
         Label.LabelStyle goStyle = new Label.LabelStyle(txtFont, Color.RED);
         Label.LabelStyle txtStyle = new Label.LabelStyle(btnFont, Color.WHITE);
-        /*TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle();
-        btnStyle.font = btnFont;
-        btnStyle.up = skin.getDrawable("button");
-        btnStyle.over = skin.getDrawable("button-over-c");
-        btnStyle.down = skin.getDrawable("button-pressed-c");*/
-
 
         Label gameOver = new Label("Game Over", goStyle);
         Label gameOverMessage = new Label("Le Vault a eu raison de toi ...", txtStyle);
